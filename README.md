@@ -12,9 +12,9 @@ Each function corresponds to one of the available APIs
 
 ### get_taxon_by_name()
 
-This function sends a query to the API based on the genus and specific epithet of a species (additionally, it can include subspecies and the scientific authority that described that taxon). It returns a data frame with the submitted data and all the information avaible in IEPNB. If no matches are found due to spelling errors or the species not existing in the IEPNB it returns nothing.
+This function sends a query to the API based on the genus and specific epithet of a species (additionally, it can include subspecies and the scientific authority that described that taxon). Even if the taxon of interest do not have any subspecies it is necessary to include the subspecies column. The function returns a data frame with the submitted data and all the information avaible in IEPNB. If no matches are found due to spelling errors or the species not existing in the IEPNB it returns nothing.
 
-``` R
+``` r
 library(eidosapi)
 example_data <- data.frame(genus = c("Ales", "Borderea"),
                            species = c("cisternasii", "chouardii"),
@@ -23,7 +23,18 @@ info_taxo <- get_taxon_by_name(taxon_list = example_data)
 print(info_taxo)
 ```
 
+This function is useful to retrieve the unique identifiers *idtaxon* from IEPNB that can be used to make accessing other APIs easier.
+
 ### get_taxon_by_id()
+
+Retrieve information associated to a list of identifiers. The input is a vector of numeric identifiers and the function returns a data frame with all the information from EIDOS. One identifier might be associated with several taxa, for example if a species has several synonyms. The returned data frame includes a row for each taxa associated to the identifier along with the taxonomic validity of the name.
+
+``` R
+library(eidosapi)
+example_ids <- c(124, "2764")
+info_taxo <- get_taxon_by_id(taxon_id = example_ids)
+print(info_taxo)
+```
 
 ### get_tables()
 
