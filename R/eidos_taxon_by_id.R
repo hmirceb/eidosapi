@@ -13,7 +13,7 @@ eidos_taxon_by_id <- function(taxon_id){
   taxon_id = as.numeric(taxon_id)
 
   ## Check if ID is correct (only numbers allowed) ##
-  if(is.na(taxon_id)){
+  if(sum(is.na(taxon_id) != 0)){
     stop("At least one ID includes letters")
   }
 

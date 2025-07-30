@@ -41,6 +41,18 @@ print(info_taxo)
 If one of the identifiers is invalid because it includes letters the function will throw an error. If the identifier is numeric but the taxon is not present in IEPNB the function returns nothing.
 
 ### eidos_conservation_by_id()
+Retrieves the conservation status from a given identifier. By default the API does not return the taxonomic information associated to that identifier. If needed, the function calls eidos_taxon_by_id() and includes the information regarding the **accepted** name for that identifier. Many taxa have been assessed several time throughout the years and thus appear in different categories. The function returns all of them by default, but includes the option of returning only the latest assessment. 
+
+``` R
+library(eidosapi)
+example_ids <- c(124, 1)
+info_taxo_default <- eidos_conservation_by_id(taxon_id = example_ids, taxo_info = F, latest = F)
+print(info_taxo)
+
+info_taxo <- eidos_conservation_by_id(taxon_id = example_ids, taxo_info = T, latest = F)
+
+info_taxo_latest <- eidos_conservation_by_id(taxon_id = example_ids, taxo_info = T, latest = T)
+```
 
 ### eidos_legal_status_by_id()
 
