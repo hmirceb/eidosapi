@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # eidos_api
 
 [!WARNING] This package works best (if not almost exclusively) for taxa
