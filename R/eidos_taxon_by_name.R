@@ -14,7 +14,7 @@
 #' example_taxo <- data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
 #'
 #'
-get_taxon_by_name <- function(taxon_list) {
+eidos_taxon_by_name <- function(taxon_list) {
 
   ## Check if genus data is ok: ##
   if(sum(is.na(taxon_list$genus)) > 0){

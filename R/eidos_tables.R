@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-get_tables <- function(table = "listapatronespecie"){
+eidos_tables <- function(table = "listapatronespecie"){
 
   if(!table %in% c("comunidades_autonomas",
                   "listapatronespecie_codigos",

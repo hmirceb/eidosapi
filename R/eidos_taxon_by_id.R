@@ -7,7 +7,7 @@
 #'
 #' @examples
 #'
-get_taxon_by_id <- function(taxon_id){
+eidos_taxon_by_id <- function(taxon_id){
 
   # Make sure ID is numeric
   taxon_id = as.numeric(taxon_id)
