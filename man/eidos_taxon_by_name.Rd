@@ -2,7 +2,7 @@
 % Please edit documentation in R/eidos_taxon_by_name.R
 \name{eidos_taxon_by_name}
 \alias{eidos_taxon_by_name}
-\title{Retrieve taxon information by name from EIDOS}
+\title{Retrieve taxonomic information by name from EIDOS}
 \usage{
 eidos_taxon_by_name(taxon_list)
 }

@@ -1,4 +1,4 @@
-#' Retrieve taxon information by name from EIDOS
+#' Retrieve taxonomic information by name from EIDOS
 #'
 #' EIDOS is the Taxonomy Web Service of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
 #'
@@ -121,7 +121,7 @@ eidos_taxon_by_name = function(taxon_list) {
                        "%20",
                        df_urls$scientificnameauthorship)
 
-  # Remove unnecessary text if sctientific authority is unavailable
+  # Remove unnecessary text if scientific authority is unavailable
   df_urls$url = gsub("%20NA",
                      "",
                      df_urls$url)
