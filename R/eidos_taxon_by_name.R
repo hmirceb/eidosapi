@@ -1,19 +1,17 @@
-#' Retrieve taxon information by name from the EIDOS Taxonomy Web Service
-#' of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
+#' Retrieve taxon information by name from EIDOS
 #'
-#' The function 'get_taxon_by_name'
-#' connects to the EIDOS API' using the base URL:
-#' https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon=
-#' and retrieves taxonomic information from EIDOS
+#' EIDOS is the Taxonomy Web Service of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
 #'
-#' @param taxon_list A vector or data.frame with taxa names. The data frame needs 4 columns: genus, species, subspecies, scientificnameauthorship. Columns subspecies and scientificnameauthorship can be NA
-#' @returns eidos_result A data.frame with the supplied data and
+#' The function 'get_taxon_by_name' connects to the EIDOS API and retrieves taxonomic information for the taxon. Invalid names will return nothing
+#'
+#' @param taxon_list A vector or data.frame with taxa names. The data frame needs 4 columns: "genus", "species", "subspecies", "scientificnameauthorship." Columns "subspecies" and "scientificnameauthorship" can be NA
+#' @returns A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 #' @export
 #'
 #' @examples
 #' example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
 #' eidos_taxon_by_name(taxon_list = example_taxo)
-#' eidos_taxon_by_name(taxon_list = c("Alytes cisternasii, "Pinus nigra subsp. salzmannii"))
+#' eidos_taxon_by_name(taxon_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
 eidos_taxon_by_name = function(taxon_list) {
 
   ## If supplied list is a vector, generate appropiate data frame

@@ -2,20 +2,24 @@
 % Please edit documentation in R/eidos_taxon_by_name.R
 \name{eidos_taxon_by_name}
 \alias{eidos_taxon_by_name}
-\title{Retrieve taxon information by name from the EIDOS Taxonomy Web Service
-of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)}
+\title{Retrieve taxon information by name from EIDOS}
 \usage{
 eidos_taxon_by_name(taxon_list)
 }
 \arguments{
-\item{taxon_list}{A vector or data.frame with taxa names. The data frame needs 4 columns: genus, species, subspecies, scientificnameauthorship. Columns subspecies and scientificnameauthorship can be NA}
+\item{taxon_list}{A vector or data.frame with taxa names. The data frame needs 4 columns: "genus", "species", "subspecies", "scientificnameauthorship." Columns "subspecies" and "scientificnameauthorship" can be NA}
 }
 \value{
-eidos_result A data.frame with the supplied data and
+A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 }
 \description{
-The function 'get_taxon_by_name'
-connects to the EIDOS API' using the base URL:
-https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon=
-and retrieves taxonomic information from EIDOS
+EIDOS is the Taxonomy Web Service of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
+}
+\details{
+The function 'get_taxon_by_name' connects to the EIDOS API and retrieves taxonomic information for the taxon. Invalid names will return nothing
+}
+\examples{
+example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
+eidos_taxon_by_name(taxon_list = example_taxo)
+eidos_taxon_by_name(taxon_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
 }
