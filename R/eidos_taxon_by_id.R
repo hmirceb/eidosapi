@@ -1,12 +1,12 @@
-#' get_taxon_by_id
+#' Get taxonomic infomration from ID
 #'
-#' @param taxon_id A valid ID number from EIDOS
+#' @param taxon_id An integer. A valid taxon identifier from EIDOS
 #'
 #' @returns A data frame with the taxonomic information for all taxa related to that ID
 #' @export
 #'
 #' @examples
-#'
+#'eidos_taxon_by_id(taxon_id = 1)
 eidos_taxon_by_id <- function(taxon_id){
 
   ## Make sure ID is numeric ##

@@ -5,16 +5,37 @@
 #' connects to the EIDOS API' using the base URL:
 #' https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon=
 #' and retrieves taxonomic information from EIDOS
-#' @param taxon_list A data.frame with 4 columns: genus, species, subspecies, scientificnameauthorship
-#' Columnes subspecies and scientificnameauthorship can be NA or omited
+#'
+#' @param taxon_list A vector or data.frame with taxa names. The data frame needs 4 columns: genus, species, subspecies, scientificnameauthorship. Columns subspecies and scientificnameauthorship can be NA
 #' @returns eidos_result A data.frame with the supplied data and
 #' @export
 #'
 #' @examples
-#' example_taxo <- data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
-#'
-#'
-eidos_taxon_by_name <- function(taxon_list) {
+#' example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
+#' eidos_taxon_by_name(taxon_list = example_taxo)
+#' eidos_taxon_by_name(taxon_list = c("Alytes cisternasii, "Pinus nigra subsp. salzmannii"))
+eidos_taxon_by_name = function(taxon_list) {
+
+  ## If supplied list is a vector, generate appropiate data frame
+  if(is.vector(taxon_list)){
+    # Remove any possible "subsp."
+    taxon_list = gsub(pattern = " subsp.", replacement = "", x = taxon_list)
+
+    # Remove underscores if any
+    taxon_list = gsub(pattern = "_", replacement = " ", x = taxon_list)
+
+    # Split vector and extract genus, species and subspecies:
+    taxa_split = strsplit(x = taxon_list, split = " ")
+    genera = sapply(taxa_split, FUN = function(x){x[1]})
+    species = sapply(taxa_split, FUN = function(x){x[2]})
+    subspecies = sapply(taxa_split, FUN = function(x){x[3]})
+
+    # Generate data frame
+    taxon_list = data.frame(genus = genera,
+               species = species,
+               subspecies = subspecies)
+    rm(genera, species, subspecies)
+  }
 
   ## Check if genus data is ok: ##
   if(sum(is.na(taxon_list$genus)) > 0){
@@ -27,15 +48,15 @@ eidos_taxon_by_name <- function(taxon_list) {
   }
 
   ## Set API URL ##
-  api_url_base <- "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
+  api_url_base = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
 
   ## Generate taxon-specific URLs ##
 
   # Separate between taxa with species and subspecies
   # Species
-  sp_list <- taxon_list[is.na(taxon_list$subspecies),]
+  sp_list = taxon_list[is.na(taxon_list$subspecies),]
 
-  sp_urls <- apply(
+  sp_urls = apply(
     X = sp_list,
     MARGIN = 1,
     simplify = T,
@@ -58,9 +79,9 @@ eidos_taxon_by_name <- function(taxon_list) {
   )
 
   # Subspecies
-  subsp_list <- taxon_list[!is.na(taxon_list$subspecies),]
+  subsp_list = taxon_list[!is.na(taxon_list$subspecies),]
 
-  subsp_urls <- apply(
+  subsp_urls = apply(
     X = subsp_list,
     MARGIN = 1,
     FUN = function(X){

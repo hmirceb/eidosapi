@@ -1,12 +1,14 @@
-#' Title
+#' Get the conservation information from EIDOS for a given taxa
 #'
-#' @param taxon_id
+#' @param taxon_id An integer. A taxon identifier from EIDOS.
+#' @param taxo_info Booelan. Return the taxonomic information of the taxon
+#' @param latest Booelan. Return the information form only the latest assessment
 #'
-#' @returns
+#' @returns A data frame with the conservation information of each taxa.
 #' @export
 #'
 #' @examples
-#'
+#' eidos_conservation_by_id(taxon_id = 1, taxon_info = F, latest = F)
 eidos_conservation_by_id <- function(taxon_id,
                                      taxo_info = F,
                                      latest = F){
