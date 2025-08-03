@@ -14,6 +14,6 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
   jsonlite,
-  janitor,
   fuzzyjoin
 RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)

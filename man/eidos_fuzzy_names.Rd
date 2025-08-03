@@ -6,6 +6,7 @@
 \usage{
 eidos_fuzzy_names(
   taxa_list,
+  checklist,
   maxdist = 2,
   method = "osa",
   mode = "inner",
@@ -13,15 +14,18 @@ eidos_fuzzy_names(
 )
 }
 \arguments{
-\item{taxa_list}{A data frame or vector with taxonomic information}
+\item{taxa_list}{A data frame or vector with taxonomic information. Must include at least the genus
+and species columns. Subspecies is optional. Additional taxonomic levels from
+kingdom to family can be supplied in the data frame to filter any possible conflicts.
+Taxonomic authorities are not supported.}
 
-\item{maxdist}{A number. Maximum distance between taxa names to match}
+\item{maxdist}{A number. Maximum dissimilarity distance between taxa names to match.}
 
-\item{method}{A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex"}
+\item{method}{A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".}
 
-\item{mode}{A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti"}
+\item{mode}{A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.}
 
-\item{distance_col}{A string. Name of the column to display the dissimilarity distance between matches strings. Set NULL to omit the column}
+\item{distance_col}{A string. Name of the column to display the dissimilarity distance between matches strings. Set NULL to omit the column.}
 }
 \value{
 A data frame
@@ -30,5 +34,7 @@ A data frame
 Fuzzy matching with the Spanish checklist
 }
 \examples{
-eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"))
+checklist = eidos_clean_checklist()
+matched_names = eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"), checklist = checklist)
+print(matched_names)
 }

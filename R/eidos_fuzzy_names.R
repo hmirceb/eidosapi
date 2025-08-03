@@ -1,10 +1,13 @@
 #' Fuzzy matching with the Spanish checklist
 #'
-#' @param taxa_list A data frame or vector with taxonomic information
-#' @param maxdist A number. Maximum distance between taxa names to match
-#' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex"
-#' @param mode A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti"
-#' @param distance_col A string. Name of the column to display the dissimilarity distance between matches strings. Set NULL to omit the column
+#' @param taxa_list A data frame or vector with taxonomic information. Must include at least the genus
+#'  and species columns. Subspecies is optional. Additional taxonomic levels from
+#'  kingdom to family can be supplied in the data frame to filter any possible conflicts.
+#'  Taxonomic authorities are not supported.
+#' @param maxdist A number. Maximum dissimilarity distance between taxa names to match.
+#' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".
+#' @param mode A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.
+#' @param distance_col A string. Name of the column to display the dissimilarity distance between matches strings. Set NULL to omit the column.
 #'
 #' @returns A data frame
 #' @export
