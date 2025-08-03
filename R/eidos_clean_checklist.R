@@ -6,6 +6,10 @@
 #' @examples
 #' eidos_clean_checklist()
 eidos_clean_checklist <- function(){
+
+  ## Message:
+  cat("Downloading, please wait...")
+
   ## Get checklist with synonyms ##
   checklist = eidos_tables(eidos_table = "listapatronespecie_sinonimos")
 

@@ -10,7 +10,9 @@
 #' @export
 #'
 #' @examples
-#' eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"))
+#' checklist = eidos_clean_checklist()
+#' matched_names = eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"), checklist = checklist)
+#' print(matched_names)
 eidos_fuzzy_names <- function(taxa_list,
                               checklist,
                               maxdist = 2,
@@ -18,14 +20,14 @@ eidos_fuzzy_names <- function(taxa_list,
                               mode = "inner",
                               distance_col = "dist"){
 
-  ## Check if checklist is in environment and download it if not
+  ## Check if checklist is in environment
   if(missing(checklist)){
-    stop("Checklist missing. Please run eidos_clean_checklist()")
+    stop("Checklist missing. Please run eidos_clean_checklist() and save result to an object")
   }
 
 ### Fuzzy match the provided name ###
 
-  ## Prepare inoput data:
+  ## Prepare input data:
   ## If supplied list is a vector, generate appropiate data frame
   if(is.vector(taxa_list)){
     # Remove any possible "subsp."
@@ -54,9 +56,6 @@ eidos_fuzzy_names <- function(taxa_list,
     rm(genera, species, subspecies)
   }
 
-  # Change column names to avoid conflicts in join
-  names(taxa_list) = paste0("supplied_", names(taxa_list))
-
   ## Check if genus data is ok: ##
   if(sum(is.na(taxa_list$genus)) > 0){
     stop("Missing genus data")
@@ -67,17 +66,75 @@ eidos_fuzzy_names <- function(taxa_list,
     stop("Missing species data")
   }
 
+  # Create supplied_taxon column:
+  taxa_list$taxon = gsub(pattern = " NA", replacement = "",
+                         x = paste(sep = " ",
+                                   taxa_list$genus,
+                                   taxa_list$species,
+                                   taxa_list$subspecies))
+
+  # Change column names to avoid conflicts in join
+  names(taxa_list) = paste0("supplied_", names(taxa_list))
+
   # Join
   eidos_checklist_join = fuzzyjoin::stringdist_join(x = taxa_list,
-                        y = eidos_checklist,
+                        y = checklist,
                         by = c("supplied_taxon" = "taxon_clean"),
                         max_dist = maxdist,
                         method = method,
                         mode = mode,
                         distance_col = distance_col)
 
-  # Return
-  return(eidos_checklist_join)
-}
+  ## If any higher taxonomic information is supplied (family, order...) ##
+  ## Filter the data frame to keep those supplied taxa that match the
+  ## higher taxonomic levels in the accepted name of the Checklist
 
-aa <- eidos_fuzzy_names(taxa_list = "Borde chouardi")
+  ### NOTE: This only works for data frames, not vector lists ###
+  # Initialize logical vector to keep all rows by default
+  keep <- rep(TRUE, nrow(eidos_checklist_join))
+
+  # Apply condition only if a particular taxonomic level was supplied for
+  # at least one taxa of interest
+
+  # The "keep &" part of the conditions update the existing logical vector
+  # to keep only the rows that continue to meet all previous conditions
+  # as well as the current condition to avoid overwriting
+
+  # Kingdom
+  if("supplied_kingdom" %in% names(eidos_checklist_join)) {
+    keep <- keep &
+      (is.na(eidos_checklist_join$supplied_kingdom) |
+         eidos_checklist_join$supplied_kingdom == eidos_checklist_join$kingdom)
+  }
+
+  # Phylum
+  if("supplied_phylum" %in% names(eidos_checklist_join)) {
+    keep <- keep & (is.na(eidos_checklist_join$supplied_phylum) |
+                      eidos_checklist_join$supplied_phylum == eidos_checklist_join$phylum)
+  }
+
+  # Class
+  if("supplied_class" %in% names(eidos_checklist_join)) {
+    keep <- keep & (is.na(eidos_checklist_join$supplied_class) |
+                      eidos_checklist_join$supplied_class == eidos_checklist_join$class)
+  }
+
+  # Order
+  if("supplied_order" %in% names(eidos_checklist_join)) {
+    keep <- keep & (is.na(eidos_checklist_join$supplied_order) |
+                      eidos_checklist_join$supplied_order == eidos_checklist_join$order)
+  }
+
+  # Family
+  if("supplied_family" %in% names(eidos_checklist_join)) {
+    keep <- keep & (is.na(eidos_checklist_join$supplied_family) |
+                      eidos_checklist_join$supplied_family == eidos_checklist_join$family)
+  }
+
+  # Filter and keep only those rows that match any of the supplied taxonomic
+  # information
+  filtered_eidos_checklist_join <- eidos_checklist_join[keep, ]
+
+  # Return
+  return(filtered_eidos_checklist_join)
+}
