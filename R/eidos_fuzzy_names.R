@@ -10,7 +10,12 @@
 eidos_tables <- function(eidos_table = "listapatronespecie"){
 
   # Clean names just in case:
-  eidos_table = janitor::make_clean_names(eidos_table, case = "snake")
+  eidos_table = gsub(pattern = " ",
+                     replacement = "_",
+                     x = tolower(
+                       x = eidos_table
+                       )
+                     )
 
   if(!eidos_table %in% c("comunidades_autonomas",
                          "listapatronespecie_codigos",
@@ -23,7 +28,16 @@ eidos_tables <- function(eidos_table = "listapatronespecie"){
                          "provincias",
                          "listapatronespecie_normas")
   ){
-    stop("The desired table is not available")
+    stop('The desired table is not available. Choose one of c("comunidades_autonomas",
+                         "listapatronespecie_codigos",
+                         "listapatronespecie",
+                         "componente_tema",
+                         "regbiogeograf_termar",
+                         "listapatronespecie_sinonimos",
+                         "pais",
+                         "norma",
+                         "provincias",
+                         "listapatronespecie_normas")')
   }
 
   # Set base URL
@@ -56,19 +70,15 @@ eidos_tables <- function(eidos_table = "listapatronespecie"){
 #' @examples
 #' eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"))
 eidos_fuzzy_names <- function(taxa_list,
+                              checklist,
                               maxdist = 2,
                               method = "osa",
                               mode = "inner",
                               distance_col = "dist"){
 
   ## Check if checklist is in environment and download it if not
-  if(!exists(x = "eidos_checklist")){
-
-    cat("Checklist not available in current R environment.\nDownloading...\nWe recommend running eidos_clean_checklist() to speed up this step")
-
-    ## Get eidos_checklist with synonyms ##
-    eidos_checklist = eidos_clean_checklist()
-
+  if(missing(checklist)){
+    stop("Checklist missing. Please run eidos_clean_checklist()")
   }
 
 ### Fuzzy match the provided name ###

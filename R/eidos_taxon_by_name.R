@@ -52,7 +52,12 @@ eidos_taxon_by_name = function(taxon_list) {
 
   # Separate between taxa with species and subspecies
   # Species
-  sp_list = taxon_list[is.na(taxon_list$subspecies),]
+  if(is.null(taxon_list$subspecies) |
+     sum(is.na(taxon_list$subspecies)) == 0){
+    sp_list = taxon_list
+  }else{
+    sp_list = taxon_list[is.na(taxon_list$subspecies),]
+  }
 
   sp_urls = apply(
     X = sp_list,
