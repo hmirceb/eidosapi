@@ -8,11 +8,16 @@
 #'  the corresponding name in the data frame or as function arguments if the supplied
 #'  data was a vector of names.
 #'  Taxonomic authorities are not supported yet.
+#' @param checklist A data frame. The result of running the eidos_clean_checklist() function.
 #' @param maxdist A number. Maximum dissimilarity distance between taxa names to match.
 #' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".
 #' @param mode A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.
 #' @param distance_col A string. Name of the column to display the dissimilarity distance between matched names. Set NULL to omit the column.
-#'
+#' @param kingdom A vector of strings of length = taxa_list with the kingdom of each supplied taxon.
+#' @param phylum A vector of strings of length = taxa_list with the phylum of each supplied taxon.
+#' @param class A vector of strings of length = taxa_list with the class of each supplied taxon.
+#' @param order A vector of strings of length = taxa_list with the order of each supplied taxon.
+#' @param family A vector of strings of length = taxa_list with the family of each supplied taxon.
 #' @returns A data frame
 #' @export
 #'

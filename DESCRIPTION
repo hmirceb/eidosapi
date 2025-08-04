@@ -1,4 +1,4 @@
-Package: eidos_api
+Package: eidosapi
 Type: Package
 Title: Connect to the taxonomic services of EIDOS through the API
 Version: 0.1.0
@@ -9,7 +9,7 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Access to the EIDOS API from the Spanish Government directly from R. This is an API to access taxonomic information from the Spanish Inventory of Natural Patromony and Biodiversity.  
+Description: Access to the EIDOS API from the Spanish Government directly from R. This is an API to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.  
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports:

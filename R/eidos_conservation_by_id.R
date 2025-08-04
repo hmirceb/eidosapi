@@ -14,11 +14,11 @@
 #' @export
 #'
 #' @examples
-#' eidos_conservation_by_id(taxon_id = 1, taxon_info = F, latest = F)
-#' eidos_conservation_by_id(taxon_id = 1, taxon_info = T, latest = F)
+#' eidos_conservation_by_id(taxon_id = 1, taxo_info = FALSE, latest = FALSE)
+#' eidos_conservation_by_id(taxon_id = 1, taxo_info = TRUE, latest = FALSE)
 eidos_conservation_by_id <- function(taxon_id,
-                                     taxo_info = F,
-                                     latest = F){
+                                     taxo_info = FALSE,
+                                     latest = FALSE){
   ## Make sure ID is numeric ##
   taxon_id = as.numeric(taxon_id)
 

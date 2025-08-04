@@ -23,6 +23,6 @@ eidos_fuzzy_names() or eidos_taxon_by_name() functions. By default de API does n
 If needed, the function retrieves that information using eidos_taxon_by_id().
 }
 \examples{
-eidos_conservation_by_id(taxon_id = 1, taxon_info = F, latest = F)
-eidos_conservation_by_id(taxon_id = 1, taxon_info = T, latest = F)
+eidos_conservation_by_id(taxon_id = 1, taxo_info = F, latest = F)
+eidos_conservation_by_id(taxon_id = 1, taxo_info = T, latest = F)
 }

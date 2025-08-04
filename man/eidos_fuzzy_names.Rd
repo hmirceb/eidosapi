@@ -33,6 +33,16 @@ Taxonomic authorities are not supported yet.}
 \item{mode}{A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.}
 
 \item{distance_col}{A string. Name of the column to display the dissimilarity distance between matched names. Set NULL to omit the column.}
+
+\item{kingdom}{A vector of strings of length = taxa_list with the kingdom of each supplied taxon.}
+
+\item{phylum}{A vector of strings of length = taxa_list with the phylum of each supplied taxon.}
+
+\item{class}{A vector of strings of length = taxa_list with the class of each supplied taxon.}
+
+\item{order}{A vector of strings of length = taxa_list with the order of each supplied taxon.}
+
+\item{family}{A vector of strings of length = taxa_list with the family of each supplied taxon.}
 }
 \value{
 A data frame
