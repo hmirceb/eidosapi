@@ -1,4 +1,4 @@
-Package: eidosapi
+Package: eidos_api
 Type: Package
 Title: Connect to the taxonomic services of EIDOS through the API
 Version: 0.1.0
