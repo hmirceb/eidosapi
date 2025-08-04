@@ -1,6 +1,6 @@
-#' Retrieve one of the tables related to the Spanish checklist
+#' Retrieve one of the tables related to the Spanish Checklist of Wildlie Species
 #'
-#' @param table Name of the table to query. The function if case insensitive and admits whitespace, but the parameter must match one of "comunidades_autonomas", "listapatronespecie_codigos",
+#' @param table Name of the table to query. The function is case insensitive, admits whitespaces and has partial matching for arguments, but these must match one of "comunidades_autonomas", "listapatronespecie_codigos",
 #' "listapatronespecie", "componente_tema", "regbiogeograf_termar", "listapatronespecie_sinonimos", "pais",
 #' "norma", "provincias" or "listapatronespecie_normas".
 #'
@@ -19,6 +19,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
                                          "norma",
                                          "provincias",
                                          "listapatronespecie_normas")){
+
   # Set table name in lower case and remove whitespaces just in case:
   eidos_table = gsub(pattern = " ",
                      replacement = "_",

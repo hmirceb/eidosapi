@@ -2,10 +2,12 @@
 #'
 #' Matches a data frame or vector with species names to any names in the Spanish checklist of Wildlife Species (*Lista Patrón de Especies Silvestres*). Uses fuzzy matching to allow spelling errors. In addition, you can filter by higher taxonomic levels to refine the match.
 #'
-#' @param taxa_list A data frame or vector with taxonomic information. Must include at least the genus
+#' @param taxa_list A data frame or vector with taxonomic information to match with the Checklist. Must include at least the genus
 #'  and species columns. Subspecies is optional. Additional taxonomic levels from
-#'  kingdom to family can be supplied in the data frame to filter any possible conflicts.
-#'  Taxonomic authorities are not supported.
+#'  kingdom to family can be supplied to filter any possible conflicts. These can be provided as columns with
+#'  the corresponding name in the data frame or as function arguments if the supplied
+#'  data was a vector of names.
+#'  Taxonomic authorities are not supported yet.
 #' @param maxdist A number. Maximum dissimilarity distance between taxa names to match.
 #' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".
 #' @param mode A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.
@@ -28,31 +30,37 @@
 #' # We can refine the search by including higher taxonomic levels:
 #' taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
 #' refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
+#'
+#' # Or using a vector instead
+#' taxa_vector = c("Lanius meridionalis")
+#' class_vector = c("Aves")
+#' refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist, class = class_vector)
+#'
 eidos_fuzzy_names <- function(taxa_list,
                               checklist,
                               maxdist = 2,
                               method = "osa",
                               mode = "inner",
-                              distance_col = "dist"){
+                              distance_col = "dist",
+                              kingdom = NULL,
+                              phylum = NULL,
+                              class = NULL,
+                              order = NULL,
+                              family = NULL){
 
   ## Check if checklist is in environment
   if(missing(checklist)){
-    stop("Checklist missing. Please run eidos_clean_checklist() and save result to an object")
+    stop("Checklist missing. Please run eidos_clean_checklist() and include result in argument checklist")
   }
 
 ### Fuzzy match the provided name ###
 
   ## Prepare input data:
-  ## If supplied list is a vector, generate appropiate data frame
+  ## If a vector was supplied, generate appropiate data frame
   if(is.vector(taxa_list)){
-    # Remove underscores if any
-    taxa_list = gsub(pattern = "_", replacement = " ", x = taxa_list)
 
-    checklist_split = strsplit(taxa_list, split = " ")
-
-    # Remove any possible "subsp."
-    taxa_list = gsub(pattern = " subsp.", replacement = "", x = taxa_list)
-
+    # Clean names (remove "subsp." and authorities)
+    taxa_list = sapply(taxa_list, clean_names)
 
     # Split vector and extract genus, species and subspecies:
     taxa_split = strsplit(x = taxa_list, split = " ")
@@ -60,10 +68,20 @@ eidos_fuzzy_names <- function(taxa_list,
     species = sapply(taxa_split, FUN = function(x){x[2]})
     subspecies = sapply(taxa_split, FUN = function(x){x[3]})
 
+    # Tabulate higher taxonomic levels if supplied
+    # If not supplied returns NULL
+    higher_taxo = cbind(kingdom, phylum, class, order, family)
+
     # Generate data frame
     taxa_list = data.frame(genus = genera,
                             species = species,
                             subspecies = subspecies)
+
+    # Join table of higher levels with supplied data.
+    # If higher_taxo is NULL, returns taxa_list
+    if(!is.null(higher_taxo)){
+      taxa_list = cbind(higher_taxo, taxa_list)
+    }
 
     # Generate clean name to match
     taxa_list$taxon = gsub(pattern = " NA", replacement = "",

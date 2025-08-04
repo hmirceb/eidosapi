@@ -1,8 +1,6 @@
 #' Retrieve taxonomic information by name from EIDOS
 #'
-#' EIDOS is the Taxonomy Web Service of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
-#'
-#' The function 'get_taxon_by_name' connects to the EIDOS API and retrieves taxonomic information for the taxon. Invalid names will return nothing
+#' Connects to the EIDOS API and retrieves taxonomic information for the given taxa. Invalid names will return nothing
 #'
 #' @param taxon_list A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
 #' Optional columns are "subspecies", "scientificnameauthorship."
@@ -34,15 +32,15 @@ eidos_taxon_by_name = function(taxon_list) {
     rm(genera, species, subspecies)
   }
 
-  ## Check if genus data is ok: ##
-  if(sum(is.na(taxon_list$genus)) > 0){
-    stop("Missing genus data")
-  }
-
-  ## Check if species data is ok: ##
-  if(sum(is.na(taxon_list$species)) > 0){
-    stop("Missing species data")
-  }
+  # ## Check if genus data is ok: ##
+  # if(sum(is.na(taxon_list$genus)) > 0){
+  #   stop("Missing genus data")
+  # }
+  #
+  # ## Check if species data is ok: ##
+  # if(sum(is.na(taxon_list$species)) > 0){
+  #   stop("Missing species data")
+  # }
 
   ## Set API URL ##
   api_url_base = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="

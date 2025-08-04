@@ -14,10 +14,7 @@ Optional columns are "subspecies", "scientificnameauthorship."}
 A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 }
 \description{
-EIDOS is the Taxonomy Web Service of the Spanish Inventory of Natural Patrimony and Biodiversity (IEPNB)
-}
-\details{
-The function 'get_taxon_by_name' connects to the EIDOS API and retrieves taxonomic information for the taxon. Invalid names will return nothing
+Connects to the EIDOS API and retrieves taxonomic information for the given taxa. Invalid names will return nothing
 }
 \examples{
 example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)

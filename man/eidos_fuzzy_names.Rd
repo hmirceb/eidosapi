@@ -10,14 +10,21 @@ eidos_fuzzy_names(
   maxdist = 2,
   method = "osa",
   mode = "inner",
-  distance_col = "dist"
+  distance_col = "dist",
+  kingdom = NULL,
+  phylum = NULL,
+  class = NULL,
+  order = NULL,
+  family = NULL
 )
 }
 \arguments{
-\item{taxa_list}{A data frame or vector with taxonomic information. Must include at least the genus
+\item{taxa_list}{A data frame or vector with taxonomic information to match with the Checklist. Must include at least the genus
 and species columns. Subspecies is optional. Additional taxonomic levels from
-kingdom to family can be supplied in the data frame to filter any possible conflicts.
-Taxonomic authorities are not supported.}
+kingdom to family can be supplied to filter any possible conflicts. These can be provided as columns with
+the corresponding name in the data frame or as function arguments if the supplied
+data was a vector of names.
+Taxonomic authorities are not supported yet.}
 
 \item{maxdist}{A number. Maximum dissimilarity distance between taxa names to match.}
 
@@ -47,4 +54,10 @@ matched_names = eidos_fuzzy_names(taxa_list = taxa_df[,-1], checklist = checklis
 # We can refine the search by including higher taxonomic levels:
 taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
 refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
+
+# Or using a vector instead
+taxa_vector = c("Lanius meridionalis")
+class_vector = c("Aves")
+refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist, class = class_vector)
+
 }
