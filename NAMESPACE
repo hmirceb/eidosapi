@@ -3,6 +3,7 @@
 export(eidos_clean_checklist)
 export(eidos_conservation_by_id)
 export(eidos_fuzzy_names)
+export(eidos_legal_status_by_id)
 export(eidos_tables)
 export(eidos_taxon_by_id)
 export(eidos_taxon_by_name)

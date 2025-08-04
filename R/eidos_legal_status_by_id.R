@@ -1,4 +1,15 @@
 
+#' Get legal status from EIDOS
+#'
+#' Retrieves the legal status of a given taxon identifier from thge EIDOS database.
+#'
+#' @param taxon_id An integer. A valid taxon identifier from EIDOS.
+#'
+#' @returns A data frame.
+#' @export
+#'
+#' @examples
+#' eidos_legal_status_by_id(taxon_id = 1)
 eidos_legal_status_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
   taxon_id = as.numeric(taxon_id)
