@@ -1,14 +1,20 @@
-#' Get the conservation information from EIDOS for a given taxa
+#' Get the conservation information from IEPNB for a given taxa
 #'
-#' @param taxon_id An integer. A taxon identifier from EIDOS.
-#' @param taxo_info Booelan. Return the taxonomic information of the taxon
-#' @param latest Booelan. Return the information form only the latest assessment
+#' Get the conservation information from IEPNB (*Inventario Español del Patrimonio Natural y de la Biodiversidad*) for a given taxon using its unique identifier
+#' from the IEPNB database. Identifiers can be retrieved using the
+#' eidos_fuzzy_names() and eidos_taxon_by_name() functions. By default de API does not return taxonomic information.
+#' If needed, the function retrieves that information using eidos_taxon_by_id().
+#'
+#' @param taxon_id An integer. A unique taxon identifier from IEPNB
+#' @param taxo_info Boolean. Return the taxonomic information of the taxon.
+#' @param latest Boolean. Return the information from only the latest assessment.
 #'
 #' @returns A data frame with the conservation information of each taxa.
 #' @export
 #'
 #' @examples
 #' eidos_conservation_by_id(taxon_id = 1, taxon_info = F, latest = F)
+#' eidos_conservation_by_id(taxon_id = 1, taxon_info = T, latest = F)
 eidos_conservation_by_id <- function(taxon_id,
                                      taxo_info = F,
                                      latest = F){
@@ -40,6 +46,7 @@ eidos_conservation_by_id <- function(taxon_id,
 
   ## Get taxonomic information if needed ##
   if(isTRUE(taxo_info)){
+    # Run the eidos_taxon_by_id() function:
     taxonomic_information = eidos_taxon_by_id(taxon_id = taxon_id)
     taxonomic_information = taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
 

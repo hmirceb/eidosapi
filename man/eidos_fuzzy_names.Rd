@@ -2,7 +2,7 @@
 % Please edit documentation in R/eidos_fuzzy_names.R
 \name{eidos_fuzzy_names}
 \alias{eidos_fuzzy_names}
-\title{Fuzzy matching with the Spanish checklist}
+\title{Fuzzy matching with the Spanish checklist of Wildlife Species}
 \usage{
 eidos_fuzzy_names(
   taxa_list,
@@ -25,16 +25,26 @@ Taxonomic authorities are not supported.}
 
 \item{mode}{A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.}
 
-\item{distance_col}{A string. Name of the column to display the dissimilarity distance between matches strings. Set NULL to omit the column.}
+\item{distance_col}{A string. Name of the column to display the dissimilarity distance between matched names. Set NULL to omit the column.}
 }
 \value{
 A data frame
 }
 \description{
-Fuzzy matching with the Spanish checklist
+Matches a data frame or vector with species names to any names in the Spanish checklist of Wildlife Species (\emph{Lista Patrón de Especies Silvestres}). Uses fuzzy matching to allow spelling errors. In addition, you can filter by higher taxonomic levels to refine the match.
 }
 \examples{
 checklist = eidos_clean_checklist()
-matched_names = eidos_fuzzy_names(taxa_list = c("Bordere chouardii", "Alts cisternasii"), checklist = checklist)
-print(matched_names)
+taxa_vector = c("Bordere chouardii", "Alts cisternasii")
+matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
+
+# Some names have conflicts when using fuzzy matching.
+# This returns two matches for two different genera,
+# Lanius (our species of interest, a bird) and Lasius (an ant).
+taxa_df = data.frame(genus = "Lanius", species = "meridionalis")
+matched_names = eidos_fuzzy_names(taxa_list = taxa_df[,-1], checklist = checklist)
+
+# We can refine the search by including higher taxonomic levels:
+taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
+refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
 }

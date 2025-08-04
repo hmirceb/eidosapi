@@ -44,5 +44,14 @@ eidos_clean_checklist <- function(){
                                  sapply(strsplit(checklist$taxon_clean, split = " "), function(x){paste(x[1], x[2], sep = " ")}),
                                  sapply(strsplit(checklist$taxon_clean, split = " "), function(x){paste(x[1], x[2], x[3], sep = " ")}))
 
+  # Remove any traces of NA and leading and trailing whitespaces
+  checklist$taxon_clean = trimws(
+    x = gsub(
+      pattern = "NA",
+      replacement = "",
+      x = checklist$taxon_clean
+      )
+    )
+
   return(checklist)
 }
