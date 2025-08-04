@@ -26,6 +26,8 @@ the corresponding name in the data frame or as function arguments if the supplie
 data was a vector of names.
 Taxonomic authorities are not supported yet.}
 
+\item{checklist}{A data frame. The result of running the eidos_clean_checklist() function.}
+
 \item{maxdist}{A number. Maximum dissimilarity distance between taxa names to match.}
 
 \item{method}{A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".}
@@ -59,7 +61,7 @@ matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist
 # This returns two matches for two different genera,
 # Lanius (our species of interest, a bird) and Lasius (an ant).
 taxa_df = data.frame(genus = "Lanius", species = "meridionalis")
-matched_names = eidos_fuzzy_names(taxa_list = taxa_df[,-1], checklist = checklist)
+matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
 
 # We can refine the search by including higher taxonomic levels:
 taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")

@@ -30,7 +30,7 @@
 #' # This returns two matches for two different genera,
 #' # Lanius (our species of interest, a bird) and Lasius (an ant).
 #' taxa_df = data.frame(genus = "Lanius", species = "meridionalis")
-#' matched_names = eidos_fuzzy_names(taxa_list = taxa_df[,-1], checklist = checklist)
+#' matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
 #'
 #' # We can refine the search by including higher taxonomic levels:
 #' taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
