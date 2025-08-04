@@ -7,7 +7,8 @@
 eidos_taxon_by_name(taxon_list)
 }
 \arguments{
-\item{taxon_list}{A vector or data.frame with taxa names. The data frame needs 4 columns: "genus", "species", "subspecies", "scientificnameauthorship." Columns "subspecies" and "scientificnameauthorship" can be NA}
+\item{taxon_list}{A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
+Optional columns are "subspecies", "scientificnameauthorship."}
 }
 \value{
 A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa

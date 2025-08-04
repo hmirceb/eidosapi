@@ -1,7 +1,9 @@
 
 #' Get legal status from EIDOS
 #'
-#' Retrieves the legal status of a given taxon identifier from thge EIDOS database.
+#' Retrieves the legal status of a given taxon identifier from the EIDOS database.
+#' Identifiers can be retrieved using the
+#' eidos_fuzzy_names() or eidos_taxon_by_name() functions.
 #'
 #' @param taxon_id An integer. A valid taxon identifier from EIDOS.
 #'
@@ -16,7 +18,7 @@ eidos_legal_status_by_id <- function(taxon_id){
 
   ## Check if ID is correct (only numbers allowed) ##
   if(sum(is.na(taxon_id) != 0)){
-    stop("At least one ID includes letters")
+    stop("At least one ID is invalid or includes letters")
   }
 
   ## Set base URL ##
@@ -31,7 +33,6 @@ eidos_legal_status_by_id <- function(taxon_id){
 
   ## Merge results ##
   eidos_query = do.call("rbind", eidos_query_list)
-
 
   ## Return results ##
   return(eidos_query)

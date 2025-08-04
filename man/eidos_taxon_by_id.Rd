@@ -2,7 +2,7 @@
 % Please edit documentation in R/eidos_taxon_by_id.R
 \name{eidos_taxon_by_id}
 \alias{eidos_taxon_by_id}
-\title{Get taxonomic infomration from ID}
+\title{Get taxonomic information from EIDOS}
 \usage{
 eidos_taxon_by_id(taxon_id)
 }
@@ -10,10 +10,12 @@ eidos_taxon_by_id(taxon_id)
 \item{taxon_id}{An integer. A valid taxon identifier from EIDOS}
 }
 \value{
-A data frame with the taxonomic information for all taxa related to that ID
+A data frame.
 }
 \description{
-Get taxonomic infomration from ID
+Retrieves the taxonomic information for a given taxon identifier from the EIDOS database.
+Identifiers can be retrieved using the
+eidos_fuzzy_names() or eidos_taxon_by_name() functions.
 }
 \examples{
 eidos_taxon_by_id(taxon_id = 1)

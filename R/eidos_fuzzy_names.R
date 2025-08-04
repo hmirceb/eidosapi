@@ -45,11 +45,14 @@ eidos_fuzzy_names <- function(taxa_list,
   ## Prepare input data:
   ## If supplied list is a vector, generate appropiate data frame
   if(is.vector(taxa_list)){
+    # Remove underscores if any
+    taxa_list = gsub(pattern = "_", replacement = " ", x = taxa_list)
+
+    checklist_split = strsplit(taxa_list, split = " ")
+
     # Remove any possible "subsp."
     taxa_list = gsub(pattern = " subsp.", replacement = "", x = taxa_list)
 
-    # Remove underscores if any
-    taxa_list = gsub(pattern = "_", replacement = " ", x = taxa_list)
 
     # Split vector and extract genus, species and subspecies:
     taxa_split = strsplit(x = taxa_list, split = " ")

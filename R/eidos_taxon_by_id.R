@@ -1,8 +1,13 @@
-#' Get taxonomic infomration from ID
+
+#' Get taxonomic information from EIDOS
+#'
+#' Retrieves the taxonomic information for a given taxon identifier from the EIDOS database.
+#' Identifiers can be retrieved using the
+#' eidos_fuzzy_names() or eidos_taxon_by_name() functions.
 #'
 #' @param taxon_id An integer. A valid taxon identifier from EIDOS
 #'
-#' @returns A data frame with the taxonomic information for all taxa related to that ID
+#' @returns A data frame.
 #' @export
 #'
 #' @examples

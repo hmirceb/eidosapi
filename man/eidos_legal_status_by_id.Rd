@@ -13,7 +13,9 @@ eidos_legal_status_by_id(taxon_id)
 A data frame.
 }
 \description{
-Retrieves the legal status of a given taxon identifier from thge EIDOS database.
+Retrieves the legal status of a given taxon identifier from the EIDOS database.
+Identifiers can be retrieved using the
+eidos_fuzzy_names() or eidos_taxon_by_name() functions.
 }
 \examples{
 eidos_legal_status_by_id(taxon_id = 1)

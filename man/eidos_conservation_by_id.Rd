@@ -2,7 +2,7 @@
 % Please edit documentation in R/eidos_conservation_by_id.R
 \name{eidos_conservation_by_id}
 \alias{eidos_conservation_by_id}
-\title{Get the conservation information from IEPNB for a given taxa}
+\title{Get conservation information from EIDOS}
 \usage{
 eidos_conservation_by_id(taxon_id, taxo_info = F, latest = F)
 }
@@ -19,7 +19,7 @@ A data frame with the conservation information of each taxa.
 \description{
 Get the conservation information from IEPNB (\emph{Inventario Español del Patrimonio Natural y de la Biodiversidad}) for a given taxon using its unique identifier
 from the IEPNB database. Identifiers can be retrieved using the
-eidos_fuzzy_names() and eidos_taxon_by_name() functions. By default de API does not return taxonomic information.
+eidos_fuzzy_names() or eidos_taxon_by_name() functions. By default de API does not return taxonomic information.
 If needed, the function retrieves that information using eidos_taxon_by_id().
 }
 \examples{

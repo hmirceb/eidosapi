@@ -7,7 +7,7 @@
 eidos_clean_checklist()
 }
 \value{
-A data frame with the Spanish checklist with synonyms in a long format ready to use in other functions
+A data frame with the Spanish checklist with synonyms in a long format ready to use in other functions in the \emph{eidos_api} package.
 }
 \description{
 Get the Spanish checklist with synonyms

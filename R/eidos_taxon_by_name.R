@@ -4,7 +4,8 @@
 #'
 #' The function 'get_taxon_by_name' connects to the EIDOS API and retrieves taxonomic information for the taxon. Invalid names will return nothing
 #'
-#' @param taxon_list A vector or data.frame with taxa names. The data frame needs 4 columns: "genus", "species", "subspecies", "scientificnameauthorship." Columns "subspecies" and "scientificnameauthorship" can be NA
+#' @param taxon_list A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
+#' Optional columns are "subspecies", "scientificnameauthorship."
 #' @returns A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 #' @export
 #'
@@ -16,11 +17,9 @@ eidos_taxon_by_name = function(taxon_list) {
 
   ## If supplied list is a vector, generate appropiate data frame
   if(is.vector(taxon_list)){
-    # Remove any possible "subsp."
-    taxon_list = gsub(pattern = " subsp.", replacement = "", x = taxon_list)
 
-    # Remove underscores if any
-    taxon_list = gsub(pattern = "_", replacement = " ", x = taxon_list)
+    # Clean names beforehand
+    taxon_list = sapply(taxon_list, clean_names)
 
     # Split vector and extract genus, species and subspecies:
     taxa_split = strsplit(x = taxon_list, split = " ")
@@ -59,6 +58,7 @@ eidos_taxon_by_name = function(taxon_list) {
     sp_list = taxon_list[is.na(taxon_list$subspecies),]
   }
 
+  # Create URLs for species
   sp_urls = apply(
     X = sp_list,
     MARGIN = 1,
@@ -81,7 +81,7 @@ eidos_taxon_by_name = function(taxon_list) {
     }
   )
 
-  # Subspecies
+  # Create URLs for subspecies
   subsp_list = taxon_list[!is.na(taxon_list$subspecies),]
 
   subsp_urls = apply(

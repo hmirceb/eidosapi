@@ -1,8 +1,9 @@
-#' Get the conservation information from IEPNB for a given taxa
+
+#' Get conservation information from EIDOS
 #'
 #' Get the conservation information from IEPNB (*Inventario Español del Patrimonio Natural y de la Biodiversidad*) for a given taxon using its unique identifier
 #' from the IEPNB database. Identifiers can be retrieved using the
-#' eidos_fuzzy_names() and eidos_taxon_by_name() functions. By default de API does not return taxonomic information.
+#' eidos_fuzzy_names() or eidos_taxon_by_name() functions. By default de API does not return taxonomic information.
 #' If needed, the function retrieves that information using eidos_taxon_by_id().
 #'
 #' @param taxon_id An integer. A unique taxon identifier from IEPNB
