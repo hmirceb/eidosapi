@@ -8,46 +8,6 @@ When working with species data it is important to have the correct taxonomic inf
 
 This package makes use of the API provided by to access the taxonomic services of the Spanish Inventory of Natural Patrimony and Biodiversity. I have avoided using any external dependencies as much as possible, but the package still depends on the *fromJSON* function of the **jsonlite** package.
 
----
-title: 'Material suplementario para "eidosapi, un paquete para estandarizar la taxonomía de especies en España"'
-
-author: Héctor Miranda-Cebrián*^1^
-
-format:
-  pdf:
-    fig-height: 6
-    fig-width: 7.5
-    code-overflow: wrap
-
-csl: ecosistemas.csl
-
-bibliography:
-  - references.bib
-  - knitcitations.bib
----
-
-> (1) Instituto Pirenaico de Ecología - CSIC
-
-> Autor de correspondencia\*: Héctor Miranda-Cebrián \[[hectorm94\@gmail.com](mailto:hectorm94@gmail.com){.email}\]
-
-# Palabras clave
-
-> Taxonomía; Estandarización; Nomenclatura; Lista Patrón
-
-# Keywords
-
-> Taxonomy; Standardization; Nomenclature; Checklist
-
-```{r knitcitations}
-#| echo: false
-#| cache: false
-#| warning: false
-library(quarto)
-library(knitcitations)
-cleanbib()
-cite_options(citation_format = "pandoc")
-```
-
 # Instalación
 
 La instalación del paquete puede realizarse facilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete **remotes** `r citep(citation("remotes"))`.
