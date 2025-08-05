@@ -169,17 +169,22 @@ eidos_taxon_by_name = function(taxon_list) {
     eidos_result = do.call("rbind", eidos_result_temp[-no_matches])
   }
 
-  # Remove rownames and return:
+  # Remove rownames:
   rownames(eidos_result) = NULL
 
+  # Add the supplied taxon (genus species subspecies)
+  # to final df
+  # Paste names
   supplied_taxon = paste(eidos_result$supplied_genus,
         eidos_result$supplied_species,
         eidos_result$supplied_subspecies,
         sep = " ")
+  # Remove " NA" if no subspecies
   supplied_taxon = gsub(pattern = " NA",
        replacement = "",
        x = supplied_taxon)
 
+  # Attach to final df and return:
   eidos_result = cbind(supplied_taxon, eidos_result)
   return(eidos_result)
 }
