@@ -12,7 +12,7 @@ This package makes use of the API provided by to access the taxonomic services o
 
 La instalación del paquete puede realizarse facilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete **remotes** `r citep(citation("remotes"))`.
 
-```{r install package}
+```r
 # Instalación con remotes
 remotes::install_github("https://github.com/hmirceb/eidos_api",
                         force = TRUE, 
@@ -28,19 +28,7 @@ library(eidosapi)
 
 Vamos a replicar un ejemplo de uso básico, buscar dos especies en la base de datos empleando la API. Para comprobar que la API también devuelve los sinónimos del taxón elegido vamos a emplear dos especies diferentes: el sapo partero ibérico (*Alytes cisternasii*), que no tiene sinónimos; y *Polygonum viviparum* que tiene varios. El procedimiento básico consiste en crear una tabla (*data frame*) con el género y la especie de cada taxón. De forma adicional podemos incluir una columna con la subespecie y la autoridad taxonómica que haya descrito el taxón, como se muestra en la Tabla 1. En el caso de que el taxón que nos interesa no tuviese subespecies o no conociésemos la autoría podemos omitir las columnas correspondientes o rellenarlas con *NA*.
 
-```{r Tabla1}
-#| output: asis
-#| echo: false
-#| cache: false
-#| warning: false
-library(knitr)
-kable(head(data.frame(genus = c("Alytes", "Polygonum", "Pinus"),
-                       species = c("cisternasii", "viviparum", "nigra"),
-                      subspecies = c("", "", "salzmannii"),
-                      scientificnameauthorship = c("", "", ""))))
-```
-
-```{r, basic example1, error=TRUE}
+```r
 # Tabla ejemplo:
 taxa_list = data.frame(genus = c("Alytes", "Polygonum"),
                        species = c("cisternasii", "viviparum"))
@@ -66,7 +54,7 @@ eidos_results[c("supplied_genus", "supplied_species", "name",
 ```
 En caso de querer consultar una subespecie, esta puede escribirse como *Género especie subespecie* o *Género especie subsp. subespecie*.
 
-```{r, basic example2, error=TRUE}
+```r
 # Usar el formato *Género especie subespecie* da resultados
 # equivalentes a *Género especie subsp. subespecie*:
 eidos_subsp1 = eidosapi::eidos_taxon_by_name(
@@ -94,7 +82,7 @@ La tabla obtenida contiene las columnas correspondientes a la información que h
 
 La columna *idtaxon* obtenida en el paso anterior contiene el identificador único para cada taxón de la base de datos. Si nos interesase saber si una especies presente en EIDOS, por ejemplo la gaviota de Audouin (*Larus audouinii*), tiene asociada alguna categoría de amenaza según los criterios la UICN, solo tendríamos que obtener su identificador con la función `eidos_taxon_by_name` y después emplearlo introducirlo en la función `eidos_conservation_by_id`.
 
-```{r, use of id1, error=TRUE}
+```r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
   taxon_list = "Larus audouinii"
@@ -119,7 +107,7 @@ Así podemos saber que a nivel mundial en 2018 se le otorgó la categoría Preoc
 
 Siguiendo este mismo procedimiento podríamos acceder al estado legal de una especie con la función `eidos_legal_status_by_id`. Esto nos permitiría saber qué categoría de conservación tiene la especie, si aparece en alguno de los anexos de la Directiva Hábitats, qué normas rigen esas categorías o el ámbito geográfico de las mismas.
 
-```{r, use of id2, error=TRUE}
+```r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
   taxon_list = "Larus audouinii"
@@ -142,7 +130,7 @@ eidos_legal[1:2,
 
 Y también podríamos volver a recuperar la información taxonómica del taxón si así lo deseásemos con la función `eidos_taxon_by_id`.
 
-```{r, use of id3, error=TRUE}
+```r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
   taxon_list = "Larus audouinii"
@@ -159,7 +147,7 @@ eidos_taxo[c("nameid", "name", "nametype", "acceptednameid")]
 
 Un problema común a la hora de trabajar con datos de especies son los errores de escritura como omitir letras o confundirlas con otras. El paquete **eidosapi** incluye la función `eidos_fuzzy_names` que, haciendo uso de lógica difusa gracias al paquete **fuzzyjoin** `r citep(citation("fuzzyjoin"))`, permite buscar en la base de datos de EIDOS los nombres que más se acerquen a la información que hayamos aportado. La función solo permite contrastar los nombres que aparezcan en la Lista patrón de las especies silvestres presentes en España (LP), y requiere que antes de emplearla descarguemos la LP. Para facilitar esa tarea contamos con la función `eidos_clean_checklist`. En el caso de que no la hayamos descargado o se nos haya olvidado incluirla como argumento, la función `eidos_fuzzy_names` devolverá un error que nos avisará. Podemos comprobar un caso básico de uso con algunos nombres mal escritos.
 
-```{r, fuzzy matching1, error=TRUE}
+```r
 # Creamos la tabla con la información que queremos contrastar:
 taxa_list = data.frame(genus = c("Vorderea", "Alytes"),
                        species = c("pyrenaica", "cisternasi"))
