@@ -64,25 +64,23 @@ eidos_taxon_by_name = function(taxon_list) {
     MARGIN = 1,
     simplify = T,
     FUN = function(X){
-      rownames(X) <- NULL
 
       # Create URL from API base url, genus and species. Use %20 as separator
       url = paste0(
         api_url_base,
-        X["genus"], "%20",
-        X["species"]
+        X[1], "%20",
+        X[2]
       )
 
       # Dataframe with supplied data and URL for each taxon
-      df = data.frame(genus = X["genus"],
-                      species = X["species"],
-                      subspecies = ifelse(is.null(X["subspecies"]),
-                                          NA,
-                                          X["subspecies"]),
-                      scientificnameauthorship = ifelse(is.null(X["scientificnameauthorship"]),
-                                                        NA,
-                                                        X["scientificnameauthorship"]),
+      # Suppress harmless warning
+      df = suppressWarnings(
+        data.frame(genus = X[1],
+                      species = X[2],
+                      subspecies = X[3],
+                      scientificnameauthorship = X[4],
                       url = url)
+                      )
     }
   )
 
@@ -97,36 +95,30 @@ eidos_taxon_by_name = function(taxon_list) {
       # between species and subspecies, and another without it.
       # We cannot know which one is which a priori so we try both
       # URLs
-      rownames(X) <- NULL
 
       # Create URL from API base url, genus, species and subspecies without "subsp."
       url1 = paste0(
         api_url_base,
-        X["genus"], "%20",
-        X["species"], "%20",
-        X["subspecies"]
+        X[1], "%20",
+        X[2], "%20",
+        X[3]
       )
 
       # Same but with "subsp."
       url2 = paste0(
         api_url_base,
-        X["genus"], "%20",
-        X["species"], "%20subsp.%20",
-        X["subspecies"]
+        X[1], "%20",
+        X[2], "%20subsp.%20",
+        X[3]
       )
 
-      # Create df with information. If scientificnameauthorship was not provided
-      # it returns NA
-      df = data.frame(
-        genus = rep(X["genus"], 2),
-        species = rep(X["species"], 2),
-        subspecies = rep(X["subspecies"], 2),
-        scientificnameauthorship = rep(
-          ifelse(is.null(X["scientificnameauthorship"]), NA, X["scientificnameauthorship"]),
-          2
-        ),
-        url = c(url1, url2)
-      )
+      df = suppressWarnings(
+        data.frame(genus = X[1],
+                      species = X[2],
+                      subspecies = X[3],
+                      scientificnameauthorship = X[4],
+                      url = c(url1, url2))
+        )
       return(df)
     }
   )
@@ -163,12 +155,12 @@ eidos_taxon_by_name = function(taxon_list) {
                  eidos_data = data.frame(error = "No matches found")
                }
                # Join supplied data and EIDOS data
-               cbind(supplied_data, eidos_data)
+               suppressWarnings(cbind(supplied_data, eidos_data))
 
              })
 
-  # Get taxa with no matches in EIDOS (DFs with less than 10 columns):
-  no_matches = which(sapply(eidos_result_temp, ncol) < 10)
+  # Get taxa with no matches in EIDOS (DFs with only 5 columns):
+  no_matches = which(sapply(eidos_result_temp, ncol) == 5)
 
   # Remove those from list
   if(length(no_matches) == 0){
@@ -177,8 +169,17 @@ eidos_taxon_by_name = function(taxon_list) {
     eidos_result = do.call("rbind", eidos_result_temp[-no_matches])
   }
 
-  # Remove row names from final df and return:
-  row.names(eidos_result) <- NULL
+  # Remove rownames and return:
+  rownames(eidos_result) = NULL
 
+  supplied_taxon = paste(eidos_result$supplied_genus,
+        eidos_result$supplied_species,
+        eidos_result$supplied_subspecies,
+        sep = " ")
+  supplied_taxon = gsub(pattern = " NA",
+       replacement = "",
+       x = supplied_taxon)
+
+  eidos_result = cbind(supplied_taxon, eidos_result)
   return(eidos_result)
 }
