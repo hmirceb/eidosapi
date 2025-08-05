@@ -33,5 +33,9 @@ eidos_taxon_by_id <- function(taxon_id){
          jsonlite::fromJSON)
 
   ## Merge results ##
-  do.call("rbind", eidos_query)
+  eidos_result = do.call("rbind", eidos_query)
+
+  # Rename "taxonid" to "idtaxon" for consistency
+  names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
+  return(eidos_result)
 }

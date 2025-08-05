@@ -32,15 +32,15 @@ eidos_taxon_by_name = function(taxon_list) {
     rm(genera, species, subspecies)
   }
 
-  # ## Check if genus data is ok: ##
-  # if(sum(is.na(taxon_list$genus)) > 0){
-  #   stop("Missing genus data")
-  # }
-  #
-  # ## Check if species data is ok: ##
-  # if(sum(is.na(taxon_list$species)) > 0){
-  #   stop("Missing species data")
-  # }
+  ## Check if genus data is ok: ##
+  if(sum(is.na(taxon_list$genus)) > 0){
+    stop("Missing genus data")
+  }
+
+  ## Check if species data is ok: ##
+  if(sum(is.na(taxon_list$species)) > 0){
+    stop("Missing species data")
+  }
 
   ## Set API URL ##
   api_url_base = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
@@ -186,5 +186,8 @@ eidos_taxon_by_name = function(taxon_list) {
 
   # Attach to final df and return:
   eidos_result = cbind(supplied_taxon, eidos_result)
+
+  # Rename "taxonid" to "idtaxon" for consistency
+  names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
   return(eidos_result)
 }
