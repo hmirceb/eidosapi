@@ -1,12 +1,8 @@
 # eidos_api
 
-[!WARNING] This package works best (if not almost exclusively) for taxa in Spain as it makes use of the taxonomic API of the Spanish Inventory of Natural Patrimony and Biodiversity
+⚠️ **Warning: This package works best (if not almost exclusively) for taxa in Spain as it makes use of the taxonomic API of the Spanish Inventory of Natural Patrimony and Biodiversity.**
 
-[!WARNING] The Spanish Inventory of Natural Patrimony and Biodiversity is a work in progress. Taxa might change and things can break from time to time do to changes in the APIs.
-
-When working with species data it is important to have the correct taxonomic information, specially if you are using data from several sources that might differ in their taxonomic classification. A common practice is to standardize names against the taxonomy of services such as GBIF, but sometimes these do not include very rare species or regional names. Specilized services like World Flora Online or Plants of the World Online help with these issues, but are limited in their taxonomic scope. In addition, any of these solutions are not useful if we are interested in retrieving information about the legal or conservation status of species at the national o regional level, common names or .
-
-This package makes use of the API provided by to access the taxonomic services of the Spanish Inventory of Natural Patrimony and Biodiversity. I have avoided using any external dependencies as much as possible, but the package still depends on the *fromJSON* function of the **jsonlite** package.
+⚠️ **Warning: The Spanish Inventory of Natural Patrimony and Biodiversity is a work in progress. Taxa might change and things can break from time to time do to changes in the APIs.**
 
 # Instalación
 
