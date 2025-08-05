@@ -73,12 +73,10 @@ eidos_subsp2 = eidosapi::eidos_taxon_by_name(
   taxon_list = "Pinus nigra salzmannii"
   )
   
-print(
 head(
   eidos_subsp2[c("supplied_taxon", "supplied_species", "name",
                "idtaxon", "nametype", "acceptednameid")],
      n = 3)
-     )
 ```
 
 La tabla obtenida contiene las columnas correspondientes a la información que hayamos aportado, con sus nombres precidos por el prefijo *supplied\_*, y todas las columnas que devuelve la API de EIDOS por defecto. Entre estas columnas encontramos *idtaxon*, que nos permite hacer uso de otras funciones del paquete **eidosapi**. A este respecto, cabe destacar que a fecha de escritura de este documento la API de EIDOS cuenta con varias inconsistencias en la nomenclatura de las columnas de sus tablas, siendo la más importante que la columna *idtaxon* a veces aparece como *taxonid*. Todas las tablas producidas por cualquiera de las funciones del paquete **eidosapi** renombran la columna *taxonid* a *idtaxon* cuando sea necesario para mantener la consistencia.
