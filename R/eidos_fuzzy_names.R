@@ -55,7 +55,9 @@ eidos_fuzzy_names <- function(taxa_list,
 
   ## Check if checklist is in environment
   if(missing(checklist)){
-    stop("Checklist missing. Please run eidos_clean_checklist() and include result in argument checklist")
+    stop("Checklist missing.
+         Please run eidos_clean_checklist() and
+         include result in argument checklist")
   }
 
 ### Fuzzy match the provided name ###
