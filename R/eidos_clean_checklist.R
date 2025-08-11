@@ -45,8 +45,5 @@ eidos_clean_checklist <- function(){
   # Substitute "" for NA
   checklist[checklist == ""] <- NA
 
-  # Remove duplicates:
-  checklist[!duplicated(checklist), ]
-
   return(checklist)
 }

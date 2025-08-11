@@ -44,8 +44,7 @@ eidos_taxon_by_id <- function(taxon_id){
   )
 
   # Remove NULLs
-  eidos_query = eidos_query[-which(sapply(eidos_query, is.null))]
-
+  eidos_query = eidos_query[!sapply(eidos_query, is.null)]
 
   ## Merge results ##
   eidos_result = do.call("rbind", eidos_query)

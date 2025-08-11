@@ -19,8 +19,7 @@
 #' eidos_conservation_by_id(taxon_id = 1, taxo_info = TRUE, latest = FALSE)
 eidos_conservation_by_id <- function(taxon_id,
                                      taxo_info = FALSE,
-                                     latest = FALSE,
-                                     remove_duplicates = TRUE){
+                                     latest = FALSE){
   ## Make sure ID is numeric ##
   taxon_id = as.numeric(taxon_id)
 
@@ -51,7 +50,7 @@ eidos_conservation_by_id <- function(taxon_id,
                             )
 
   # Remove NULLs
-  eidos_query_list = eidos_query_list[-which(sapply(eidos_query_list, is.null))]
+  eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
 
     # If required, return only the latest conservation assessment
     if(isTRUE(latest)){
@@ -81,11 +80,6 @@ eidos_conservation_by_id <- function(taxon_id,
 
     # Substitute "" for NA
     eidos_query[eidos_query == ""] <- NA
-
-    # Remove duplicates:
-    if(isTRUE(remove_duplicates)){
-      eidos_query[!duplicated(eidos_query), ]
-    }
 
     ## Return results ##
     return(eidos_query)

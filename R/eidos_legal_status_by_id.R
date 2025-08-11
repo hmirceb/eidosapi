@@ -43,8 +43,7 @@ eidos_legal_status_by_id <- function(taxon_id){
   )
 
   # Remove NULLs
-  eidos_query_list = eidos_query_list[-which(sapply(eidos_query_list, is.null))]
-
+  eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
 
   ## Merge results ##
   eidos_query = do.call("rbind", eidos_query_list)
