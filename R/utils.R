@@ -12,7 +12,10 @@ clean_names = function(taxa_names){
   taxa_names = gsub(pattern = "_", replacement = " ", x = taxa_names)
 
   # Substitute Unicode whitespaces with normal whitespaces
-  taxa_names = gsub("\xc2\xa0", " ", taxa_names, fixed = TRUE)
+  taxa_names = gsub("\\p{Zs}+", " ", taxa_names, perl = TRUE)
+
+  # Remove double whitespaces
+  taxa_names = gsub("\\s+", " ", taxa_names, fixed = TRUE)
 
   # Remove anything between parentheses
   taxa_names = gsub("\\(.*?\\)", "", taxa_names)
