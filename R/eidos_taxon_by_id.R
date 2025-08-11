@@ -30,12 +30,34 @@ eidos_taxon_by_id <- function(taxon_id){
 
   ## Query API ##
   eidos_query = lapply(eidos_url,
-         jsonlite::fromJSON)
+                            function(x){
+                              # Query EIDOS API
+                              a = jsonlite::fromJSON(txt = x)
+
+                              # If the URL is valid but there is no info, return NULL
+                              if(is.null(unlist(a))){
+                                return(NULL)
+                              }else{
+                                return(a)
+                              }
+                            }
+  )
+
+  # Remove NULLs
+  eidos_query = eidos_query[-which(sapply(eidos_query, is.null))]
+
 
   ## Merge results ##
   eidos_result = do.call("rbind", eidos_query)
 
   # Rename "taxonid" to "idtaxon" for consistency
   names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
+
+  # Substitute "" for NA
+  eidos_result[eidos_result == ""] <- NA
+
+  # Remove duplicates:
+  eidos_result[!duplicated(eidos_result), ]
+
   return(eidos_result)
 }

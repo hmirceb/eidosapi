@@ -14,6 +14,9 @@ clean_names = function(taxa_names){
   # Substitute Unicode whitespaces with normal whitespaces
   taxa_names = gsub("\\p{Zs}+", " ", taxa_names, perl = TRUE)
 
+  # Remove zero-width spaces
+  taxa_names = gsub("\u200B", "", taxa_names)
+
   # Remove double whitespaces
   taxa_names = gsub("\\s+", " ", taxa_names, fixed = TRUE)
 

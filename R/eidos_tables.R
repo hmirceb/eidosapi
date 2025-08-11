@@ -44,6 +44,12 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
   ## Query the API ##
   api_table = jsonlite::fromJSON(table_url)
 
+  # Substitute "" for NA
+  api_table[api_table == ""] <- NA
+
+  # Remove duplicates:
+  api_table[!duplicated(api_table), ]
+
   # Return the table
   return(api_table)
 }

@@ -39,8 +39,14 @@ eidos_clean_checklist <- function(){
     replacement = "",
     x = checklist$taxon_clean)
 
-# Remove any traces of leading and trailing whitespaces
+  # Remove any traces of leading and trailing whitespaces
   checklist$taxon_clean = trimws(checklist$taxon_clean)
+
+  # Substitute "" for NA
+  checklist[checklist == ""] <- NA
+
+  # Remove duplicates:
+  checklist[!duplicated(checklist), ]
 
   return(checklist)
 }

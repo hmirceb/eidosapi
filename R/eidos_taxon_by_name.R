@@ -189,5 +189,12 @@ eidos_taxon_by_name = function(taxon_list) {
 
   # Rename "taxonid" to "idtaxon" for consistency
   names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
+
+  # Substitute "" for NA
+  eidos_result[eidos_result == ""] <- NA
+
+  # Remove duplicates:
+  eidos_result[!duplicated(eidos_result), ]
+
   return(eidos_result)
 }
