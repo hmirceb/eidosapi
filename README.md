@@ -10,7 +10,7 @@ La instalación del paquete puede realizarse facilmente desde R clonando el repo
 
 ```r
 # Instalación con remotes
-remotes::install_github("https://github.com/hmirceb/eidos_api",
+remotes::install_github("https://github.com/hmirceb/eidosapi",
                         force = TRUE, 
                         quiet = TRUE)
 
