@@ -4,7 +4,12 @@
 \alias{eidos_conservation_by_id}
 \title{Get conservation information from EIDOS}
 \usage{
-eidos_conservation_by_id(taxon_id, taxo_info = FALSE, latest = FALSE)
+eidos_conservation_by_id(
+  taxon_id,
+  taxo_info = FALSE,
+  latest = FALSE,
+  remove_duplicates = TRUE
+)
 }
 \arguments{
 \item{taxon_id}{An integer. A unique taxon identifier from IEPNB}
@@ -12,6 +17,8 @@ eidos_conservation_by_id(taxon_id, taxo_info = FALSE, latest = FALSE)
 \item{taxo_info}{Boolean. Return the taxonomic information of the taxon.}
 
 \item{latest}{Boolean. Return the information from only the latest assessment.}
+
+\item{remove_duplicates}{Boolean. Remove duplicate rows if necessary}
 }
 \value{
 A data frame with the conservation information of each taxa.
