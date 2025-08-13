@@ -33,7 +33,7 @@ Vamos a replicar un ejemplo de uso básico, buscar dos especies en la base de da
 taxa_list = data.frame(genus = c("Alytes", "Polygonum"),
                        species = c("cisternasii", "viviparum"))
 eidos_results = eidosapi::eidos_taxon_by_name(
-  taxon_list = taxa_list
+  taxa_list = taxa_list
   )
 
 # La tabla resultante tienes muchas columnas
@@ -47,7 +47,7 @@ eidos_results[c("supplied_genus", "supplied_species", "name",
 # usásemos un vector:
 taxa_list = c("Alytes cisternasii", "Polygonum viviparum")
 eidos_results = eidosapi::eidos_taxon_by_name(
-  taxon_list = taxa_list
+  taxa_list = taxa_list
   )
   
 eidos_results[c("supplied_genus", "supplied_species", "name",
@@ -61,7 +61,7 @@ En caso de querer consultar una subespecie, esta puede escribirse como *Género 
 # equivalentes a *Género especie subsp. subespecie*:
 # Con subsp.
 eidos_subsp1 = eidosapi::eidos_taxon_by_name(
-  taxon_list = "Pinus nigra subsp. salzmannii"
+  taxa_list = "Pinus nigra subsp. salzmannii"
   )
   
 head(
@@ -71,7 +71,7 @@ head(
 
 # Sin subsp.
 eidos_subsp2 = eidosapi::eidos_taxon_by_name(
-  taxon_list = "Pinus nigra salzmannii"
+  taxa_list = "Pinus nigra salzmannii"
   )
   
 head(
@@ -91,7 +91,7 @@ La columna *idtaxon* obtenida en el paso anterior contiene el identificador úni
 ``` r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
-  taxon_list = "Larus audouinii"
+  taxa_list = "Larus audouinii"
   )
 
 # El identificador debería ser 14053:
@@ -115,7 +115,7 @@ Siguiendo este mismo procedimiento podríamos acceder al estado legal de una esp
 ``` r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
-  taxon_list = "Larus audouinii"
+  taxa_list = "Larus audouinii"
   )
 
 # Accedemos a la información sobre su estado de conservación:
@@ -137,7 +137,7 @@ Y también podríamos volver a recuperar la información taxonómica del taxón 
 ``` r
 # Buscamos el identificador por nombre:
 eidos_results = eidosapi::eidos_taxon_by_name(
-  taxon_list = "Larus audouinii"
+  taxa_list = "Larus audouinii"
   )
 
 # Accedemos a la información sobre su estado de conservación:
