@@ -5,7 +5,7 @@
 #' Identifiers can be retrieved using the
 #' eidos_fuzzy_names() or eidos_taxon_by_name() functions.
 #'
-#' @param taxon_id An integer. A valid taxon identifier from EIDOS
+#' @param taxon_id An integer or vector of integers. Valid taxon identifiers from EIDOS.
 #'
 #' @returns A data frame.
 #' @export
@@ -49,6 +49,12 @@ eidos_taxon_by_id <- function(taxon_id){
   ## Merge results ##
   eidos_result = do.call("rbind", eidos_query)
 
+  ## Check if at least one id was valid ##
+  if(is.null(eidos_result)){
+    stop("All the supplied IDs are invalid.
+         Please use accepted IDs from eidos_taxon_by_name() or eidos_fuzzy_names()")
+  }
+
   # Rename "taxonid" to "idtaxon" for consistency
   names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
 
@@ -58,19 +64,30 @@ eidos_taxon_by_id <- function(taxon_id){
   # Remove duplicates:
   eidos_result[!duplicated(eidos_result), ]
 
-  # Remove any wierd whitespaces from the checklist
+  # Remove any wierd whitespaces from table
   eidos_result = as.data.frame(
-    lapply(
-      eidos_result,
-      function(x) {
-        gsub(pattern = "\\p{Zs}+",
-             replacement = " ",
-             x = x,
-             perl = TRUE
-        )
-      }
-    )
+    lapply(eidos_result, eidosapi:::eidos_clean_whitespaces),
+    check.names = FALSE
   )
 
+  # For accepted names, the EIDOS API returns the wrong ID in the
+  # "nameid" and "acceptednameid" columns.
+  # If name is not accepted, nameid should be the ID for the invalid name
+  # NOT for the accepted name because it leas to confussion.
+  eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+                               eidos_result$acceptednameid,
+                               eidos_result$idtaxon)
+
+  # After setting that, the acceptedmeid of an invalid name should be idtaxon,
+  # which corresponds to the id of the accepted name
+  eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+                                       eidos_result$idtaxon,
+                                       eidos_result$idtaxon)
+
+  # Now, idtaxon should be equal to nameid. These columns seem to be
+  # redundant in the API
+  eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/válido",
+                                eidos_result$nameid,
+                                eidos_result$idtaxon)
   return(eidos_result)
 }

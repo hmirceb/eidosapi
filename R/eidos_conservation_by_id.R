@@ -80,18 +80,10 @@ eidos_conservation_by_id <- function(taxon_id,
     # Substitute "" for NA
     eidos_query[eidos_query == ""] <- NA
 
-    # Remove any wierd whitespaces from the checklist
+    # Remove any wierd whitespaces from table
     eidos_query = as.data.frame(
-      lapply(
-        eidos_query,
-        function(x) {
-          gsub(pattern = "\\p{Zs}+",
-               replacement = " ",
-               x = x,
-               perl = TRUE
-          )
-        }
-      )
+      lapply(eidos_query, eidosapi:::eidos_clean_whitespaces),
+      check.names = FALSE
     )
 
     ## Return results ##

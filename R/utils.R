@@ -1,27 +1,43 @@
-#' Clean a vector or species names
-#'
-#' Remove any "subsp." or similar from name
+#' Remove whitespaces
 #'
 #' @param taxa_names A vector of species names.
 #'
-#' @returns A vector of clean species names.
+#' @returns A vector of strings with only " " whitespaces
 #'
-clean_names = function(taxa_names){
+eidos_clean_whitespaces = function(x) {
+  # Substitute Unicode whitespaces with normal whitespaces
+  x = gsub("\\p{Zs}+", " ", x, perl = TRUE)
+
+  # Remove zero-width spaces
+  x = gsub("\u200B", "", x)
+
+  # Remove double whitespaces
+  x = gsub("\\s+", " ", x, fixed = TRUE)
+
+  return(x)
+}
+
+#' Clean a single species names
+#'
+#' Removes any "subsp.", "var.", "f.", years and authorship similar from a species name.
+#'
+#' @param taxa_names A single species names.
+#'
+#' @returns A single clean species names.
+#'
+eidos_clean_names = function(taxa_names){
 
   # Remove underscores if any
   taxa_names = gsub(pattern = "_", replacement = " ", x = taxa_names)
 
-  # Substitute Unicode whitespaces with normal whitespaces
-  taxa_names = gsub("\\p{Zs}+", " ", taxa_names, perl = TRUE)
-
-  # Remove zero-width spaces
-  taxa_names = gsub("\u200B", "", taxa_names)
-
-  # Remove double whitespaces
-  taxa_names = gsub("\\s+", " ", taxa_names, fixed = TRUE)
+  # Remove UNICODE whitespaces, doble whitespaces and zero-width spaces
+  taxa_names = eidos_clean_whitespaces(taxa_names)
 
   # Remove anything between parentheses
   taxa_names = gsub("\\(.*?\\)", "", taxa_names)
+
+  # Remove anything between brackets
+  taxa_names = gsub("\\[.*?\\]", "", taxa_names)
 
   # Split by whitespaces
   taxa_split = unlist(strsplit(taxa_names, split = " "))
@@ -29,7 +45,7 @@ clean_names = function(taxa_names){
   # Detect "subsp.", "var.", words starting in capital letter and
   # non letter characters associated with
   # authorities except "-"
-  indice1 = which(grepl("^[[:upper:]]+|&|[^a-zA-Z-]]", taxa_split))
+  indice1 = which(grepl("(^[[:upper:]])|&|[^A-Za-z-]", taxa_split))
 
   # Look for letters with umlaut "ö"
   indice2 = which(grepl("^[[\U00E0-\U017F]]", taxa_split))
@@ -43,22 +59,22 @@ clean_names = function(taxa_names){
                                     "y", "zur", "sensu",
                                     "pro", "parte", "de",
                                     "la", "non", "da", "nud",
-                                    "del", "van", "der", "auct",
+                                    "del", "von", "van", "der", "auct",
                                     "den", "and", "-", "degli",
                                     "en", "prensa", "subst",
                                     "var", "species", "unrecognised", "x",
                                     "subsp.", "var.", "subsp"))
 
   # Join indices
-  indices = unique(c(indice1, indice2, indice3, indice4))
+  indices = unique(c(indice1, indice2, indice3, indice4))[-1]
 
   # Collapse into full name:
   # The [-1] excludes the genus because they always start with capital letter
-  if(length(indices[-1]) == 0){ # If the name did not meet any of the above criteria it returns 0 and leads to errors
+  if(length(indices) == 0){ # If the name did not meet any of the above criteria it returns 0 and leads to errors
     taxa_names_clean = paste(taxa_split,
           collapse = " ")
   }else{
-    taxa_names_clean = paste(taxa_split[-indices[-1]],
+    taxa_names_clean = paste(taxa_split[-indices],
           collapse = " ")
   }
 
@@ -69,4 +85,3 @@ clean_names = function(taxa_names){
   return(taxa_names_clean)
 
 }
-

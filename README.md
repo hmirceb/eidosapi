@@ -4,6 +4,9 @@
 
 ⚠️ **Warning: The Spanish Inventory of Natural Patrimony and Biodiversity is a work in progress. Taxa might change and things can break from time to time do to changes in the APIs.**
 
+⚠️ **En este momento los nombres de las columnas que devuelve Lista Patrón son una combinación cuanto menos curiosa de camelCase, separaciones con guiones_bajos y separaciones con espacios en blanco, además de tener tildes. Estos no son compatibles con el resto de las consultas de EIDOS**
+
+
 # Instalación
 
 La instalación del paquete puede realizarse facilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete **remotes** `r citep(citation("remotes"))`.

@@ -7,7 +7,7 @@
 eidos_taxon_by_id(taxon_id)
 }
 \arguments{
-\item{taxon_id}{An integer. A valid taxon identifier from EIDOS}
+\item{taxon_id}{An integer or vector of integers. Valid taxon identifiers from EIDOS.}
 }
 \value{
 A data frame.

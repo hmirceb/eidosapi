@@ -1,5 +1,7 @@
 #' Retrieve one of the tables related to the Spanish Checklist of Wildlie Species
 #'
+#' The tables are downloaded verbatim from the API. This means that column names may not match those in other tables from EIDOS.
+#'
 #' @param eidos_table Name of the table to query. The function is case insensitive, admits whitespaces and has partial matching for arguments, but these must match one of "comunidades_autonomas", "listapatronespecie_codigos",
 #' "listapatronespecie", "componente_tema", "regbiogeograf_termar", "listapatronespecie_sinonimos", "pais",
 #' "norma", "provincias" or "listapatronespecie_normas".
@@ -50,19 +52,11 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
   # Remove duplicates:
   api_table[!duplicated(api_table), ]
 
-  # Remove any wierd whitespaces from the checklist
+  # Remove any wierd whitespaces from table
   api_table = as.data.frame(
-    lapply(
-      api_table,
-      function(x) {
-        gsub(pattern = "\\p{Zs}+",
-             replacement = " ",
-             x = x,
-             perl = TRUE
-        )
-      }
+    lapply(api_table, eidosapi:::eidos_clean_whitespaces),
+    check.names = FALSE
     )
-  )
 
   # Return the table
   return(api_table)

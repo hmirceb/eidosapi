@@ -20,7 +20,7 @@ eidos_tables(
 The desired table from the EIDOS API
 }
 \description{
-Retrieve one of the tables related to the Spanish Checklist of Wildlie Species
+The tables are downloaded verbatim from the API. This means that column names may not match those in other tables from EIDOS.
 }
 \examples{
 eidos_tables(eidos_table = "listapatronespecie")
