@@ -63,7 +63,10 @@ eidos_clean_names = function(taxa_names){
                                     "den", "and", "-", "degli",
                                     "en", "prensa", "subst",
                                     "var", "species", "unrecognised", "x",
-                                    "subsp.", "var.", "subsp"))
+                                    "subsp.", "var.", "subsp",
+                                    "e", "du", "di", "des",
+                                    "nec", "f", "illeg",
+                                    "delle", ""))
 
   # Join indices
   indices = unique(c(indice1, indice2, indice3, indice4))[-1]
@@ -74,9 +77,15 @@ eidos_clean_names = function(taxa_names){
     taxa_names_clean = paste(taxa_split,
           collapse = " ")
   }else{
-    taxa_names_clean = paste(taxa_split[-indices],
+    taxa_names_clean = paste(taxa_split[-indices][1:3], # The [1:3] ensures that only the first three words corresponding to genus, species, subspecies are used
           collapse = " ")
   }
+
+  # Remove any NAs in strings derived from last step:
+  taxa_names_clean = gsub(
+    pattern = "NA",
+    replacement = "",
+    x = taxa_names_clean)
 
   # Remove any extra whitespace just in case:
   taxa_names_clean = gsub(pattern = "\\s+", replacement = " ", x = taxa_names_clean)

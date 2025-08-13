@@ -24,20 +24,6 @@ eidos_clean_checklist <- function(){
   # Remove "subsp." and authorities and any Unicode whitespaces
   checklist$name_clean = sapply(checklist$name, eidos_clean_names)
 
-  # With above information, generate full name excluding any possible leftovers
-  checklist$name_clean = ifelse(checklist$taxonRank == "Subspecies" | grepl("subsp.", checklist$name),
-                                 sapply(strsplit(checklist$name_clean, split = " "), function(x){paste(x[1], x[2], x[3], sep = " ")}),
-                                 sapply(strsplit(checklist$name_clean, split = " "), function(x){paste(x[1], x[2], sep = " ")}))
-
-  # Remove any leftover "NA"
-  checklist$name_clean = gsub(
-    pattern = "NA",
-    replacement = "",
-    x = checklist$name_clean)
-
-  # Remove any traces of leading and trailing whitespaces
-  checklist$name_clean = trimws(checklist$name_clean)
-
   # Substitute "" for NA
   checklist[checklist == ""] <- NA
 
