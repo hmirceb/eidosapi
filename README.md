@@ -10,7 +10,7 @@
 
 # Instalación
 
-La instalación del paquete puede realizarse facilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete **remotes** `r citep(citation("remotes"))`.
+La instalación del paquete puede realizarse facilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete [**remotes**](https://cran.r-project.org/web/packages/remotes/index.html) (Csárdi et al. 2024).
 
 ``` r
 # Instalación con remotes
@@ -127,7 +127,6 @@ eidos_legal = eidosapi::eidos_legal_status_by_id(
 # con su nombre completo y dificultan la visualización:
 eidos_legal[1:2, 
             c("idtaxon", "estadolegal", "ambito")]
-
 ```
 
 ### Información taxonómica
@@ -149,7 +148,7 @@ eidos_taxo[c("nameid", "name", "nametype", "acceptednameid")]
 
 ## Busqueda de especies con errores en la nomenclatura
 
-Un problema común a la hora de trabajar con datos de especies son los errores de escritura como omitir letras o confundirlas con otras. El paquete **eidosapi** incluye la función `eidos_fuzzy_names` que, haciendo uso de lógica difusa gracias al paquete **fuzzyjoin** `r citep(citation("fuzzyjoin"))`, permite buscar en la base de datos de EIDOS los nombres que más se acerquen a la información que hayamos aportado. La función solo permite contrastar los nombres que aparezcan en la Lista patrón de las especies silvestres presentes en España (LP), y requiere que antes de emplearla descarguemos la LP. Para facilitar esa tarea contamos con la función `eidos_clean_checklist`. En el caso de que no la hayamos descargado o se nos haya olvidado incluirla como argumento, la función `eidos_fuzzy_names` devolverá un error que nos avisará. Podemos comprobar un caso básico de uso con algunos nombres mal escritos.
+Un problema común a la hora de trabajar con datos de especies son los errores de escritura como omitir letras o confundirlas con otras. El paquete **eidosapi** incluye la función `eidos_fuzzy_names` que, haciendo uso de lógica difusa gracias al paquete [**fuzzyjoin**](https://cran.r-project.org/web/packages/fuzzyjoin/index.html) (Robinson, 2025), permite buscar en la base de datos de EIDOS los nombres que más se acerquen a la información que hayamos aportado. La función solo permite contrastar los nombres que aparezcan en la Lista patrón de las especies silvestres presentes en España (LP), y requiere que antes de emplearla descarguemos la LP. Para facilitar esa tarea contamos con la función `eidos_clean_checklist`. En el caso de que no la hayamos descargado o se nos haya olvidado incluirla como argumento, la función `eidos_fuzzy_names` devolverá un error que nos avisará. Podemos comprobar un caso básico de uso con algunos nombres mal escritos.
 
 ``` r
 # Creamos la tabla con la información que queremos contrastar:
@@ -211,7 +210,7 @@ eidos_fuzzy2[c("supplied_taxon", "idtaxon", "name", "class")]
 
 Cabe destacar que también podemos buscar las especies aportando un vector con los nombres que queramos en vez de una tabla. Si queremos aportar información adicional habrá que hacerlo también como un vector que se incluirá como un argumento en la función (kingdom, phylum, class, order y/o family).
 
-Además de esta posibilidad, la función `eidos_fuzzy_names` cuenta con varios argumentos extra heredados de la función `stringdist_join` del paquete **fuzzyjoin** `r citep(citation("fuzzyjoin"))` que controlan el método para estimar las diferencias entre el nombre que aportemos y los que aparecen en la lista (method), la diferencia máxima entre el nombre aportado y alguno en la LP (maxdist), si queremos que en el resultado final aparezca una columna con estas diferencias (distance_col) y el tipo de unión que queremos con la LP en función del nombre aportado (mode). El método por defecto es "osa" (*optimal string aligment*), con el cual una distancia de 1 equivaldría a que los dos nombres contrastados se diferenciarían en una letra o carácter (e.g. *Lanius* y *Lasius*). Se puede encontrar información adicional sobre este y el resto de los métodos disponibles en la documentación del paquete **fuzzyjoin**. Por defecto la función `eidos_fuzzy_names` usa una distancia de 2, pero esta asunción puede relajarse. En cuanto al tipo de unión, salvo que lo especifiquemos explícitamente la función devuelve solamente los registros de la LP que coincidan con alguno de los que hayamos aportado y aparezcan en ambas tablas (*inner join*), aunque también podemos obtener la LP completa incluyendo nuestras especies de interés (*full join*) y otras variantes de este tipo de uniones entre tablas (*anti*, *left* y *right*).
+Además de esta posibilidad, la función `eidos_fuzzy_names` cuenta con varios argumentos extra heredados de la función `stringdist_join` del paquete **fuzzyjoin** que controlan el método para estimar las diferencias entre el nombre que aportemos y los que aparecen en la lista (method), la diferencia máxima entre el nombre aportado y alguno en la LP (maxdist), si queremos que en el resultado final aparezca una columna con estas diferencias (distance_col) y el tipo de unión que queremos con la LP en función del nombre aportado (mode). El método por defecto es "osa" (*optimal string aligment*), con el cual una distancia de 1 equivaldría a que los dos nombres contrastados se diferenciarían en una letra o carácter (e.g. *Lanius* y *Lasius*). Se puede encontrar información adicional sobre este y el resto de los métodos disponibles en la documentación del paquete **fuzzyjoin**. Por defecto la función `eidos_fuzzy_names` usa una distancia de 2, pero esta asunción puede relajarse. En cuanto al tipo de unión, salvo que lo especifiquemos explícitamente la función devuelve solamente los registros de la LP que coincidan con alguno de los que hayamos aportado y aparezcan en ambas tablas (*inner join*), aunque también podemos obtener la LP completa incluyendo nuestras especies de interés (*full join*) y otras variantes de este tipo de uniones entre tablas (*anti*, *left* y *right*).
 
 ## Funciones adicionales
 
@@ -226,3 +225,9 @@ head(
   eidos_tables("regbiogeograf_termar")
   )
 ```
+
+# Referencias
+
+1.  Csárdi G., Hester J., Wickham H., Chang W., Morgan M. & Tenenbaum D. (2024). remotes: R Package Installation from Remote Repositories, Including 'GitHub'. <doi:10.32614/CRAN.package.remotes> <https://doi.org/10.32614/CRAN.package.remotes>, R package version 2.5.0, <https://CRAN.R-project.org/package=remotes>.
+
+2.  Robinson D. (2025). fuzzyjoin: Join Tables Together on Inexact Matching. <doi:10.32614/CRAN.package.fuzzyjoin> <https://doi.org/10.32614/CRAN.package.fuzzyjoin>, R package version 0.1.6.1, <https://CRAN.R-project.org/package=fuzzyjoin>.
