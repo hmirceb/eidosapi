@@ -4,8 +4,6 @@
 #' @returns A data frame with the Spanish checklist with synonyms in a long format ready to use in other functions in the *eidos_api* package.
 #' @export
 #'
-#' @examples
-#' eidos_clean_checklist()
 eidos_clean_checklist <- function(){
 
   ## Message:

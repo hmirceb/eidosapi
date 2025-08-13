@@ -12,6 +12,3 @@ A data frame with the Spanish checklist with synonyms in a long format ready to 
 \description{
 Get the Spanish checklist with synonyms
 }
-\examples{
-eidos_clean_checklist()
-}

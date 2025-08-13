@@ -9,7 +9,6 @@
 #' @param taxon_id An integer. A unique taxon identifier from IEPNB
 #' @param taxo_info Boolean. Return the taxonomic information of the taxon.
 #' @param latest Boolean. Return the information from only the latest assessment.
-#' @param remove_duplicates Boolean. Remove duplicate rows if necessary
 #'
 #' @returns A data frame with the conservation information of each taxa.
 #' @export
