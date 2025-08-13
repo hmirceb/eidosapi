@@ -90,13 +90,7 @@ eidos_fuzzy_names <- function(taxa_list,
       taxa_list = cbind(higher_taxo, taxa_list)
     }
 
-    # Generate clean name to match
-    taxa_list$taxon = gsub(pattern = " NA", replacement = "",
-                                  x = paste(sep = " ",
-                                            taxa_list$genus,
-                                            taxa_list$species,
-                                            taxa_list$subspecies))
-    rm(genera, species, subspecies)
+    rm(genera, species, subspecies, taxa_list_clean, taxa_split)
   }
 
   ## Check if genus data is ok: ##
