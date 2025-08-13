@@ -177,8 +177,8 @@ eidos_result = eidosapi::eidos_fuzzy_names(taxa_list = taxa_list,
 
 # Podemos comprobar que ha encontrado una coincidencia y 
 # el nombre aceptado:
-eidos_result[c("idtaxon", "taxon_clean", 
-               "ScientificName", "WithoutAutorship")]
+eidos_result[c("idtaxon", "name_clean", 
+               "name", "withoutautorship")]
 ```
 
 ### Afinamiento de búsquedas
@@ -196,7 +196,7 @@ checklist = eidosapi::eidos_clean_checklist()
 eidos_fuzzy1 = eidosapi::eidos_fuzzy_names(
   taxa_list = taxa_list, 
   checklist = checklist)
-eidos_fuzzy1[c("supplied_taxon", "idtaxon", "ScientificName", "class")]
+eidos_fuzzy1[c("supplied_taxon", "idtaxon", "name", "class")]
 
 # Podemos refinar la búsqueda añadiendo,
 # por ejemplo, la clase a la que pertenece nuestro taxón de interés: 
@@ -206,7 +206,7 @@ taxa_list = data.frame(class = "Aves",
 eidos_fuzzy2 = eidosapi::eidos_fuzzy_names(
   taxa_list = taxa_list, 
   checklist = checklist)
-eidos_fuzzy2[c("supplied_taxon", "idtaxon", "ScientificName", "class")]
+eidos_fuzzy2[c("supplied_taxon", "idtaxon", "name", "class")]
 ```
 
 Cabe destacar que también podemos buscar las especies aportando un vector con los nombres que queramos en vez de una tabla. Si queremos aportar información adicional habrá que hacerlo también como un vector que se incluirá como un argumento en la función (kingdom, phylum, class, order y/o family).

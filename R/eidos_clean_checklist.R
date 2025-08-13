@@ -87,7 +87,7 @@ eidos_clean_checklist <- function(){
                               "acceptednameid", "nameid", "acceptedname", "acceptedname_clean",
                               "taxonconceptid", "scientificnameid",
                               "nameaccordingto", "namepublishedin", "namepublishedinyear",
-                              "kingdom", "family","genus","subgenus",
+                              "kingdom", "phylum", "class", "order", "family","genus","subgenus",
                               "specificepithet","infraspecificepithet","taxonrank",
                               "withoutautorship","scientificnameauthorship","remarks",
                               "vernacular_name","origin","environment")]
