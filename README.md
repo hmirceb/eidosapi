@@ -26,7 +26,14 @@ library(eidosapi)
 
 ## Busqueda de especies por nombre
 
-Vamos a replicar un ejemplo de uso básico, buscar dos especies en la base de datos empleando la API. Para comprobar que la API también devuelve los sinónimos del taxón elegido vamos a emplear dos especies diferentes: el sapo partero ibérico (*Alytes cisternasii*), que no tiene sinónimos; y *Polygonum viviparum* que tiene varios. El procedimiento básico consiste en crear una tabla (*data frame*) con el género y la especie de cada taxón. De forma adicional podemos incluir una columna con la subespecie y la autoridad taxonómica que haya descrito el taxón, como se muestra en la Tabla 1. En el caso de que el taxón que nos interesa no tuviese subespecies o no conociésemos la autoría podemos omitir las columnas correspondientes o rellenarlas con *NA*.
+Vamos a replicar un ejemplo de uso básico, buscar dos especies en la base de datos empleando la API. Para comprobar que la API también devuelve los sinónimos del taxón elegido vamos a emplear dos especies diferentes: el sapo partero ibérico (*Alytes cisternasii*), que no tiene sinónimos; y *Polygonum viviparum* que tiene varios. El procedimiento básico consiste en crear una tabla (*data frame*) con el género y la especie de cada taxón. De forma adicional podemos incluir una columna con la subespecie y la autoridad taxonómica que haya descrito el taxón, como se muestra en la siguiente tabla. En el caso de que el taxón que nos interesa no tuviese subespecies o no conociésemos la autoría podemos omitir las columnas correspondientes o rellenarlas con *NA*.
+
+| genus     | species     | subspecies | scientificnameauthorship |
+|-----------|-------------|------------|--------------------------|
+| Alytes    | cisternasii |            |                          |
+| Polygonum | viviparum   | *NA*       |                          |
+| Androsace | cylindrica  | willkommii |                          |
+| Pinus     | nigra       | salzmannii | (Dunal) Franco           |
 
 ``` r
 # Tabla ejemplo:
