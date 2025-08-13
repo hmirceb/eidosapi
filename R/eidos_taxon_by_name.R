@@ -5,43 +5,43 @@
 #' Names have to be properly written, although the default API admits some common spelling errors like "i" instead of "ii" (e.g. Borderea chouardi instead of chouardii).
 #' For anything else use eidos_fuzzy_names()
 #'
-#' @param taxa_list A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
+#' @param taxon_list A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
 #' Optional columns are "subspecies", "scientificnameauthorship."
 #' @returns A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 #' @export
 #'
 #' @examples
 #' example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
-#' eidos_taxon_by_name(taxa_list = example_taxo)
-#' eidos_taxon_by_name(taxa_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
-eidos_taxon_by_name = function(taxa_list) {
+#' eidos_taxon_by_name(taxon_list = example_taxo)
+#' eidos_taxon_by_name(taxon_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
+eidos_taxon_by_name = function(taxon_list) {
 
   ## If supplied list is a vector, generate appropiate data frame
-  if(is.vector(taxa_list)){
+  if(is.vector(taxon_list)){
 
     # Clean names beforehand
-    taxa_list = sapply(taxa_list, eidosapi:::eidos_clean_names)
+    taxon_list = sapply(taxon_list, eidos_clean_names)
 
     # Split vector and extract genus, species and subspecies:
-    taxa_split = strsplit(x = taxa_list, split = " ")
+    taxa_split = strsplit(x = taxon_list, split = " ")
     genera = sapply(taxa_split, FUN = function(x){x[1]})
     species = sapply(taxa_split, FUN = function(x){x[2]})
     subspecies = sapply(taxa_split, FUN = function(x){x[3]})
 
     # Generate data frame
-    taxa_list = data.frame(genus = genera,
+    taxon_list = data.frame(genus = genera,
                species = species,
                subspecies = subspecies)
     rm(genera, species, subspecies)
   }
 
   ## Check if genus data is ok: ##
-  if(sum(is.na(taxa_list$genus)) > 0){
+  if(sum(is.na(taxon_list$genus)) > 0){
     stop("Missing genus data")
   }
 
   ## Check if species data is ok: ##
-  if(sum(is.na(taxa_list$species)) > 0){
+  if(sum(is.na(taxon_list$species)) > 0){
     stop("Missing species data")
   }
 
@@ -52,13 +52,13 @@ eidos_taxon_by_name = function(taxa_list) {
 
   # Separate between taxa with species and subspecies
   # Species
-  if(is.null(taxa_list$subspecies) |
-     sum(is.na(taxa_list$subspecies)) == 0){
-    # If subspecies column is empty or does not exist, keep taxa_list as it is
-    sp_list = taxa_list
+  if(is.null(taxon_list$subspecies) |
+     sum(is.na(taxon_list$subspecies)) == 0){
+    # If subspecies column is empty or does not exist, keep taxon_list as it is
+    sp_list = taxon_list
   }else{
     # Else subset only species
-    sp_list = taxa_list[is.na(taxa_list$subspecies),]
+    sp_list = taxon_list[is.na(taxon_list$subspecies),]
   }
 
   # Create URLs for species
@@ -88,7 +88,7 @@ eidos_taxon_by_name = function(taxa_list) {
   )
 
   # Create URLs for subspecies
-  subsp_list = taxa_list[!is.na(taxa_list$subspecies),]
+  subsp_list = taxon_list[!is.na(taxon_list$subspecies),]
 
   subsp_urls = apply(
     X = subsp_list,
@@ -201,7 +201,7 @@ eidos_taxon_by_name = function(taxa_list) {
 
   # Remove any wierd whitespaces from table
   eidos_result = as.data.frame(
-    lapply(eidos_result, eidosapi:::eidos_clean_whitespaces),
+    lapply(eidos_result, eidos_clean_whitespaces),
     check.names = FALSE
   )
 

@@ -1,6 +1,6 @@
 #' Remove whitespaces
 #'
-#' @param taxa_names A vector of species names.
+#' @param x A vector of strings.
 #'
 #' @returns A vector of strings with only " " whitespaces
 #'

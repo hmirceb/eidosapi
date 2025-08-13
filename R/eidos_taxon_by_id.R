@@ -66,7 +66,7 @@ eidos_taxon_by_id <- function(taxon_id){
 
   # Remove any wierd whitespaces from table
   eidos_result = as.data.frame(
-    lapply(eidos_result, eidosapi:::eidos_clean_whitespaces),
+    lapply(eidos_result, eidos_clean_whitespaces),
     check.names = FALSE
   )
 

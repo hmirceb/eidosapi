@@ -67,7 +67,7 @@ eidos_fuzzy_names <- function(taxa_list,
   if(is.vector(taxa_list)){
 
     # Clean names (remove "subsp." and authorities)
-    taxa_list = sapply(taxa_list, eidosapi:::eidos_clean_names)
+    taxa_list = sapply(taxa_list, eidos_clean_names)
 
     # Split vector and extract genus, species and subspecies:
     taxa_split = strsplit(x = taxa_list, split = " ")
@@ -186,7 +186,7 @@ eidos_fuzzy_names <- function(taxa_list,
 
   # Remove any wierd whitespaces from table
   filtered_eidos_checklist_join = as.data.frame(
-    lapply(filtered_eidos_checklist_join, eidosapi:::eidos_clean_whitespaces),
+    lapply(filtered_eidos_checklist_join, eidos_clean_whitespaces),
     check.names = FALSE
   )
 

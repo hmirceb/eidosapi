@@ -54,7 +54,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
 
   # Remove any wierd whitespaces from table
   api_table = as.data.frame(
-    lapply(api_table, eidosapi:::eidos_clean_whitespaces),
+    lapply(api_table, eidos_clean_whitespaces),
     check.names = FALSE
     )
 

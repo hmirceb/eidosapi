@@ -22,7 +22,7 @@ eidos_clean_checklist <- function(){
                            checklist$Sinónimo)
 
   # Remove "subsp." and authorities and any Unicode whitespaces
-  checklist$name_clean = sapply(checklist$name, eidosapi:::eidos_clean_names)
+  checklist$name_clean = sapply(checklist$name, eidos_clean_names)
 
   # With above information, generate full name excluding any possible leftovers
   checklist$name_clean = ifelse(checklist$taxonRank == "Subspecies" | grepl("subsp.", checklist$name),
@@ -69,7 +69,7 @@ eidos_clean_checklist <- function(){
   checklist$acceptednameid <- checklist$idtaxon
 
   # Add 'acceptedname_clean' column
-  checklist$acceptedname_clean <- sapply(checklist$acceptedname, eidosapi:::eidos_clean_names)
+  checklist$acceptedname_clean <- sapply(checklist$acceptedname, eidos_clean_names)
 
   # If name si accepted, set idtaxon with that id. If not, use nameid.
   checklist$idtaxon <- ifelse(checklist$nametype == "Aceptado/válido",

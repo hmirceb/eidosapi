@@ -7,7 +7,7 @@
 eidos_clean_whitespaces(x)
 }
 \arguments{
-\item{taxa_names}{A vector of species names.}
+\item{x}{A vector of strings.}
 }
 \value{
 A vector of strings with only " " whitespaces

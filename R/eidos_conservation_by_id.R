@@ -82,7 +82,7 @@ eidos_conservation_by_id <- function(taxon_id,
 
     # Remove any wierd whitespaces from table
     eidos_query = as.data.frame(
-      lapply(eidos_query, eidosapi:::eidos_clean_whitespaces),
+      lapply(eidos_query, eidos_clean_whitespaces),
       check.names = FALSE
     )
 
