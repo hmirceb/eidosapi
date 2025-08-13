@@ -184,6 +184,20 @@ eidos_fuzzy_names <- function(taxa_list,
   # Remove duplicates:
   filtered_eidos_checklist_join[!duplicated(filtered_eidos_checklist_join), ]
 
+  # Remove any wierd whitespaces from the checklist
+  filtered_eidos_checklist_join = as.data.frame(
+    lapply(
+      filtered_eidos_checklist_join,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+             )
+        }
+      )
+    )
+
   # Return
   return(filtered_eidos_checklist_join)
 }

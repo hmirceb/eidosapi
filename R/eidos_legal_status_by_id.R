@@ -54,6 +54,20 @@ eidos_legal_status_by_id <- function(taxon_id){
   # Remove duplicates:
   eidos_query[!duplicated(eidos_query), ]
 
+  # Remove any wierd whitespaces from the checklist
+  eidos_query = as.data.frame(
+    lapply(
+      eidos_query,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+        )
+      }
+    )
+  )
+
   ## Return results ##
   return(eidos_query)
 

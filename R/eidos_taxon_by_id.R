@@ -58,5 +58,19 @@ eidos_taxon_by_id <- function(taxon_id){
   # Remove duplicates:
   eidos_result[!duplicated(eidos_result), ]
 
+  # Remove any wierd whitespaces from the checklist
+  eidos_result = as.data.frame(
+    lapply(
+      eidos_result,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+        )
+      }
+    )
+  )
+
   return(eidos_result)
 }

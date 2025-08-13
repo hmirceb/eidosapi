@@ -112,6 +112,7 @@ eidos_taxon_by_name = function(taxon_list) {
         X[3]
       )
 
+      # Create data frame with urls to query
       df = suppressWarnings(
         data.frame(genus = X[1],
                       species = X[2],
@@ -172,8 +173,7 @@ eidos_taxon_by_name = function(taxon_list) {
   # Remove rownames:
   rownames(eidos_result) = NULL
 
-  # Add the supplied taxon (genus species subspecies)
-  # to final df
+  # Add the supplied taxon (genus species subspecies) to final df
   # Paste names
   supplied_taxon = paste(eidos_result$supplied_genus,
         eidos_result$supplied_species,
@@ -195,6 +195,20 @@ eidos_taxon_by_name = function(taxon_list) {
 
   # Remove duplicates:
   eidos_result[!duplicated(eidos_result), ]
+
+  # Remove any wierd whitespaces from the checklist
+  eidos_result = as.data.frame(
+    lapply(
+      eidos_result,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+        )
+      }
+    )
+  )
 
   return(eidos_result)
 }

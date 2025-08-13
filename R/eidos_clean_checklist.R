@@ -45,5 +45,19 @@ eidos_clean_checklist <- function(){
   # Substitute "" for NA
   checklist[checklist == ""] <- NA
 
+  # Remove any wierd whitespaces from the checklist
+  checklist = as.data.frame(
+    lapply(
+      checklist,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+        )
+      }
+    )
+  )
+
   return(checklist)
 }

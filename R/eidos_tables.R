@@ -50,6 +50,20 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
   # Remove duplicates:
   api_table[!duplicated(api_table), ]
 
+  # Remove any wierd whitespaces from the checklist
+  api_table = as.data.frame(
+    lapply(
+      api_table,
+      function(x) {
+        gsub(pattern = "\\p{Zs}+",
+             replacement = " ",
+             x = x,
+             perl = TRUE
+        )
+      }
+    )
+  )
+
   # Return the table
   return(api_table)
 }
