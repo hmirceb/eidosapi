@@ -6,7 +6,7 @@
 
 ⚠️ **En este momento los nombres de las columnas que devuelve Lista Patrón son una combinación cuanto menos curiosa de camelCase, separaciones con guiones_bajos y separaciones con espacios en blanco, además de tener tildes** **Por compatibilidad con el resto de la información accesible desde la API, la funcion eidos_cleanchecklist() modifica los nombres** **Los originales pueden encontrarse con la función eidos_tables()**
 
-⚠️ **Ocurre algo similar con los identificadores de los taxa. La API da como aceptado el ID del sinónimo, lo cual no tiene sentido puesto que el ID útil es el aceptado ya que es el único que acepta la API para otras consultas. Se ha modificado para que los IDs sean consistentes en todas las tablas. **
+⚠️ **Ocurre algo similar con los identificadores de los taxa. La API da como aceptado el ID del sinónimo, lo cual no tiene sentido puesto que el ID útil es el aceptado ya que es el único que acepta la API para otras consultas. Se ha modificado para que los IDs sean consistentes en todas las tablas.**
 
 # Instalación
 
