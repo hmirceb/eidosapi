@@ -51,6 +51,10 @@ eidos_conservation_by_id <- function(taxon_id,
   # Remove NULLs
   eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
 
+  # Stop if no results found
+  if(length(eidos_query_list) == 0){
+    stop("No matching IDs")
+  }else{
     # If required, return only the latest conservation assessment
     if(isTRUE(latest)){
       eidos_query_list = lapply(eidos_query_list, function(x){
@@ -88,4 +92,5 @@ eidos_conservation_by_id <- function(taxon_id,
 
     ## Return results ##
     return(eidos_query)
+    }
 }

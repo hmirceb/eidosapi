@@ -45,22 +45,26 @@ eidos_legal_status_by_id <- function(taxon_id){
   # Remove NULLs
   eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
 
-  ## Merge results ##
-  eidos_query = do.call("rbind", eidos_query_list)
+  # Stop if no results found
+  if(length(eidos_query_list) == 0){
+    stop("No matching IDs")
+  }else{
+    ## Merge results ##
+    eidos_query = do.call("rbind", eidos_query_list)
 
-  # Substitute "" for NA
-  eidos_query[eidos_query == ""] <- NA
+    # Substitute "" for NA
+    eidos_query[eidos_query == ""] <- NA
 
-  # Remove duplicates:
-  eidos_query[!duplicated(eidos_query), ]
+    # Remove duplicates:
+    eidos_query[!duplicated(eidos_query), ]
 
-  # Remove any wierd whitespaces from table
-  eidos_query = as.data.frame(
-    lapply(eidos_query, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
+    # Remove any wierd whitespaces from table
+    eidos_query = as.data.frame(
+      lapply(eidos_query, eidos_clean_whitespaces),
+      check.names = FALSE
+    )
 
-  ## Return results ##
-  return(eidos_query)
-
+    ## Return results ##
+    return(eidos_query)
+  }
 }
