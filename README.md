@@ -233,6 +233,38 @@ head(
   )
 ```
 
+## Ejemplos complejos
+
+En muchas ocasiones el número de especies que tenemos que buscar puede ser muy grande. La velocidad a la que obtengamos la información depende de la velocidad de conexión con la API de EIDOS y de lo rápido que se interpreten los archivos JSON obtenidos. Por tanto si buscamos muchas especies a la vez el proceso puede ser muy lento. Vamos a comprobarlo con un ejemplo más complejo que los anteriores, para ello vamos a usar una lista de nombres de especies provenientes del proyecto [Biotrend](https://biotrend.es/), que fue la motivación para el desarrollo de este paquete.
+
+```{r, fuzzy tablas, error=TRUE}
+# Cargamos los datos de ejemplo
+data("eidos_example_data")
+
+head(info_sps)
+```
+
+El dataset contiene cuatro columnas, taxon, genus, species y subspecies. Para comprobar como varía la velocidad de la API, vamos a la función eidos_taxon_by_name con diferentes nombres y a estimar el tiempo que se tarda. 
+
+```{r, fuzzy tablas, error=TRUE, results='hide'}
+t0 = Sys.time() # Tiempo inicial
+eidos_taxon_by_name(taxa_list = info_sps[1,2:4])
+t1 = Sys.time() # Tiempo final
+t1-t0 # Tiempo que tarda la función
+
+t0 = Sys.time()
+eidos_taxon_by_name(taxa_list = info_sps[10,2:4])
+t1 = Sys.time()
+t1-t0
+
+t0 = Sys.time()
+eidos_taxon_by_name(taxa_list = info_sps[1:10,2:4])
+t1 = Sys.time()
+t1-t0
+```
+
+En este caso, y con mi ordenador y conexión a internet, 
+
 # Referencias
 
 1.  Csárdi G., Hester J., Wickham H., Chang W., Morgan M. & Tenenbaum D. (2024). remotes: R Package Installation from Remote Repositories, Including 'GitHub'. <doi:10.32614/CRAN.package.remotes> <https://doi.org/10.32614/CRAN.package.remotes>, R package version 2.5.0, <https://CRAN.R-project.org/package=remotes>.
