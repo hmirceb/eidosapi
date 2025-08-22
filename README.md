@@ -265,24 +265,19 @@ t1-t0
 
 Una sola búsqueda suele tardar alrededor de medio segundo. Como el tiempo aumenta de forma aproximadamente lineal las 10 especies de la segunda búsqueda han tardado 4.5 segundos.
 
-Aunque no es una espera prohibitiva, la búsqueda puede acelerarse de una forma sencilla. Podemos buscar primero las especies que estén en la Lista Patrón usando la función eidos_fuzzy_names() y después buscar las que falten con eidos_taxon_by_name(). Si optamos por esta opción, hay que tener en cuenta que descargar la Lista Patrón lleva unos segundos.
+Aunque no es una espera prohibitiva, la búsqueda puede acelerarse de una forma sencilla. Podemos buscar primero las especies que estén en la Lista Patrón usando la función eidos_fuzzy_names() y después buscar las que falten con eidos_taxon_by_name(). Si optamos por esta opción, hay que tener en cuenta que descargar la Lista Patrón lleva unos segundos y por tanto puede tardar más que la opción anterior si buscamos pocas especies.
 
 ```{r, fuzzy tablas, error=TRUE, results='hide'}
-t0 = Sys.time() # Tiempo inicial
+t0 = Sys.time()
+# Descargamos la Lista Patrón
 checklist = eidos_clean_checklist()
-t1 = Sys.time() # Tiempo final
-t1-t0 # Tiempo que tarda la función
-
-t0 = Sys.time()
-eidos_taxon_by_name(taxa_list = info_sps[10,2:4])
-t1 = Sys.time()
-t1-t0
-
-t0 = Sys.time()
-eidos_taxon_by_name(taxa_list = info_sps[1:10,2:4])
+eidos_fuzzy_names(taxa_list = info_sps[1:100,2:4],
+                  checklist = checklist)
 t1 = Sys.time()
 t1-t0
 ```
+
+Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la descarga de la Lista Patrón) frente a los 40 que tardaría con de la otra forma. Aunque no pueda parecer mucho en este ejemplo, repitiéndolo con las 500 especies del ejemplo tarda 23 segundos frente a los 4 minutos de eidos_taxon_by_name().
 
 # Referencias
 
