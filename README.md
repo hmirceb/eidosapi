@@ -240,11 +240,10 @@ En muchas ocasiones el número de especies que tenemos que buscar puede ser muy 
 ```{r, fuzzy tablas, error=TRUE}
 # Cargamos los datos de ejemplo
 data("eidos_example_data")
-
 head(info_sps)
 ```
 
-El dataset contiene cuatro columnas, taxon, genus, species y subspecies. Para comprobar como varía la velocidad de la API, vamos a la función eidos_taxon_by_name con diferentes nombres y a estimar el tiempo que se tarda. 
+El dataset contiene cuatro columnas, taxon, genus, species y subspecies. Para comprobar como varía la velocidad de la API, vamos a la función `eidos_taxon_by_name` con diferentes nombres y a estimar el tiempo que se tarda. 
 
 ```{r, fuzzy tablas, error=TRUE, results='hide'}
 t0 = Sys.time() # Tiempo inicial
@@ -265,7 +264,7 @@ t1-t0
 
 Una sola búsqueda suele tardar alrededor de medio segundo. Como el tiempo aumenta de forma aproximadamente lineal las 10 especies de la segunda búsqueda han tardado 4.5 segundos.
 
-Aunque no es una espera prohibitiva, la búsqueda puede acelerarse de una forma sencilla. Podemos buscar primero las especies que estén en la Lista Patrón usando la función eidos_fuzzy_names() y después buscar las que falten con eidos_taxon_by_name(). Si optamos por esta opción, hay que tener en cuenta que descargar la Lista Patrón lleva unos segundos y por tanto puede tardar más que la opción anterior si buscamos pocas especies.
+Aunque no es una espera prohibitiva, la búsqueda puede acelerarse de una forma sencilla. Podemos buscar primero las especies que estén en la Lista Patrón usando la función `eidos_fuzzy_names()` y después buscar las que falten con `eidos_taxon_by_name()`. Si optamos por esta opción, hay que tener en cuenta que descargar la Lista Patrón lleva unos segundos y por tanto puede tardar más que la opción anterior si buscamos pocas especies.
 
 ```{r, fuzzy tablas, error=TRUE, results='hide'}
 t0 = Sys.time()
@@ -277,7 +276,7 @@ t1 = Sys.time()
 t1-t0
 ```
 
-Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la descarga de la Lista Patrón) frente a los 40 que tardaría con de la otra forma. Aunque no pueda parecer mucho en este ejemplo, repitiéndolo con las 500 especies del ejemplo tarda 23 segundos frente a los 4 minutos de eidos_taxon_by_name().
+Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la descarga de la Lista Patrón) frente a los 40 que tardaría con de la otra forma. Aunque no pueda parecer mucho en este ejemplo, repitiéndolo con las 500 especies del ejemplo tarda 23 segundos frente a los 4 minutos de `eidos_taxon_by_name()`.
 
 # Referencias
 
