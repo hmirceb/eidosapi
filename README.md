@@ -191,7 +191,7 @@ eidos_result[c("idtaxon", "name_clean",
 
 Un problema que puede surgir a la hora de emplear esta función es que devuelva varias posibilidades muy dispares para un mismo taxón. Para solventar esto, la función incluye la posibilidad de incluir información taxonómica adicional (reino, filo, clase, orden y familia) en la tabla de datos. Se pueden incluir varias restricciones a la vez, por ejemplo clase y familia; y si queremos buscar varios taxa no es necesario aportar esta información adicional para todas ellas, bastará con poner *NA* en las celdas correspondientes. Para comprobar su utilidad, vamos a buscar información sobre el alcaudón real (*Lanius meridionalis)*, un ave, que coincide estrechamente con *Lasius meridionalis*, una hormiga.
 
-```{r, fuzzy matching2, error=TRUE}
+``` r
 # Creamos la tabla con la información que queremos contrastar:
 taxa_list = data.frame(genus = c("Lanius"),
                        species = c("meridionalis"))
@@ -223,7 +223,7 @@ Además de esta posibilidad, la función `eidos_fuzzy_names` cuenta con varios a
 
 El paquete **eidosapi** cuenta con varias funciones adicionales, enfocadas principalmente a descargar información asociada a la [Lista patrón de las especies silvestres presentes en España](https://www.miteco.gob.es/es/biodiversidad/servicios/banco-datos-naturaleza/informacion-disponible/bdn_listas_patron.html#lista-patron-de-las-especies-silvestres-presentes-en-espana). Entre estas funciones está la ya mencionada `eidos_clean_checklist`, que descarga la LP con los sinónimos disponibles en un formato largo, para facilitar el uso de la función `eidos_fuzzy_names`. El funcionamiento de `eidos_clean_checklist` depende de la función `eidos_tables`, que permite descargar las diferentes versiones disponibles de la LP (con y sin sinonimias, con normativas y categorías de protección y con pasarelas a otras bases de datos) así como otras tablas consultables en el siguiente [enlace](https://iepnb.gob.es/recursos/servicios-interoperables/api-catalogo). Estas se refieren a listas de regiones biogeográficas, comunidades autónomas, provincias, normativas legales y demás, que podrían ser de cierta utilidad.
 
-```{r, fuzzy tablas, error=TRUE}
+``` r
 # Accedemos a las tablas de comunidades autónomas y de regiones biogeográficas:
 head(
   eidos_tables("comunidades_autonomas")
@@ -237,7 +237,7 @@ head(
 
 En muchas ocasiones el número de especies que tenemos que buscar puede ser muy grande. La velocidad a la que obtengamos la información depende de la velocidad de conexión con la API de EIDOS y de lo rápido que se interpreten los archivos JSON obtenidos. Por tanto si buscamos muchas especies a la vez el proceso puede ser muy lento. Vamos a comprobarlo con un ejemplo más complejo que los anteriores. Para ello vamos a usar una lista de nombres de especies provenientes del proyecto [Biotrend](https://biotrend.es/), que fue la motivación para el desarrollo de este paquete.
 
-```{r, example big, error=TRUE}
+``` r
 # Cargamos los datos de ejemplo
 data("eidos_example_data")
 head(info_sps)
@@ -245,7 +245,7 @@ head(info_sps)
 
 La tabla contiene cuatro columnas: *taxon*, *genus*, *species* y *subspecies*. Para comprobar como varía la velocidad de la API, vamos a emplear la función `eidos_taxon_by_name` con diferentes nombres y a estimar el tiempo que tarda en obtener su información asociada.
 
-```{r, example times, error=TRUE, results='hide'}
+``` r
 t0 = Sys.time() # Tiempo inicial
 eidos_taxon_by_name(taxa_list = info_sps[1,2:4])
 t1 = Sys.time() # Tiempo final
@@ -266,7 +266,7 @@ Una sola búsqueda suele tardar alrededor de medio segundo. Como el tiempo aumen
 
 Aunque no es una espera prohibitiva, la búsqueda puede acelerarse de una forma sencilla. Podemos buscar primero las especies que estén en la Lista Patrón usando la función `eidos_fuzzy_names()` y después buscar las que falten con `eidos_taxon_by_name()`. Si optamos por esta opción, hay que tener en cuenta que descargar la Lista Patrón lleva unos segundos y por tanto puede tardar más que la opción anterior si buscamos pocas especies.
 
-```{r, speedup names, error=TRUE, results='hide'}
+``` r
 t0 = Sys.time()
 # Descargamos la Lista Patrón
 checklist = eidos_clean_checklist()
@@ -280,7 +280,7 @@ Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la desc
 
 Aunque las búsquedas con el identificador (*e.g.,* `eidos_taxon_by_id`) son cerca de un 50% más rápidas que las búsquedas por nombre, estas también pueden tardar. Podemos hacer que vaya más rápido descargando antes la tabla con las normativas asociadas a cada especie usando la función `eidos_tables()`
 
-```{r, speedup ids, error=TRUE, results='hide'}
+``` r
 checklist = eidos_clean_checklist()
 sps_ids = eidos_fuzzy_names(taxa_list = info_sps[,2:4],
                             checklist = checklist)
