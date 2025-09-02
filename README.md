@@ -4,7 +4,7 @@
 
 ⚠️ **Warning: The Spanish Inventory of Natural Patrimony and Biodiversity is a work in progress. Taxa might change and things can break from time to time do to changes in the APIs.**
 
-⚠️ **En este momento los nombres de las columnas que devuelve Lista Patrón son una combinación cuanto menos curiosa de camelCase, separaciones con guiones_bajos y separaciones con espacios en blanco, además de tener tildes** **Por compatibilidad con el resto de la información accesible desde la API, la funcion eidos_cleanchecklist() modifica los nombres** **Los originales pueden encontrarse con la función eidos_tables()**
+⚠️ **En este momento los nombres de las columnas que devuelve Lista Patrón son una combinación cuanto menos curiosa de camelCase, separaciones con guiones_bajos y separaciones con espacios en blanco, además de tener tildes.** **Por compatibilidad con el resto de la información accesible desde la API, la funcion eidos_cleanchecklist() modifica los nombres.** **Los originales pueden encontrarse con la función eidos_tables().**
 
 ⚠️ **Ocurre algo similar con los identificadores de los taxa. La API da como aceptado el ID del sinónimo, lo cual no tiene sentido puesto que el ID útil es el aceptado ya que es el único que acepta la API para otras consultas. Se ha modificado para que los IDs sean consistentes en todas las tablas.**
 
@@ -155,7 +155,7 @@ eidos_taxo[c("nameid", "name", "nametype", "acceptednameid")]
 
 ## Busqueda de especies con errores en la nomenclatura
 
-Un problema común a la hora de trabajar con datos de especies son los errores de escritura como omitir letras o confundirlas con otras. El paquete **eidosapi** incluye la función `eidos_fuzzy_names` que, haciendo uso de lógica difusa gracias al paquete [**fuzzyjoin**](https://cran.r-project.org/web/packages/fuzzyjoin/index.html) (Robinson, 2025), permite buscar en la base de datos de EIDOS los nombres que más se acerquen a la información que hayamos aportado. La función solo permite contrastar los nombres que aparezcan en la Lista patrón de las especies silvestres presentes en España (LP), y requiere que antes de emplearla descarguemos la LP. Para facilitar esa tarea contamos con la función `eidos_clean_checklist`. En el caso de que no la hayamos descargado o se nos haya olvidado incluirla como argumento, la función `eidos_fuzzy_names` devolverá un error que nos avisará. Podemos comprobar un caso básico de uso con algunos nombres mal escritos.
+Un problema común a la hora de trabajar con datos de especies son los errores de escritura, como omitir letras o confundirlas con otras. El paquete **eidosapi** incluye la función `eidos_fuzzy_names` que, haciendo uso de lógica difusa gracias al paquete [**fuzzyjoin**](https://cran.r-project.org/web/packages/fuzzyjoin/index.html) (Robinson, 2025), permite buscar en la base de datos de EIDOS los nombres que más se acerquen a la información que hayamos aportado. La función solo permite contrastar los nombres que aparezcan en la Lista patrón de las especies silvestres presentes en España (LP), y requiere que antes de emplearla descarguemos la LP. Para facilitar esa tarea contamos con la función `eidos_clean_checklist`. En el caso de que no la hayamos descargado o se nos haya olvidado incluirla como argumento, la función `eidos_fuzzy_names` devolverá un error que nos avisará. Podemos comprobar un caso básico de uso con algunos nombres mal escritos.
 
 ``` r
 # Creamos la tabla con la información que queremos contrastar:
@@ -189,7 +189,7 @@ eidos_result[c("idtaxon", "name_clean",
 
 ### Afinamiento de búsquedas
 
-Un problema que puede surgir a la hora de emplear esta función es que devuelva varias posibilidades muy dispares para un mismo taxón. Para solventar esto, la función incluye la posibilidad de incluir información taxonómica adicional (reino, filo, clase, orden y familia) en la tabla de datos. Se pueden incluir varias restricciones a la vez, por ejemplo clase y familia; y si queremos buscar varios taxa no es necesario aportar esta información adicional para todas ellas, bastará con poner *NA* en las celdas correspondientes. Para comprobar su utilidad, vamos a buscar información sobre el alcaudón real *Lanius meridionalis*, un ave, que coincide estrechamente con *Lasius meridionalis*, una hormiga.
+Un problema que puede surgir a la hora de emplear esta función es que devuelva varias posibilidades muy dispares para un mismo taxón. Para solventar esto, la función incluye la posibilidad de incluir información taxonómica adicional (reino, filo, clase, orden y familia) en la tabla de datos. Se pueden incluir varias restricciones a la vez, por ejemplo clase y familia; y si queremos buscar varios taxa no es necesario aportar esta información adicional para todas ellas, bastará con poner *NA* en las celdas correspondientes. Para comprobar su utilidad, vamos a buscar información sobre el alcaudón real (*Lanius meridionalis)*, un ave, que coincide estrechamente con *Lasius meridionalis*, una hormiga.
 
 ```{r, fuzzy matching2, error=TRUE}
 # Creamos la tabla con la información que queremos contrastar:
@@ -217,11 +217,11 @@ eidos_fuzzy2[c("supplied_taxon", "idtaxon", "name", "class")]
 
 Cabe destacar que también podemos buscar las especies aportando un vector con los nombres que queramos en vez de una tabla. Si queremos aportar información adicional habrá que hacerlo también como un vector que se incluirá como un argumento en la función (kingdom, phylum, class, order y/o family).
 
-Además de esta posibilidad, la función `eidos_fuzzy_names` cuenta con varios argumentos extra heredados de la función `stringdist_join` del paquete **fuzzyjoin** que controlan el método para estimar las diferencias entre el nombre que aportemos y los que aparecen en la lista (method), la diferencia máxima entre el nombre aportado y alguno en la LP (maxdist), si queremos que en el resultado final aparezca una columna con estas diferencias (distance_col) y el tipo de unión que queremos con la LP en función del nombre aportado (mode). El método por defecto es "osa" (*optimal string aligment*), con el cual una distancia de 1 equivaldría a que los dos nombres contrastados se diferenciarían en una letra o carácter (e.g. *Lanius* y *Lasius*). Se puede encontrar información adicional sobre este y el resto de los métodos disponibles en la documentación del paquete **fuzzyjoin**. Por defecto la función `eidos_fuzzy_names` usa una distancia de 2, pero esta asunción puede relajarse. En cuanto al tipo de unión, salvo que lo especifiquemos explícitamente la función devuelve solamente los registros de la LP que coincidan con alguno de los que hayamos aportado y aparezcan en ambas tablas (*inner join*), aunque también podemos obtener la LP completa incluyendo nuestras especies de interés (*full join*) y otras variantes de este tipo de uniones entre tablas (*anti*, *left* y *right*).
+Además de esta posibilidad, la función `eidos_fuzzy_names` cuenta con varios argumentos extra heredados de la función `stringdist_join` del paquete **fuzzyjoin** que controlan el método para estimar las diferencias entre el nombre que aportemos y los que aparecen en la lista (*method*), la diferencia máxima entre el nombre aportado y alguno en la LP (*maxdist*), si queremos que en el resultado final aparezca una columna con estas diferencias (*distance_col*) y el tipo de unión que queremos con la LP en función del nombre aportado (*mode*). El método por defecto es "osa" (*optimal string aligment*), con el cual una distancia de 1 equivaldría a que los dos nombres contrastados se diferenciarían en una letra o carácter (e.g. *Lanius* y *Lasius*). Se puede encontrar información adicional sobre este y el resto de los métodos disponibles en la documentación del paquete **fuzzyjoin**. Por defecto la función `eidos_fuzzy_names` usa una distancia de 2, pero esta asunción puede relajarse. En cuanto al tipo de unión, salvo que lo especifiquemos explícitamente la función devuelve solamente los registros de la LP que coincidan con alguno de los que hayamos aportado y aparezcan en ambas tablas (*inner join*), aunque también podemos obtener la LP completa incluyendo nuestras especies de interés (*full join*) y otras variantes de este tipo de uniones entre tablas (*anti*, *left* y *right*).
 
 ## Funciones adicionales
 
-El paquete **eidosapi** cuenta con varias funciones adicionales, enfocadas principalmente a descargar información asociada a la [Lista patrón de las especies silvestres presentes en España](https://www.miteco.gob.es/es/biodiversidad/servicios/banco-datos-naturaleza/informacion-disponible/bdn_listas_patron.html#lista-patron-de-las-especies-silvestres-presentes-en-espana). Entre estas funciones está la ya mencionada `eidos_clean_checklist`, que descarga la LP con los sinónimos disponibles en un formato largo, para facilitar el uso de la función El funcionamiento de `eidos_fuzzy_names`. `eidos_clean_checklist` depende de la función `eidos_tables`, que permite descargar las diferentes versiones disponibles de la LP (con y sin sinonimias, con normativas y categorías de protección y con pasarelas a otras bases de datos) así como otras tablas consultables en el siguiente [enlace](https://iepnb.gob.es/recursos/servicios-interoperables/api-catalogo). Estas se refieren a listas de regiones biogeográficas, comunidades autónomas, provincias, normativas legales y demás, que podrían ser de cierta utilidad.
+El paquete **eidosapi** cuenta con varias funciones adicionales, enfocadas principalmente a descargar información asociada a la [Lista patrón de las especies silvestres presentes en España](https://www.miteco.gob.es/es/biodiversidad/servicios/banco-datos-naturaleza/informacion-disponible/bdn_listas_patron.html#lista-patron-de-las-especies-silvestres-presentes-en-espana). Entre estas funciones está la ya mencionada `eidos_clean_checklist`, que descarga la LP con los sinónimos disponibles en un formato largo, para facilitar el uso de la función `eidos_fuzzy_names`. El funcionamiento de `eidos_clean_checklist` depende de la función `eidos_tables`, que permite descargar las diferentes versiones disponibles de la LP (con y sin sinonimias, con normativas y categorías de protección y con pasarelas a otras bases de datos) así como otras tablas consultables en el siguiente [enlace](https://iepnb.gob.es/recursos/servicios-interoperables/api-catalogo). Estas se refieren a listas de regiones biogeográficas, comunidades autónomas, provincias, normativas legales y demás, que podrían ser de cierta utilidad.
 
 ```{r, fuzzy tablas, error=TRUE}
 # Accedemos a las tablas de comunidades autónomas y de regiones biogeográficas:
@@ -235,7 +235,7 @@ head(
 
 ## Ejemplos complejos
 
-En muchas ocasiones el número de especies que tenemos que buscar puede ser muy grande. La velocidad a la que obtengamos la información depende de la velocidad de conexión con la API de EIDOS y de lo rápido que se interpreten los archivos JSON obtenidos. Por tanto si buscamos muchas especies a la vez el proceso puede ser muy lento. Vamos a comprobarlo con un ejemplo más complejo que los anteriores, para ello vamos a usar una lista de nombres de especies provenientes del proyecto [Biotrend](https://biotrend.es/), que fue la motivación para el desarrollo de este paquete.
+En muchas ocasiones el número de especies que tenemos que buscar puede ser muy grande. La velocidad a la que obtengamos la información depende de la velocidad de conexión con la API de EIDOS y de lo rápido que se interpreten los archivos JSON obtenidos. Por tanto si buscamos muchas especies a la vez el proceso puede ser muy lento. Vamos a comprobarlo con un ejemplo más complejo que los anteriores. Para ello vamos a usar una lista de nombres de especies provenientes del proyecto [Biotrend](https://biotrend.es/), que fue la motivación para el desarrollo de este paquete.
 
 ```{r, example big, error=TRUE}
 # Cargamos los datos de ejemplo
@@ -243,7 +243,7 @@ data("eidos_example_data")
 head(info_sps)
 ```
 
-El dataset contiene cuatro columnas, taxon, genus, species y subspecies. Para comprobar como varía la velocidad de la API, vamos a la función `eidos_taxon_by_name` con diferentes nombres y a estimar el tiempo que se tarda. 
+El dataset contiene cuatro columnas, taxon, genus, species y subspecies. Para comprobar como varía la velocidad de la API, vamos a emplear la función `eidos_taxon_by_name` con diferentes nombres y a estimar el tiempo que tarda en obtener su información asociada.
 
 ```{r, example times, error=TRUE, results='hide'}
 t0 = Sys.time() # Tiempo inicial
@@ -276,9 +276,9 @@ t1 = Sys.time()
 t1-t0
 ```
 
-Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la descarga de la Lista Patrón) frente a los 40 que tardaría con de la otra forma. Aunque no pueda parecer mucho en este ejemplo, repitiéndolo con las 500 especies del ejemplo tarda 23 segundos frente a los 4 minutos de `eidos_taxon_by_name()`.
+Empleando esta opción, el tiempo se reduce a unos 20 segundos (incluida la descarga de la Lista Patrón) frente a los 40 que tardaría de la otra forma. Aunque no pueda parecer mucho en este ejemplo, repitiéndolo con las 500 especies del ejemplo tarda 23 segundos frente a los 4 minutos de `eidos_taxon_by_name()`.
 
-Aunque las búsquedas con el identificador (*e.g.,* `eidos_taxon_by_id`) son cerca de un 50% más rápidas que las búsquedas por nombre, también pueden tardar. Podemos hacer que vaya más rápido descargando antes la tabla con las normativas asociadas a cada especie usando la función `eidos_tables()`
+Aunque las búsquedas con el identificador (*e.g.,* `eidos_taxon_by_id`) son cerca de un 50% más rápidas que las búsquedas por nombre, estas también pueden tardar. Podemos hacer que vaya más rápido descargando antes la tabla con las normativas asociadas a cada especie usando la función `eidos_tables()`
 
 ```{r, speedup ids, error=TRUE, results='hide'}
 checklist = eidos_clean_checklist()
@@ -296,7 +296,6 @@ ccc = lp_normas[lp_normas$idtaxon %in% sps_ids$idtaxon,]
 t1 = Sys.time()
 t1-t0
 ```
-
 
 # Referencias
 
