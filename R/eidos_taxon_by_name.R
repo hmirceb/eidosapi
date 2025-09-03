@@ -203,6 +203,7 @@ eidos_taxon_by_name = function(taxa_list) {
     eidos_result$name_clean = gsub(pattern = " NA",
                                    replacement = "",
                                    x = eidos_result$name_clean)
+    eidos_result$name_clean = trimws(eidos_result$name_clean)
 
     # Rename "taxonid" to "idtaxon" for consistency
     names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
