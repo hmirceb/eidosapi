@@ -182,6 +182,7 @@ eidos_taxon_by_name = function(taxa_list) {
         eidos_result$supplied_species,
         eidos_result$supplied_subspecies,
         sep = " ")
+
   # Remove " NA" if no subspecies
   supplied_taxon = gsub(pattern = " NA",
        replacement = "",
@@ -189,6 +190,15 @@ eidos_taxon_by_name = function(taxa_list) {
 
   # Attach to final df and return:
   eidos_result = cbind(supplied_taxon, eidos_result)
+
+  # Add clean name in eidos
+  eidos_result$name_clean = paste(eidos_result$genus,
+                                   eidos_result$specificepithet,
+                                   eidos_result$infraspecificepithet,
+                                   sep = " ")
+  eidos_result$name_clean = gsub(pattern = " NA",
+                        replacement = "",
+                        x = eidos_result$name_clean)
 
   # Rename "taxonid" to "idtaxon" for consistency
   names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
