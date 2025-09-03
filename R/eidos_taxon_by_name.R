@@ -53,7 +53,7 @@ eidos_taxon_by_name = function(taxa_list) {
   # Separate between taxa with species and subspecies
   # Species
   if(is.null(taxa_list$subspecies) |
-     sum(is.na(taxa_list$subspecies)) == 0){
+     sum(is.na(taxa_list$subspecies)) != 0){
     # If subspecies column is empty or does not exist, keep taxa_list as it is
     sp_list = taxa_list
   }else{
@@ -191,48 +191,53 @@ eidos_taxon_by_name = function(taxa_list) {
   # Attach to final df and return:
   eidos_result = cbind(supplied_taxon, eidos_result)
 
-  # Add clean name in eidos
-  eidos_result$name_clean = paste(eidos_result$genus,
-                                   eidos_result$specificepithet,
-                                   eidos_result$infraspecificepithet,
-                                   sep = " ")
-  eidos_result$name_clean = gsub(pattern = " NA",
-                        replacement = "",
-                        x = eidos_result$name_clean)
+  # Stop if there are no matches
+  if(dim(eidos_result)[1] == 0){
+    stop("No matches found")
+  }else{
+    # Add clean name in eidos
+    eidos_result$name_clean = paste(eidos_result$genus,
+                                    eidos_result$specificepithet,
+                                    eidos_result$infraspecificepithet,
+                                    sep = " ")
+    eidos_result$name_clean = gsub(pattern = " NA",
+                                   replacement = "",
+                                   x = eidos_result$name_clean)
 
-  # Rename "taxonid" to "idtaxon" for consistency
-  names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
+    # Rename "taxonid" to "idtaxon" for consistency
+    names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
 
-  # Substitute "" for NA
-  eidos_result[eidos_result == ""] <- NA
+    # Substitute "" for NA
+    eidos_result[eidos_result == ""] <- NA
 
-  # Remove duplicates:
-  eidos_result = eidos_result[!duplicated(eidos_result), ]
+    # Remove duplicates:
+    eidos_result = eidos_result[!duplicated(eidos_result), ]
 
-  # Remove any wierd whitespaces from table
-  eidos_result = as.data.frame(
-    lapply(eidos_result, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
+    # Remove any wierd whitespaces from table
+    eidos_result = as.data.frame(
+      lapply(eidos_result, eidos_clean_whitespaces),
+      check.names = FALSE
+    )
 
-  # For accepted names, the EIDOS API returns the wrong ID in the
-  # "nameid" and "acceptednameid" columns.
-  # If name is not accepted, nameid should be the ID for the invalid name
-  # NOT for the accepted name because it leas to confussion.
-  eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/válido",
-                               eidos_result$acceptednameid,
-                               eidos_result$nameid)
+    # For accepted names, the EIDOS API returns the wrong ID in the
+    # "nameid" and "acceptednameid" columns.
+    # If name is not accepted, nameid should be the ID for the invalid name
+    # NOT for the accepted name because it leas to confussion.
+    eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+                                 eidos_result$acceptednameid,
+                                 eidos_result$nameid)
 
-  # After setting that, the acceptedmeid of an invalid name should be idtaxon,
-  # which corresponds to the id of the accepted name
-  eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/válido",
-                                        eidos_result$idtaxon,
-                                        eidos_result$acceptednameid)
+    # After setting that, the acceptedmeid of an invalid name should be idtaxon,
+    # which corresponds to the id of the accepted name
+    eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+                                         eidos_result$idtaxon,
+                                         eidos_result$acceptednameid)
 
-  # Now, idtaxon should be equal to nameid. These columns seem to be
-  # redundant in the API
-  eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/válido",
-                                       eidos_result$nameid,
-                                       eidos_result$idtaxon)
-  return(eidos_result)
+    # Now, idtaxon should be equal to nameid. These columns seem to be
+    # redundant in the API
+    eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/válido",
+                                  eidos_result$nameid,
+                                  eidos_result$idtaxon)
+    return(eidos_result)
+  }
 }
