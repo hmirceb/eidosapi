@@ -53,11 +53,9 @@ eidos_fuzzy_names <- function(taxa_list,
                               order = NULL,
                               family = NULL){
 
-  ## Check if checklist is in environment
+  ## Check if checklist is in environment and download
   if(missing(checklist)){
-    stop("Checklist missing.
-         Please run eidos_clean_checklist() and
-         include result in argument checklist")
+    checklist = eidos_clean_checklist()
   }
 
 ### Fuzzy match the provided name ###
@@ -90,7 +88,6 @@ eidos_fuzzy_names <- function(taxa_list,
       taxa_list = cbind(higher_taxo, taxa_list)
     }
 
-    rm(genera, species, subspecies, taxa_list_clean, taxa_split)
   }
 
   ## Check if genus data is ok: ##
