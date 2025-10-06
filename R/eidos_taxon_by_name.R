@@ -48,18 +48,15 @@ eidos_taxon_by_name = function(taxa_list) {
   ## Set API URL ##
   api_url_base = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
 
-  ## Generate taxon-specific URLs ##
-
-  # Separate between taxa with species and subspecies
-  # Species
-  if(is.null(taxa_list$subspecies) |
-     sum(is.na(taxa_list$subspecies)) != 0){
-    # If subspecies column is empty or does not exist, keep taxa_list as it is
-    sp_list = taxa_list
-  }else{
-    # Else subset only species
-    sp_list = taxa_list[is.na(taxa_list$subspecies),]
+  # Add subspecies column if it is not present in taxa_list
+  if(is.null(taxa_list$subspecies)){
+    taxa_list$subspecies <- NA
   }
+
+  ## Generate taxon-specific URLs ##
+  # Separate between taxa with species and subspecies
+  # Gerente URLs for species-level taxa
+  sp_list = taxa_list[is.na(taxa_list$subspecies),]
 
   # Create URLs for species
   sp_urls = apply(
