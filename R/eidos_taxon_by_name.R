@@ -196,27 +196,32 @@ eidos_taxon_by_name = function(taxa_list) {
 
   ## Format no matches ##
   no_matches_df = do.call("rbind", eidos_result_temp[no_matches])
-  no_matches_df$supplied_taxon = paste(no_matches_df$supplied_genus,
-                           no_matches_df$supplied_species,
-                           no_matches_df$supplied_subspecies,
-                           sep = " ")
 
-  no_matches_df$supplied_taxon = gsub(pattern = " NA",
-                          replacement = "",
-                          x = no_matches_df$supplied_taxon)
+  if(!is.null(no_matches_df)){
+    no_matches_df$supplied_taxon = paste(no_matches_df$supplied_genus,
+                                         no_matches_df$supplied_species,
+                                         no_matches_df$supplied_subspecies,
+                                         sep = " ")
 
-  no_matches_df = no_matches_df[c("supplied_taxon",
-          colnames(no_matches_df)[colnames(no_matches_df) != "supplied_taxon"])]
+    no_matches_df$supplied_taxon = gsub(pattern = " NA",
+                                        replacement = "",
+                                        x = no_matches_df$supplied_taxon)
 
-  # Remove duplicates that appear in eidos_result
-  # (from the two possible URLs used for subspecies)
-  no_matches_df = no_matches_df[!no_matches_df$supplied_taxon %in%
-                                  eidos_result$supplied_taxon,]
+    no_matches_df = no_matches_df[c("supplied_taxon",
+                                    colnames(no_matches_df)[colnames(no_matches_df) != "supplied_taxon"])]
 
-  # Bind matches and no_matches by row creating new empty columns if necessary
-  eidos_result[setdiff(names(no_matches_df), names(eidos_result))] <- NA
-  no_matches_df[setdiff(names(eidos_result), names(no_matches_df))] <- NA
-  eidos_result = rbind(eidos_result, no_matches_df)
+    # Remove duplicates that appear in eidos_result
+    # (from the two possible URLs used for subspecies)
+    no_matches_df = no_matches_df[!no_matches_df$supplied_taxon %in%
+                                    eidos_result$supplied_taxon,]
+
+    if(dim(no_matches_df)[1] != 0){
+      # Bind matches and no_matches by row creating new empty columns if necessary
+      eidos_result[setdiff(names(no_matches_df), names(eidos_result))] <- NA
+      no_matches_df[setdiff(names(eidos_result), names(no_matches_df))] <- NA
+      eidos_result = rbind(eidos_result, no_matches_df)
+    }
+  }
 
   # Add clean name in eidos
   eidos_result$name_clean = paste(eidos_result$genus,
