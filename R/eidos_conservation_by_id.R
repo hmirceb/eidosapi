@@ -7,15 +7,13 @@
 #' If needed, the function retrieves that information using eidos_taxon_by_id().
 #'
 #' @param taxon_id An integer. A unique taxon identifier from IEPNB
-#' @param taxo_info Boolean. Return the taxonomic information of the taxon.
-#' @param latest Boolean. Return the information from only the latest assessment.
 #'
 #' @returns A data frame with the conservation information of each taxa.
 #' @export
 #'
 #' @examples
-#' eidos_conservation_by_id(taxon_id = 1, taxo_info = FALSE, latest = FALSE)
-#' eidos_conservation_by_id(taxon_id = 1, taxo_info = TRUE, latest = FALSE)
+#' eidos_conservation_by_id(taxon_id = 1)
+#' eidos_conservation_by_id(taxon_id = 1)
 eidos_conservation_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
   taxon_id = as.numeric(taxon_id)

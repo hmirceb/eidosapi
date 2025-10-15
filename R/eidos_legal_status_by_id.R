@@ -57,10 +57,10 @@ eidos_legal_status_by_id <- function(taxon_id){
   eidos_query[eidos_query == ""] <- NA
 
   # Remove duplicates:
-  eidos_query[!duplicated(eidos_query), ]
+  eidos_query <- eidos_query[!duplicated(eidos_query), ]
 
   # Remove any wierd whitespaces from table
-  eidos_query = as.data.frame(
+  eidos_query_temp = as.data.frame(
     lapply(eidos_query, eidos_clean_whitespaces),
     check.names = FALSE
   )
@@ -72,18 +72,18 @@ eidos_legal_status_by_id <- function(taxon_id){
   taxonomic_information$name = eidos_clean_names(taxonomic_information$name)
 
   # Merge query and name
-  eidos_query = merge(x = eidos_query_temp,
+  eidos_query_final = merge(x = eidos_query_temp,
                       y = taxonomic_information,
                       by.x = "idtaxon",
                       by.y = "nameid")
 
   # Put name as first column:
-  eidos_query = eidos_query[c("name",
-                              colnames(eidos_query)[colnames(eidos_query) != "name"])]
+  eidos_query_final = eidos_query_final[c("name",
+                              colnames(eidos_query_final)[colnames(eidos_query_final) != "name"])]
 
   # Rename column:
-  colnames(eidos_query)[1] <- "name_clean"
+  colnames(eidos_query_final)[1] <- "name_clean"
 
   ## Return results ##
-  return(eidos_query)
+  return(eidos_query_final)
 }

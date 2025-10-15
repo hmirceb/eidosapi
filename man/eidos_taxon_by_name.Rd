@@ -4,10 +4,10 @@
 \alias{eidos_taxon_by_name}
 \title{Retrieve taxonomic information by name from EIDOS}
 \usage{
-eidos_taxon_by_name(taxon_list)
+eidos_taxon_by_name(taxa_list)
 }
 \arguments{
-\item{taxon_list}{A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
+\item{taxa_list}{A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
 Optional columns are "subspecies", "scientificnameauthorship."}
 }
 \value{
@@ -21,6 +21,6 @@ For anything else use eidos_fuzzy_names()
 }
 \examples{
 example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
-eidos_taxon_by_name(taxon_list = example_taxo)
-eidos_taxon_by_name(taxon_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
+eidos_taxon_by_name(taxa_list = example_taxo)
+eidos_taxon_by_name(taxa_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
 }

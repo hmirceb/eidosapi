@@ -1,7 +1,7 @@
 Package: eidosapi
 Type: Package
 Title: Connect to the taxonomic services of EIDOS through the API
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
     person(
       "Héctor", "Miranda-Cebrián",
@@ -17,3 +17,6 @@ Imports:
   fuzzyjoin
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.5)
+LazyData: true

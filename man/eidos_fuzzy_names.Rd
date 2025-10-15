@@ -6,10 +6,10 @@
 \usage{
 eidos_fuzzy_names(
   taxa_list,
-  checklist,
-  maxdist = 2,
-  method = "osa",
-  mode = "inner",
+  checklist = eidos_clean_checklist(),
+  maxdist = 0.1,
+  method = "jw",
+  mode = "left",
   distance_col = "dist",
   kingdom = NULL,
   phylum = NULL,
@@ -28,9 +28,9 @@ Taxonomic authorities are not supported yet.}
 
 \item{checklist}{A data frame. The result of running the eidos_clean_checklist() function.}
 
-\item{maxdist}{A number. Maximum dissimilarity distance between taxa names to match.}
+\item{maxdist}{A number. Maximum dissimilarity distance between taxa names to match. Default for "jw" is 0.1 (10\%)}
 
-\item{method}{A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".}
+\item{method}{A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex". Default is "jw".}
 
 \item{mode}{A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.}
 

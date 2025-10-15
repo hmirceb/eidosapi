@@ -4,14 +4,10 @@
 \alias{eidos_conservation_by_id}
 \title{Get conservation information from EIDOS}
 \usage{
-eidos_conservation_by_id(taxon_id, taxo_info = FALSE, latest = FALSE)
+eidos_conservation_by_id(taxon_id)
 }
 \arguments{
 \item{taxon_id}{An integer. A unique taxon identifier from IEPNB}
-
-\item{taxo_info}{Boolean. Return the taxonomic information of the taxon.}
-
-\item{latest}{Boolean. Return the information from only the latest assessment.}
 }
 \value{
 A data frame with the conservation information of each taxa.
@@ -23,6 +19,6 @@ eidos_fuzzy_names() or eidos_taxon_by_name() functions. By default de API does n
 If needed, the function retrieves that information using eidos_taxon_by_id().
 }
 \examples{
-eidos_conservation_by_id(taxon_id = 1, taxo_info = FALSE, latest = FALSE)
-eidos_conservation_by_id(taxon_id = 1, taxo_info = TRUE, latest = FALSE)
+eidos_conservation_by_id(taxon_id = 1)
+eidos_conservation_by_id(taxon_id = 1)
 }
