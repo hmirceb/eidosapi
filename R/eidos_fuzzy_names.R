@@ -9,8 +9,8 @@
 #'  data was a vector of names.
 #'  Taxonomic authorities are not supported yet.
 #' @param checklist A data frame. The result of running the eidos_clean_checklist() function.
-#' @param maxdist A number. Maximum dissimilarity distance between taxa names to match.
-#' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex".
+#' @param maxdist A number. Maximum dissimilarity distance between taxa names to match. Default for "jw" is 0.1 (10%)
+#' @param method A string. Method to calculate the distance between names inherited from fuzzyjoin::stringdist_join. One of "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw" or "soundex". Default is "jw".
 #' @param mode A string. Type of join, one of "inner", "left", "right", "full", "semi" or "anti" inherited from fuzzyjoin::stringdist_join.
 #' @param distance_col A string. Name of the column to display the dissimilarity distance between matched names. Set NULL to omit the column.
 #' @param kingdom A vector of strings of length = taxa_list with the kingdom of each supplied taxon.
@@ -43,8 +43,8 @@
 #'
 eidos_fuzzy_names <- function(taxa_list,
                               checklist = eidos_clean_checklist(),
-                              maxdist = 2,
-                              method = "osa",
+                              maxdist = 0.1,
+                              method = "jw",
                               mode = "left",
                               distance_col = "dist",
                               kingdom = NULL,
@@ -95,12 +95,16 @@ eidos_fuzzy_names <- function(taxa_list,
     stop("Missing species data")
   }
 
-  # Create supplied_taxon column:
-  taxa_list$taxon = gsub(pattern = " NA", replacement = "",
-                         x = paste(sep = " ",
-                                   taxa_list$genus,
-                                   taxa_list$species,
-                                   taxa_list$subspecies))
+  # Create supplied_taxon column (paste columns, remove NA and trim white space):
+  taxa_list$taxon = trimws(
+    gsub(pattern = " NA",
+         replacement = "",
+         x = paste(sep = " ",
+                   taxa_list$genus,
+                   taxa_list$species,
+                   taxa_list$subspecies)
+         )
+    )
 
   # Change column names to avoid conflicts in join
   names(taxa_list) = paste0("supplied_", names(taxa_list))
