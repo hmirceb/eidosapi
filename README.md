@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1026184761.svg)](https://doi.org/10.5281/zenodo.17505969)
+
 # eidosapi
 
 ⚠️ **Warning: This package works best (if not almost exclusively) for taxa in Spain as it makes use of the taxonomic API of the Spanish Inventory of Natural Patrimony and Biodiversity.**
