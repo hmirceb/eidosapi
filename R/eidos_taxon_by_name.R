@@ -112,13 +112,26 @@ eidos_taxon_by_name = function(taxa_list) {
         X[3]
       )
 
+      # Try with scientific authority of higher taxon (species) too
+      # Retrieve authority
+      sps_auth <- get_authorities(taxa_auth = paste(X[1], X[2], sep = " "))
+      authorship <- sps_auth$scientificnameauthorship
+      # Create URL
+      url3 <- paste0(
+        api_url_base,
+        X[1], "%20",
+        X[2], "%20",
+        authorship, "%20",
+        X[3]
+      )
+
       # Create data frame with urls to query
       df <- suppressWarnings(
         data.frame(genus = X[1],
                       species = X[2],
                       subspecies = X[3],
                       scientificnameauthorship = X[4],
-                      url = c(url1, url2))
+                      url = c(url1, url2, url3))
         )
       return(df)
     }
@@ -171,7 +184,7 @@ eidos_taxon_by_name = function(taxa_list) {
   }
 
   ## Stop if no matches found ##
-  if (dim(eidos_result)[1] == 0) {
+  if (is.null(eidos_result)) {
     stop("No matches found")
     }
 
@@ -256,8 +269,8 @@ eidos_taxon_by_name = function(taxa_list) {
 
   # For accepted names, the EIDOS API returns the wrong ID in the
   # "nameid" and "acceptednameid" columns.
-  # If name is not accepted, nameid should be the ID for the invalid name
-  # NOT for the accepted name because it leas to confussion.
+  # If the name is not accepted, nameid should be the ID for the invalid name
+  # NOT for the accepted name because it leads to confussion.
   eidos_result$nameid <- ifelse(eidos_result$nametype != "Aceptado/válido",
                                  eidos_result$acceptednameid,
                                  eidos_result$nameid)
