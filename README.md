@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/1026184761.svg)](https://doi.org/10.5281/zenodo.17505969)
+[![DOI](https://zenodo.org/badge/17505969.svg)](https://doi.org/10.5281/zenodo.17505969)
 
 # eidosapi
 
