@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "eidosapi, un paquete de R para interactuar con la base de datos de biodiversidad EIDOS",
+  author   = "Héctor Miranda-Cebrián",
+  journal  = "Ecosistemas",
+  year     = "2025",
+  volume   = "",
+  number   = "",
+  pages    = "",
+  doi      = ""
+)
