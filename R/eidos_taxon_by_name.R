@@ -84,58 +84,70 @@ eidos_taxon_by_name = function(taxa_list) {
     }
   )
 
-  # Create URLs for subspecies
+  # Create URLs for subspecies if necessary
   subsp_list <- taxa_list[!is.na(taxa_list$subspecies),]
 
-  subsp_urls <- apply(
-    X = subsp_list,
-    MARGIN = 1,
-    FUN = function(X){
-      # For subspecies the API uses 2 different formats, one with "subsp."
-      # between species and subspecies, and another without it.
-      # We cannot know which one is which a priori so we try both
-      # URLs
+  if (dim(subsp_list)[1] != 0) {
+    subsp_urls <- apply(
+      X = subsp_list,
+      MARGIN = 1,
+      FUN = function(X){
+        # For subspecies the API uses 2 different formats, one with "subsp."
+        # between species and subspecies, and another without it.
+        # We cannot know which one is which a priori so we try both
+        # URLs
 
-      # Create URL from API base url, genus, species and subspecies without "subsp."
-      url1 <- paste0(
-        api_url_base,
-        X[1], "%20",
-        X[2], "%20",
-        X[3]
-      )
-
-      # Same but with "subsp."
-      url2 <- paste0(
-        api_url_base,
-        X[1], "%20",
-        X[2], "%20subsp.%20",
-        X[3]
-      )
-
-      # Try with scientific authority of higher taxon (species) too
-      # Retrieve authority
-      sps_auth <- get_authorities(taxa_auth = paste(X[1], X[2], sep = " "))
-      authorship <- sps_auth$scientificnameauthorship
-      # Create URL
-      url3 <- paste0(
-        api_url_base,
-        X[1], "%20",
-        X[2], "%20",
-        authorship, "%20",
-        X[3]
-      )
-
-      # Create data frame with urls to query
-      df <- suppressWarnings(
-        data.frame(genus = X[1],
-                      species = X[2],
-                      subspecies = X[3],
-                      scientificnameauthorship = X[4],
-                      url = c(url1, url2, url3))
+        # Create URL from API base url, genus, species and subspecies without "subsp."
+        url1 <- paste0(
+          api_url_base,
+          X[1], "%20",
+          X[2], "%20",
+          X[3]
         )
-      return(df)
-    }
-  )
+
+        # Same but with "subsp."
+        url2 <- paste0(
+          api_url_base,
+          X[1], "%20",
+          X[2], "%20subsp.%20",
+          X[3]
+        )
+
+        # Try with scientific authority of higher taxon (species) too
+        # Retrieve authority
+        sps_auth <- get_authorities(taxa_auth = paste(X[1], X[2], sep = " "))
+        authorship <- URLencode(sps_auth$scientificnameauthorship, reserved = TRUE)
+        # Create URL
+        url3 <- paste0(
+          api_url_base,
+          X[1], "%20",
+          X[2], "%20",
+          authorship, "%20",
+          X[3]
+        )
+
+        # Create data frame with urls to query
+        df <- suppressWarnings(
+          data.frame(genus = X[1],
+                     species = X[2],
+                     subspecies = X[3],
+                     scientificnameauthorship = X[4],
+                     url = c(url1, url2, url3))
+        )
+        return(df)
+      }
+    )
+  } else {
+    subsp_urls <- list(
+      data.frame(genus = NULL,
+                 species = NULL,
+                 subspecies = NULL,
+                 scientificnameauthorship = NULL,
+                 url = NULL
+                 )
+      )
+  }
+
 
   # Join DFs with species and subspecies URLs
   df_urls <- do.call("rbind", c(sp_urls, subsp_urls))
