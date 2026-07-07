@@ -184,3 +184,51 @@ get_authorities <- function(taxa_auth){
                                "nameid", "scientificnameauthorship")]
   return(auth_result)
 }
+
+
+#' Function to download large Excel files from MITECO
+#'
+#' @param url URL to download.
+#' @param destfile Path to downloaded file.
+#' @param tries Number of download tries.
+#'
+#' @returns A file
+#'
+download_with_retry <- function(url, destfile, tries = 8) {
+  h <- curl::new_handle()
+  curl::handle_setopt(h,
+                      timeout = 600,
+                      low_speed_time = 120,
+                      low_speed_limit = 1,
+                      connecttimeout = 60,
+                      ssl_verifypeer = TRUE
+  )
+
+  for (i in seq_len(tries)) {
+    message("Attempt ", i, "...")
+    ok <- tryCatch({
+      curl::curl_download(url, destfile, handle = h, mode = "wb", quiet = FALSE)
+      TRUE
+    }, error = function(e) {
+      message("  failed: ", conditionMessage(e))
+      FALSE
+    })
+
+    if (ok && file.exists(destfile)) {
+      size <- file.info(destfile)$size
+      message("  got ", round(size / 1e6, 2), " MB")
+      # Basic sanity check: a valid xlsx is a zip file starting with "PK"
+      con <- file(destfile, "rb")
+      magic <- readBin(con, "raw", 2)
+      close(con)
+      if (identical(as.character(magic), c("50", "4b"))) {
+        message("File is valid")
+        return(invisible(TRUE))
+      } else {
+        message("  file looks incomplete/corrupted, retrying...")
+      }
+    }
+    Sys.sleep(5 * i)
+  }
+  stop("Download failed after ", tries, " attempts")
+}

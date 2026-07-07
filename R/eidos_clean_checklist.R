@@ -10,19 +10,19 @@ eidos_clean_checklist <- function(){
   cat("Downloading checklist and formatting, please wait...")
 
   ## Get checklist with synonyms ##
-  checklist = eidos_tables(eidos_table = "listapatronespecie_sinonimos")
+  checklist <- eidos_tables(eidos_table = "listapatronespecie_sinonimos")
 
   # Remove unnecessary columns
-  checklist = checklist[,-which(startsWith(x = names(checklist),
+  checklist <- checklist[,-which(startsWith(x = names(checklist),
                                            prefix = "LP "))]
 
   # Create new column with the taxon name
-  checklist$name = ifelse(is.na(checklist$Sinónimo),
+  checklist$name <- ifelse(is.na(checklist$Sinónimo),
                            checklist$ScientificName,
                            checklist$Sinónimo)
 
   # Remove "subsp." and authorities and any Unicode whitespaces
-  checklist$name_clean = sapply(checklist$name, eidos_clean_names)
+  checklist$name_clean <- sapply(checklist$name, eidos_clean_names)
 
   # Substitute "" for NA
   checklist[checklist == ""] <- NA
@@ -32,22 +32,22 @@ eidos_clean_checklist <- function(){
   # Fix that
 
   # Remove camelCase and capital letters in general in column names
-  colnames(checklist) = tolower(colnames(checklist))
+  colnames(checklist) <- tolower(colnames(checklist))
 
   # Remove whitespace in column names
-  colnames(checklist) = gsub(pattern = " ",
+  colnames(checklist) <- gsub(pattern = " ",
                              replacement = "_",
                              colnames(checklist))
 
   # Add 'nametype' column
   checklist$nametype <- ifelse(checklist$name == checklist$scientificname,
-                               "Aceptado/válido",
-                               "Sinónimo")
+                               "Aceptado/v\u00e1lido",
+                               "Sin\u00f3nimo")
 
   # Rename columns
   names(checklist)[names(checklist) == "scientificname"] <- "acceptedname"
   names(checklist)[names(checklist) == "idnombre"] <- "nameid"
-  names(checklist)[names(checklist) == "grupo_taxonómico"] <- "taxonomicgroup"
+  names(checklist)[names(checklist) == "grupo_taxon\u00f3mico"] <- "taxonomicgroup"
   names(checklist)[names(checklist) == "origen"] <- "origin"
   names(checklist)[names(checklist) == "taxonremarks"] <- "remarks"
 
@@ -58,14 +58,14 @@ eidos_clean_checklist <- function(){
   checklist$acceptedname_clean <- sapply(checklist$acceptedname, eidos_clean_names)
 
   # If name si accepted, set idtaxon with that id. If not, use nameid.
-  checklist$idtaxon <- ifelse(checklist$nametype == "Aceptado/válido",
+  checklist$idtaxon <- ifelse(checklist$nametype == "Aceptado/v\u00e1lido",
                               checklist$idtaxon,
                               checklist$nameid)
 
   # Drop unnecessary columns
   checklist <- checklist[ , !(names(checklist) %in%
-                                c("idnombre_sinónimo",
-                                  "sinónimo",
+                                c("idnombre_sin\u00f3nimo",
+                                  "sin\u00f3nimo",
                                   "tipo_sinonimia")) ]
 
   # Reorder columns

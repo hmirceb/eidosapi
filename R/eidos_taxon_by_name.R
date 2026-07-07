@@ -116,7 +116,7 @@ eidos_taxon_by_name = function(taxa_list) {
         # Try with scientific authority of higher taxon (species) too
         # Retrieve authority
         sps_auth <- get_authorities(taxa_auth = paste(X[1], X[2], sep = " "))
-        authorship <- URLencode(sps_auth$scientificnameauthorship, reserved = TRUE)
+        authorship <- utils::URLencode(sps_auth$scientificnameauthorship, reserved = TRUE)
         # Create URL
         url3 <- paste0(
           api_url_base,
@@ -283,19 +283,19 @@ eidos_taxon_by_name = function(taxa_list) {
   # "nameid" and "acceptednameid" columns.
   # If the name is not accepted, nameid should be the ID for the invalid name
   # NOT for the accepted name because it leads to confussion.
-  eidos_result$nameid <- ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$nameid <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                  eidos_result$acceptednameid,
                                  eidos_result$nameid)
 
   # After setting that, the acceptedmeid of an invalid name should be idtaxon,
   # which corresponds to the id of the accepted name
-  eidos_result$acceptednameid <- ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$acceptednameid <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                         eidos_result$idtaxon,
                                         eidos_result$acceptednameid)
 
   # Now, idtaxon should be equal to nameid. These columns seem to be
   # redundant in the API
-  eidos_result$idtaxon <- ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$idtaxon <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                 eidos_result$nameid,
                                 eidos_result$idtaxon)
   return(eidos_result)

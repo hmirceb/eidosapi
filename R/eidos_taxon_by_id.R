@@ -74,19 +74,19 @@ eidos_taxon_by_id <- function(taxon_id){
   # "nameid" and "acceptednameid" columns.
   # If name is not accepted, nameid should be the ID for the invalid name
   # NOT for the accepted name because it leas to confussion.
-  eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                eidos_result$acceptednameid,
                                eidos_result$idtaxon)
 
   # After setting that, the acceptedmeid of an invalid name should be idtaxon,
   # which corresponds to the id of the accepted name
-  eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                        eidos_result$idtaxon,
                                        eidos_result$idtaxon)
 
   # Now, idtaxon should be equal to nameid. These columns seem to be
   # redundant in the API
-  eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/válido",
+  eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                 eidos_result$nameid,
                                 eidos_result$idtaxon)
   return(eidos_result)

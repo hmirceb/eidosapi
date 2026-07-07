@@ -5,10 +5,10 @@
 \title{Retrieve one of the tables related to the Spanish Checklist of Wildlie Species}
 \usage{
 eidos_tables(
-  eidos_table = c("comunidades_autonomas", "listapatronespecie_codigos",
-    "listapatronespecie", "componente_tema", "regbiogeograf_termar",
-    "listapatronespecie_sinonimos", "pais", "norma", "provincias",
-    "listapatronespecie_normas")
+  eidos_table = c("comunidades_autonomas", "listapatronespecie",
+    "listapatronespecie_sinonimos", "listapatronespecie_normas",
+    "listapatronespecie_codigos", "componente_tema", "regbiogeograf_termar", "pais",
+    "norma", "provincias")
 )
 }
 \arguments{
@@ -21,6 +21,7 @@ The desired table from the EIDOS API
 }
 \description{
 The tables are downloaded verbatim from the API. This means that column names may not match those in other tables from EIDOS.
+The exception are the Checklists. Due to limits in the download size of files from the API these are downloaded to the disk as xlsx files and then loaded to environment.
 }
 \examples{
 eidos_tables(eidos_table = "listapatronespecie")
