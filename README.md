@@ -1,6 +1,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17505969.svg)](https://doi.org/10.5281/zenodo.17505969)
+[![DOI](https://zenodo.org/badge/101709566.svg)](https://zenodo.org/badge/latestdoi/101709566)
 <!-- badges: end -->
 
 # eidosapi
