@@ -13,7 +13,6 @@
 #'
 #' @examples
 #' eidos_conservation_by_id(taxon_id = 1)
-#' eidos_conservation_by_id(taxon_id = 1)
 eidos_conservation_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
   taxon_id = as.numeric(taxon_id)
@@ -33,7 +32,7 @@ eidos_conservation_by_id <- function(taxon_id){
   eidos_query_list = lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
-                              a = jsonlite::fromJSON(txt = x)
+                              a <- parse_json(url = x)
 
                               # If the URL is valid but there is no info, return NULL
                               if(is.null(unlist(a))){

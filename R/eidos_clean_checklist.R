@@ -17,9 +17,9 @@ eidos_clean_checklist <- function(){
                                            prefix = "LP "))]
 
   # Create new column with the taxon name
-  checklist$name <- ifelse(is.na(checklist$Sinónimo),
+  checklist$name <- ifelse(is.na(checklist[["Sin\u00f3nimo"]]),
                            checklist$ScientificName,
-                           checklist$Sinónimo)
+                           checklist[["Sin\u00f3nimo"]])
 
   # Remove "subsp." and authorities and any Unicode whitespaces
   checklist$name_clean <- sapply(checklist$name, eidos_clean_names)

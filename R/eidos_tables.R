@@ -11,61 +11,45 @@
 #' @export
 #'
 #' @examples
-#' eidos_tables(eidos_table = "listapatronespecie")
+#' eidos_tables(eidos_table = "comunidades_autonomas")
 eidos_tables <- function(eidos_table = c("comunidades_autonomas",
-                                         "listapatronespecie",
-                                         "listapatronespecie_sinonimos",
-                                         "listapatronespecie_normas",
-                                         "listapatronespecie_codigos",
-                                         "componente_tema",
-                                         "regbiogeograf_termar",
-                                         "pais",
-                                         "norma",
-                                         "provincias")){
+                                          "listapatronespecie",
+                                          "listapatronespecie_sinonimos",
+                                          "listapatronespecie_normas",
+                                          "listapatronespecie_codigos",
+                                          "componente_tema",
+                                          "regbiogeograf_termar",
+                                          "pais",
+                                          "norma",
+                                          "provincias",
+                                          "ceei")){
 
   # Set table name in lower case and remove whitespaces just in case:
   eidos_table <- gsub(pattern = " ",
-                     replacement = "_",
-                     x = tolower(
-                       x = trimws(
-                         x = eidos_table
-                         )
-                     )
+                      replacement = "_",
+                      x = tolower(
+                        x = trimws(
+                          x = eidos_table
+                        )
+                      )
   )
 
   # Match input to one of the arguments:
   table <- match.arg(eidos_table)
 
-  # Las listas patron las descargamos de otra web porque el JSON da error
-  if( grepl("listapatronespecie", table) ){
-    listas_url <- "https://www.miteco.gob.es/content/dam/miteco/es/biodiversidad/servicios/banco-datos-naturaleza/recursos/listas/"
-
-    # opciones para la url
-    listas_options <- data.frame(
-      table = c(
-        "listapatronespecie",
-        "listapatronespecie_sinonimos",
-        "listapatronespecie_normas",
-        "listapatronespecie_codigos"
-                ),
-      url = c(
-        "lista-patron-especies-silvestres.xlsx",
-        "lista-patron-especies-silvestres-con-sinonimos.xlsx",
-        "lista-patron-especies-silvestres-con-normativa.xlsx",
-        "lista-patron-especies-silvestres-pasarela.xlsx"
-    )
-    )
+  # Get exotic species catalogue
+  if( grepl("ceei", table) ){
     # make url
-    table_url <- paste0(listas_url,
-                        listas_options[listas_options$table == table,]$url)
-    destfile <- listas_options[listas_options$table == table,]$url
+    table_url <- "https://iepnb.gob.es/sites/default/files/2026-06/TablaCEEI.xlsx"
+    destfile <- "TablaCEEI.xlsx"
     # download, load and remove file from disk
     download_with_retry(url = table_url, destfile = destfile)
 
     api_table <- readxl::read_excel(destfile)
     file.remove(destfile)
+  }
 
-  } else {
+  if( !grepl("ceei", table) ) {
     # Set base URL
     base_url <- "https://des.iepnb.es/api/catalogo/"
 
@@ -75,7 +59,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
                         table)
 
     ## Query the API ##
-    api_table <- jsonlite::fromJSON(table_url)
+    api_table <- parse_json(url = table_url)
   }
 
   # Substitute "" for NA
@@ -88,7 +72,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
   api_table <- as.data.frame(
     lapply(api_table, eidos_clean_whitespaces),
     check.names = FALSE
-    )
+  )
 
   # Return the table
   return(api_table)

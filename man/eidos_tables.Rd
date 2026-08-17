@@ -8,7 +8,7 @@ eidos_tables(
   eidos_table = c("comunidades_autonomas", "listapatronespecie",
     "listapatronespecie_sinonimos", "listapatronespecie_normas",
     "listapatronespecie_codigos", "componente_tema", "regbiogeograf_termar", "pais",
-    "norma", "provincias")
+    "norma", "provincias", "ceei")
 )
 }
 \arguments{
@@ -24,5 +24,5 @@ The tables are downloaded verbatim from the API. This means that column names ma
 The exception are the Checklists. Due to limits in the download size of files from the API these are downloaded to the disk as xlsx files and then loaded to environment.
 }
 \examples{
-eidos_tables(eidos_table = "listapatronespecie")
+eidos_tables(eidos_table = "comunidades_autonomas")
 }

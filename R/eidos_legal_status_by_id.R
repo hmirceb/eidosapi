@@ -31,7 +31,7 @@ eidos_legal_status_by_id <- function(taxon_id){
   eidos_query_list = lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
-                              a = jsonlite::fromJSON(txt = x)
+                              a <- parse_json(url = x)
 
                               # If the URL is valid but there is no info, return NULL
                               if(is.null(unlist(a))){

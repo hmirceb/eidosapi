@@ -185,6 +185,20 @@ get_authorities <- function(taxa_auth){
   return(auth_result)
 }
 
+#' Parse JSON content in a URL
+#'
+#' @param url A url
+#'
+#' @returns The content
+#' @noRd
+parse_json <- function(url){
+  # GET url
+  url_json <- httr::GET(url = url)
+  ## Parse JSON ##
+  url_content <- jsonlite::fromJSON(httr::content(url_json, "text", encoding = "UTF-8"))
+  return(url_content)
+}
+
 
 #' Function to download large Excel files from MITECO
 #'

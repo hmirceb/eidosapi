@@ -20,5 +20,4 @@ If needed, the function retrieves that information using eidos_taxon_by_id().
 }
 \examples{
 eidos_conservation_by_id(taxon_id = 1)
-eidos_conservation_by_id(taxon_id = 1)
 }
