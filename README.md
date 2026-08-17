@@ -18,7 +18,10 @@
 La instalación del paquete puede realizarse fácilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete [**remotes**](https://cran.r-project.org/web/packages/remotes/index.html) (Csárdi et al. 2024).
 
 ``` r
-# Instalación con pak
+# Instalación
+## Desde CRAN:
+install.packages("eidosapi")
+## Desde GitHub:
 pak::pkg_install("https://github.com/hmirceb/eidosapi")
 
 # Cargamos el paquete
