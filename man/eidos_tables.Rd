@@ -17,7 +17,7 @@ eidos_tables(
 "norma", "provincias" or "listapatronespecie_normas".}
 }
 \value{
-The desired table from the EIDOS API
+A data.frame with the desired table from the EIDOS API
 }
 \description{
 The tables are downloaded verbatim from the API. This means that column names may not match those in other tables from EIDOS.

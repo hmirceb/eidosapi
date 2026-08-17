@@ -3,7 +3,8 @@
 #' @param x A vector of strings.
 #'
 #' @returns A vector of strings with only " " whitespaces
-#'
+#' @keywords internal
+#' @noRd
 eidos_clean_whitespaces = function(x) {
   # Substitute Unicode whitespaces with normal whitespaces
   x = gsub("\\p{Zs}+", " ", x, perl = TRUE)
@@ -24,7 +25,8 @@ eidos_clean_whitespaces = function(x) {
 #' @param taxa_names A single species names.
 #'
 #' @returns A single clean species names.
-#'
+#' @keywords internal
+#' @noRd
 eidos_clean_names = function(taxa_names){
 
   # Remove underscores if any
@@ -100,7 +102,8 @@ eidos_clean_names = function(taxa_names){
 #' @param taxa_auth a vector of species names
 #'
 #' @returns DF with supplied name and authorship in eidos. Only works for vectors of species names
-#'
+#' @keywords internal
+#' @noRd
 get_authorities <- function(taxa_auth){
 
   ## Set API URL ##
@@ -141,7 +144,7 @@ get_authorities <- function(taxa_auth){
                                                           supplied_species = X[2])
 
                               # Query EIDOS API
-                              eidos_data <- jsonlite::fromJSON(txt = X[3])
+                              eidos_data <- parse_api_json(url = X[3])
 
                               # If the URL is not correct, EIDOS returns an empty DF
                               # Add error message
@@ -189,9 +192,10 @@ get_authorities <- function(taxa_auth){
 #'
 #' @param url A url
 #'
-#' @returns The content
+#' @returns A data.frame with the content of the parsed URL
+#' @keywords internal
 #' @noRd
-parse_json <- function(url){
+parse_api_json <- function(url){
   # GET url
   url_json <- httr::GET(url = url)
   ## Parse JSON ##
@@ -207,7 +211,8 @@ parse_json <- function(url){
 #' @param tries Number of download tries.
 #'
 #' @returns A file
-#'
+#' @keywords internal
+#' @noRd
 download_with_retry <- function(url, destfile, tries = 8) {
   h <- curl::new_handle()
   curl::handle_setopt(h,

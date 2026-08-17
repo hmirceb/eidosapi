@@ -7,7 +7,7 @@
 #' "listapatronespecie", "componente_tema", "regbiogeograf_termar", "listapatronespecie_sinonimos", "pais",
 #' "norma", "provincias" or "listapatronespecie_normas".
 #'
-#' @returns The desired table from the EIDOS API
+#' @returns A data.frame with the desired table from the EIDOS API
 #' @export
 #'
 #' @examples
@@ -59,7 +59,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
                         table)
 
     ## Query the API ##
-    api_table <- parse_json(url = table_url)
+    api_table <- parse_api_json(url = table_url)
   }
 
   # Substitute "" for NA

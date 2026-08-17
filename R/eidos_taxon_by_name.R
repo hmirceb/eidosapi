@@ -173,7 +173,7 @@ eidos_taxon_by_name = function(taxa_list) {
                                           supplied_scientificnameauthorship = X[4])
 
                # Query EIDOS API
-               eidos_data <- a <- parse_json(url = X[5])
+               eidos_data <- a <- parse_api_json(url = X[5])
 
                # If the URL is not correct, EIDOS returns an empty DF
                # Add error message

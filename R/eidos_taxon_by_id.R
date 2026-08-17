@@ -32,7 +32,7 @@ eidos_taxon_by_id <- function(taxon_id){
   eidos_query = lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
-                              a <- parse_json(url = x)
+                              a <- parse_api_json(url = x)
 
                               # If the URL is valid but there is no info, return NULL
                               if(is.null(unlist(a))){
