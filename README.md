@@ -1,4 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml)
 [![DOI](https://zenodo.org/badge/17505969.svg)](https://doi.org/10.5281/zenodo.17505969)
+<!-- badges: end -->
 
 # eidosapi
 
@@ -15,10 +18,8 @@
 La instalación del paquete puede realizarse fácilmente desde R clonando el repositorio disponible en GitHub empleando la función `install_github` del paquete [**remotes**](https://cran.r-project.org/web/packages/remotes/index.html) (Csárdi et al. 2024).
 
 ``` r
-# Instalación con remotes
-remotes::install_github("https://github.com/hmirceb/eidosapi",
-                        force = TRUE, 
-                        quiet = TRUE)
+# Instalación con pak
+pak::pkg_install("https://github.com/hmirceb/eidosapi")
 
 # Cargamos el paquete
 library(eidosapi)

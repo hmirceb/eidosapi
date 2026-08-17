@@ -6,10 +6,11 @@ Authors@R: c(
     person(
       "Héctor", "Miranda-Cebrián",
       email = "hectorm94@gmail.com",
-      role = c("aut", "cre")
+      role = c("aut", "cre", "cph"),
+      comment = c(ORCID = "0000-0002-0340-8373")
     )
   )
-Description: Access to the EIDOS API from the Spanish Government directly from R. This is an API to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.  
+Description: Access to the 'EIDOS' 'API' from the Spanish Government directly from R. This is an 'API' to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.  
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
@@ -18,6 +19,8 @@ Imports:
   readxl,
   curl,
   httr
+URL: https://github.com/hmirceb/eidosapi
+BugReports: https://github.com/hmirceb/eidosapi/issues
 Roxygen: list(markdown = TRUE)
 Depends: 
     R (>= 3.5)
