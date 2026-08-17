@@ -1,6 +1,6 @@
 Package: eidosapi
 Type: Package
-Title: Connect to the taxonomic services of EIDOS through the API
+Title: Connect to the taxonomic services of EIDOS
 Version: 1.2.0
 Authors@R: c(
     person(
