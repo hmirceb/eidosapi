@@ -5,7 +5,7 @@
 * This is a new release.
 
 ## Error 404 in inst/CITATION
-DOI https://doi.org/10.7818/ECOS.3134 is valid and redirects to the original publication in:
+DOI https://doi.org/10.7818/ECOS.3134 has been manually verified. It is valid and redirects to the original publication in:
 https://revistaecosistemas.net/index.php/ecosistemas/article/view/3134
 
 ## Long examples
