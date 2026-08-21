@@ -10,7 +10,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-0340-8373")
     )
   )
-Description: Provides access to 'EIDOS', the taxonomic information service from the Spanish Inventory of Natural Patrimony and Biodiversity directly from R.
+Description: Provides access to 'EIDOS' <https://iepnb.gob.es/areas-tematicas/especies-silvestres/eidos>, the taxonomic information service from the Spanish Inventory of Natural Patrimony and Biodiversity. This package includes a suite of functions that help retrieve species' taxonomic and conservation information from 'EIDOS' and match taxa names against the checklists available in the database. More information can be found at Miranda Cebrián, H. (2025) <doi:10.7818/ECOS.3134>. 
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
