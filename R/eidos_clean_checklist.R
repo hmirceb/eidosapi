@@ -5,7 +5,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' eidos_clean_checklist()
+#' }
+#'
 eidos_clean_checklist <- function(){
 
   ## Message:

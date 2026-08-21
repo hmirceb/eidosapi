@@ -22,6 +22,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' checklist = eidos_clean_checklist()
 #' taxa_vector = c("Bordere chouardii", "Alts cisternasii")
 #' matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
@@ -42,6 +43,7 @@
 #' refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_vector,
 #'                                           checklist = checklist,
 #'                                           class = class_vector)
+#' }
 #'
 eidos_fuzzy_names <- function(taxa_list,
                               checklist = eidos_clean_checklist(),
