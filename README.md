@@ -2,6 +2,10 @@
 [![R-CMD-check](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hmirceb/eidosapi/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
+# Referencia
+
+Miranda Cebrián, H. (2025). eidosapi, un paquete de R para interactuar con la base de datos de biodiversidad EIDOS. Ecosistemas, 34(3), 3134. https://doi.org/10.7818/ECOS.3134
+
 # eidosapi
 
 ⚠️ **Warning: This package works best (if not almost exclusively) for taxa in Spain as it makes use of the taxonomic API of the Spanish Inventory of Natural Patrimony and Biodiversity.**
@@ -306,4 +310,6 @@ t1-t0
 
 1.  Csárdi G, Hester J (2026). _pak: Another Approach to Package Installation_. doi:10.32614/CRAN.package.pak <https://doi.org/10.32614/CRAN.package.pak>. R package version 0.9.5, <https://CRAN.R-project.org/package=pak>.
 
-2.  Robinson D. (2025). fuzzyjoin: Join Tables Together on Inexact Matching. <doi:10.32614/CRAN.package.fuzzyjoin> <https://doi.org/10.32614/CRAN.package.fuzzyjoin>, R package version 0.1.6.1, <https://CRAN.R-project.org/package=fuzzyjoin>.
+2. Miranda Cebrián, H. (2025). eidosapi, un paquete de R para interactuar con la base de datos de biodiversidad EIDOS. Ecosistemas, 34(3), 3134. https://doi.org/10.7818/ECOS.3134
+
+3.  Robinson D. (2025). fuzzyjoin: Join Tables Together on Inexact Matching. <doi:10.32614/CRAN.package.fuzzyjoin> <https://doi.org/10.32614/CRAN.package.fuzzyjoin>, R package version 0.1.6.1, <https://CRAN.R-project.org/package=fuzzyjoin>.
