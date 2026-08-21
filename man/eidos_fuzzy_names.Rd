@@ -53,6 +53,7 @@ A data frame
 Matches a data frame or vector with species names to any names in the Spanish checklist of Wildlife Species (\emph{Lista Patrón de Especies Silvestres}). Uses fuzzy matching to allow spelling errors. In addition, you can filter by higher taxonomic levels to refine the match.
 }
 \examples{
+\dontrun{
 checklist = eidos_clean_checklist()
 taxa_vector = c("Bordere chouardii", "Alts cisternasii")
 matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
@@ -73,5 +74,6 @@ class_vector = c("Aves")
 refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_vector,
                                           checklist = checklist,
                                           class = class_vector)
+}
 
 }

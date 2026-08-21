@@ -6,7 +6,7 @@
 \alias{eidosapi-package}
 \title{The eidosapi R package}
 \description{
-Access to the 'EIDOS' 'API' from the Spanish Government directly from R. This is an 'API' to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.
+Provides access to 'EIDOS', the taxonomic information service from the Spanish Inventory of Natural Patrimony and Biodiversity directly from R.
 }
 \details{
 This is an 'API' to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.
