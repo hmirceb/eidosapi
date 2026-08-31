@@ -195,12 +195,35 @@ get_authorities <- function(taxa_auth){
 #' @returns A data.frame with the content of the parsed URL
 #' @keywords internal
 #' @noRd
-parse_api_json <- function(url){
-  # GET url
-  url_json <- httr::GET(url = url)
-  ## Parse JSON ##
-  url_content <- jsonlite::fromJSON(httr::content(url_json, "text", encoding = "UTF-8"))
-  return(url_content)
+parse_api_json <- function(url) {
+  # try url five times
+  for (attempt in seq_len(5)) {
+    result <- tryCatch({
+      # GET url
+      url_json <- httr::GET(url = url, httr::config(http_version = 2))
+      # Check that the response was successful
+      httr::stop_for_status(url_json)
+      # Parse JSON
+      url_content <- jsonlite::fromJSON(httr::content(url_json, "text", encoding = "UTF-8"))
+      url_content  # returned if everything went well
+
+    }, error = function(e) {
+      message(paste0("Attempt ", attempt, "/", 5, " failed"))
+      NULL
+    })
+
+    # If it succeeded, break the loop and return the result
+    if (!is.null(result)) {
+      return(result)
+    }
+
+    # If unsuccessful, wait a bit and try again
+    if (attempt < 5) {
+      Sys.sleep(2 * attempt)
+    }
+  }
+  # Error if nothing worked
+  stop("Could not connect to EIDOS after ", 5, " attempts, try again later")
 }
 
 

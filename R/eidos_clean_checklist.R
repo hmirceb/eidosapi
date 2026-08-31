@@ -5,14 +5,14 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eidos_clean_checklist()
 #' }
 #'
 eidos_clean_checklist <- function(){
 
   ## Message:
-  cat("Downloading checklist and formatting, please wait...")
+  message("Downloading checklist and formatting, please wait...")
 
   ## Get checklist with synonyms ##
   checklist <- eidos_tables(eidos_table = "listapatronespecie_sinonimos")

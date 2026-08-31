@@ -22,7 +22,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' checklist = eidos_clean_checklist()
 #' taxa_vector = c("Bordere chouardii", "Alts cisternasii")
 #' matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
