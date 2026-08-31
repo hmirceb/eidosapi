@@ -6,7 +6,7 @@
 \alias{eidosapi-package}
 \title{The eidosapi R package}
 \description{
-Provides access to 'EIDOS', the taxonomic information service from the Spanish Inventory of Natural Patrimony and Biodiversity directly from R.
+Provides access to 'EIDOS' \url{https://iepnb.gob.es/areas-tematicas/especies-silvestres/eidos}, the taxonomic information service from the Spanish Inventory of Natural Patrimony and Biodiversity. This package includes a suite of functions that help retrieve species' taxonomic and conservation information from 'EIDOS' and match taxa names against the checklists available in the database. More information can be found at Miranda Cebrián, H. (2025) \doi{10.7818/ECOS.3134}.
 }
 \details{
 This is an 'API' to access taxonomic information from the Spanish Inventory of Natural Patrimony and Biodiversity.

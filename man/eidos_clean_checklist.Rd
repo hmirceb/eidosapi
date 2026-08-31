@@ -13,7 +13,7 @@ A data frame with the Spanish checklist with synonyms in a long format ready to 
 Get the Spanish checklist with synonyms
 }
 \examples{
-\dontrun{
+\donttest{
 eidos_clean_checklist()
 }
 
