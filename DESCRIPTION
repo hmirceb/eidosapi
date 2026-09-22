@@ -16,8 +16,6 @@ Encoding: UTF-8
 Imports:
   jsonlite,
   fuzzyjoin,
-  readxl,
-  curl,
   httr
 URL: https://github.com/hmirceb/eidosapi
 BugReports: https://github.com/hmirceb/eidosapi/issues

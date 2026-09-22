@@ -8,13 +8,13 @@ eidos_tables(
   eidos_table = c("comunidades_autonomas", "listapatronespecie",
     "listapatronespecie_sinonimos", "listapatronespecie_normas",
     "listapatronespecie_codigos", "componente_tema", "regbiogeograf_termar", "pais",
-    "norma", "provincias", "ceei")
+    "norma")
 )
 }
 \arguments{
 \item{eidos_table}{Name of the table to query. The function is case insensitive, admits whitespaces and has partial matching for arguments, but these must match one of "comunidades_autonomas", "listapatronespecie_codigos",
 "listapatronespecie", "componente_tema", "regbiogeograf_termar", "listapatronespecie_sinonimos", "pais",
-"norma", "provincias" or "listapatronespecie_normas".}
+"norma" or "listapatronespecie_normas".}
 }
 \value{
 A data.frame with the desired table from the EIDOS API

@@ -48,38 +48,39 @@ eidos_conservation_by_id <- function(taxon_id){
 
   # Stop if no results found
   if(length(eidos_query_list) == 0){
-    stop("No matching IDs")
+    warning("No matching IDs", call. = FALSE)
+    return(invisible(NULL))
+  } else {
+    # Get names from EIDOS:
+    taxonomic_information = eidos_taxon_by_id(taxon_id = taxon_id)
+    taxonomic_information = taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
+    taxonomic_information = taxonomic_information[c("nameid", "name")]
+    taxonomic_information$name = eidos_clean_names(taxonomic_information$name)
+
+    ## Merge results ##
+    eidos_query_temp = do.call("rbind", eidos_query_list)
+    eidos_query = merge(x = eidos_query_temp,
+                        y = taxonomic_information,
+                        by.x = "idtaxon",
+                        by.y = "nameid")
+
+    # Substitute "" for NA
+    eidos_query[eidos_query == ""] <- NA
+
+    # Remove any wierd whitespaces from table
+    eidos_query = as.data.frame(
+      lapply(eidos_query, eidos_clean_whitespaces),
+      check.names = FALSE
+    )
+
+    # Put name as first column:
+    eidos_query = eidos_query[c("name",
+                                colnames(eidos_query)[colnames(eidos_query) != "name"])]
+
+    # Rename column:
+    colnames(eidos_query)[1] <- "name_clean"
+
+    ## Return results ##
+    return(eidos_query)
   }
-
-  # Get names from EIDOS:
-  taxonomic_information = eidos_taxon_by_id(taxon_id = taxon_id)
-  taxonomic_information = taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
-  taxonomic_information = taxonomic_information[c("nameid", "name")]
-  taxonomic_information$name = eidos_clean_names(taxonomic_information$name)
-
-  ## Merge results ##
-  eidos_query_temp = do.call("rbind", eidos_query_list)
-  eidos_query = merge(x = eidos_query_temp,
-                      y = taxonomic_information,
-                      by.x = "idtaxon",
-                      by.y = "nameid")
-
-  # Substitute "" for NA
-  eidos_query[eidos_query == ""] <- NA
-
-  # Remove any wierd whitespaces from table
-  eidos_query = as.data.frame(
-    lapply(eidos_query, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
-
-  # Put name as first column:
-  eidos_query = eidos_query[c("name",
-                              colnames(eidos_query)[colnames(eidos_query) != "name"])]
-
-  # Rename column:
-  colnames(eidos_query)[1] <- "name_clean"
-
-  ## Return results ##
-  return(eidos_query)
 }

@@ -54,24 +54,24 @@ Matches a data frame or vector with species names to any names in the Spanish ch
 }
 \examples{
 \donttest{
-checklist = eidos_clean_checklist()
-taxa_vector = c("Bordere chouardii", "Alts cisternasii")
-matched_names = eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
+checklist <- eidos_clean_checklist()
+taxa_vector <- c("Bordere chouardii", "Alts cisternasii")
+matched_names <- eidos_fuzzy_names(taxa_list = taxa_vector, checklist = checklist)
 
 # Some names have conflicts when using fuzzy matching.
 # This returns two matches for two different genera,
 # Lanius (our species of interest, a bird) and Lasius (an ant).
-taxa_df = data.frame(genus = "Lanius", species = "meridionalis")
-matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
+taxa_df <- data.frame(genus = "Lanius", species = "meridionalis")
+matched_names <- eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
 
 # We can refine the search by including higher taxonomic levels:
-taxa_df = data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
-refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
+taxa_df <- data.frame(class = "Aves", genus = "Lanius", species = "meridionalis")
+refined_matched_names <- eidos_fuzzy_names(taxa_list = taxa_df, checklist = checklist)
 
 # Or using a vector instead
-taxa_vector = c("Lanius meridionalis")
-class_vector = c("Aves")
-refined_matched_names = eidos_fuzzy_names(taxa_list = taxa_vector,
+taxa_vector <- c("Lanius meridionalis")
+class_vector <- c("Aves")
+refined_matched_names <- eidos_fuzzy_names(taxa_list = taxa_vector,
                                           checklist = checklist,
                                           class = class_vector)
 }

@@ -14,7 +14,7 @@
 #' eidos_legal_status_by_id(taxon_id = 1)
 eidos_legal_status_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
-  taxon_id = as.numeric(taxon_id)
+  taxon_id <- as.numeric(taxon_id)
 
   ## Check if ID is correct (only numbers allowed) ##
   if(sum(is.na(taxon_id) != 0)){
@@ -22,13 +22,13 @@ eidos_legal_status_by_id <- function(taxon_id){
   }
 
   ## Set base URL ##
-  base_url = "https://iepnb.gob.es:443/api/especie/rpc/obtenerestadoslegalesportaxonid?_idtaxon="
+  base_url <- "https://iepnb.gob.es:443/api/especie/rpc/obtenerestadoslegalesportaxonid?_idtaxon="
 
   ## Create URL for API ##
-  eidos_url = paste0(base_url, taxon_id)
+  eidos_url <- paste0(base_url, taxon_id)
 
   ## Query API ##
-  eidos_query_list = lapply(eidos_url,
+  eidos_query_list <- lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
                               a <- parse_api_json(url = x)
@@ -43,47 +43,52 @@ eidos_legal_status_by_id <- function(taxon_id){
   )
 
   # Remove NULLs
-  eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
+  eidos_query_list <- eidos_query_list[!sapply(eidos_query_list, is.null)]
 
   # Stop if no results found
   if(length(eidos_query_list) == 0){
-    stop("No matching IDs")
+    warning("No matching IDs", call. = FALSE)
+    return(invisible(NULL))
+    } else {
+      ## Merge results ##
+      eidos_query <- do.call("rbind", eidos_query_list)
+
+      # Substitute "" for NA
+      eidos_query[eidos_query == ""] <- NA
+
+      # Remove duplicates:
+      eidos_query <- eidos_query[!duplicated(eidos_query), ]
+
+      # Remove any wierd whitespaces from table
+      eidos_query_temp <- as.data.frame(
+        lapply(eidos_query, eidos_clean_whitespaces),
+        check.names = FALSE
+      )
+
+      # Get names from EIDOS:
+      taxonomic_information <- eidos_taxon_by_id(taxon_id = taxon_id)
+      if (is.null(taxonomic_information)) {
+        warning("Could not retrieve taxonomic names for the supplied IDs.", call. = FALSE)
+        return(invisible(NULL))
+      }
+      taxonomic_information <- taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
+      taxonomic_information <- taxonomic_information[c("nameid", "name")]
+      taxonomic_information$name <- eidos_clean_names(taxonomic_information$name)
+
+      # Merge query and name
+      eidos_query_final <- merge(x = eidos_query_temp,
+                                 y = taxonomic_information,
+                                 by.x = "idtaxon",
+                                 by.y = "nameid")
+
+      # Put name as first column:
+      eidos_query_final <- eidos_query_final[c("name",
+                                               colnames(eidos_query_final)[colnames(eidos_query_final) != "name"])]
+
+      # Rename column:
+      colnames(eidos_query_final)[1] <- "name_clean"
+
+      ## Return results ##
+      return(eidos_query_final)
     }
-
-  ## Merge results ##
-  eidos_query = do.call("rbind", eidos_query_list)
-
-  # Substitute "" for NA
-  eidos_query[eidos_query == ""] <- NA
-
-  # Remove duplicates:
-  eidos_query <- eidos_query[!duplicated(eidos_query), ]
-
-  # Remove any wierd whitespaces from table
-  eidos_query_temp = as.data.frame(
-    lapply(eidos_query, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
-
-  # Get names from EIDOS:
-  taxonomic_information = eidos_taxon_by_id(taxon_id = taxon_id)
-  taxonomic_information = taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
-  taxonomic_information = taxonomic_information[c("nameid", "name")]
-  taxonomic_information$name = eidos_clean_names(taxonomic_information$name)
-
-  # Merge query and name
-  eidos_query_final = merge(x = eidos_query_temp,
-                      y = taxonomic_information,
-                      by.x = "idtaxon",
-                      by.y = "nameid")
-
-  # Put name as first column:
-  eidos_query_final = eidos_query_final[c("name",
-                              colnames(eidos_query_final)[colnames(eidos_query_final) != "name"])]
-
-  # Rename column:
-  colnames(eidos_query_final)[1] <- "name_clean"
-
-  ## Return results ##
-  return(eidos_query_final)
 }

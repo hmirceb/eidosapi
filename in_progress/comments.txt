@@ -1,0 +1,3 @@
+habria que checkear en todas las funciones que cuando se descarga una tabla todas la columnas necesarias estan, sobre todo
+las que se usan para algo dentro de la funcion
+

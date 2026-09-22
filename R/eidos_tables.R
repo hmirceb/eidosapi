@@ -5,7 +5,7 @@
 #'
 #' @param eidos_table Name of the table to query. The function is case insensitive, admits whitespaces and has partial matching for arguments, but these must match one of "comunidades_autonomas", "listapatronespecie_codigos",
 #' "listapatronespecie", "componente_tema", "regbiogeograf_termar", "listapatronespecie_sinonimos", "pais",
-#' "norma", "provincias" or "listapatronespecie_normas".
+#' "norma" or "listapatronespecie_normas".
 #'
 #' @returns A data.frame with the desired table from the EIDOS API
 #' @export
@@ -20,9 +20,7 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
                                           "componente_tema",
                                           "regbiogeograf_termar",
                                           "pais",
-                                          "norma",
-                                          "provincias",
-                                          "ceei")){
+                                          "norma")){
 
   # Set table name in lower case and remove whitespaces just in case:
   eidos_table <- gsub(pattern = " ",
@@ -37,43 +35,36 @@ eidos_tables <- function(eidos_table = c("comunidades_autonomas",
   # Match input to one of the arguments:
   table <- match.arg(eidos_table)
 
-  # Get exotic species catalogue
-  if( grepl("ceei", table) ){
-    # make url
-    table_url <- "https://iepnb.gob.es/sites/default/files/2026-06/TablaCEEI.xlsx"
-    destfile <- "TablaCEEI.xlsx"
-    # download, load and remove file from disk
-    download_with_retry(url = table_url, destfile = destfile)
+  # Set base URL
+  base_url <- "https://des.iepnb.es/api/catalogo/"
 
-    api_table <- readxl::read_excel(destfile)
-    file.remove(destfile)
+  # Create URL to desired table:
+  table_url <- paste0(base_url,
+                      "v_", # for some reason all of them have this
+                      table)
+
+  ## Query the API ##
+  api_table <- parse_api_json(url = table_url)
+
+  ## Check if table download was correct ##
+  if(is.null(api_table)){
+    warning("Unable to retrieve table. EIDOS or your internet connection is down.",
+            call. = FALSE)
+    return(invisible(NULL))
+  } else {
+    # Substitute "" for NA
+    api_table[api_table == ""] <- NA
+
+    # Remove duplicates:
+    api_table <- api_table[!duplicated(api_table), ]
+
+    # Remove any wierd whitespaces from table
+    api_table <- as.data.frame(
+      lapply(api_table, eidos_clean_whitespaces),
+      check.names = FALSE
+    )
+
+    # Return the table
+    return(api_table)
   }
-
-  if( !grepl("ceei", table) ) {
-    # Set base URL
-    base_url <- "https://des.iepnb.es/api/catalogo/"
-
-    # Create URL to desired table:
-    table_url <- paste0(base_url,
-                        "v_", # for some reason all of them have this
-                        table)
-
-    ## Query the API ##
-    api_table <- parse_api_json(url = table_url)
-  }
-
-  # Substitute "" for NA
-  api_table[api_table == ""] <- NA
-
-  # Remove duplicates:
-  api_table <- api_table[!duplicated(api_table), ]
-
-  # Remove any wierd whitespaces from table
-  api_table <- as.data.frame(
-    lapply(api_table, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
-
-  # Return the table
-  return(api_table)
 }

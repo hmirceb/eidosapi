@@ -29,7 +29,7 @@ eidos_taxon_by_id <- function(taxon_id){
   eidos_url = paste0(base_url, taxon_id)
 
   ## Query API ##
-  eidos_query = lapply(eidos_url,
+  eidos_query <- lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
                               a <- parse_api_json(url = x)
@@ -51,43 +51,45 @@ eidos_taxon_by_id <- function(taxon_id){
 
   ## Check if at least one id was valid ##
   if(is.null(eidos_result)){
-    stop("All the supplied IDs are invalid.
-         Please use accepted IDs from eidos_taxon_by_name() or eidos_fuzzy_names()")
+    warning("All the supplied IDs are invalid.",
+         "Please use accepted IDs from eidos_taxon_by_name() or eidos_fuzzy_names()",
+            call. = FALSE)
+    return(invisible(NULL))
+  } else {
+    # Rename "taxonid" to "idtaxon" for consistency
+    names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
+
+    # Substitute "" for NA
+    eidos_result[eidos_result == ""] <- NA
+
+    # Remove duplicates:
+    eidos_result[!duplicated(eidos_result), ]
+
+    # Remove any wierd whitespaces from table
+    eidos_result = as.data.frame(
+      lapply(eidos_result, eidos_clean_whitespaces),
+      check.names = FALSE
+    )
+
+    # For accepted names, the EIDOS API returns the wrong ID in the
+    # "nameid" and "acceptednameid" columns.
+    # If name is not accepted, nameid should be the ID for the invalid name
+    # NOT for the accepted name because it leas to confussion.
+    eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+                                 eidos_result$acceptednameid,
+                                 eidos_result$idtaxon)
+
+    # After setting that, the acceptedmeid of an invalid name should be idtaxon,
+    # which corresponds to the id of the accepted name
+    eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+                                         eidos_result$idtaxon,
+                                         eidos_result$idtaxon)
+
+    # Now, idtaxon should be equal to nameid. These columns seem to be
+    # redundant in the API
+    eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+                                  eidos_result$nameid,
+                                  eidos_result$idtaxon)
+    return(eidos_result)
   }
-
-  # Rename "taxonid" to "idtaxon" for consistency
-  names(eidos_result)[names(eidos_result)=="taxonid"] <- "idtaxon"
-
-  # Substitute "" for NA
-  eidos_result[eidos_result == ""] <- NA
-
-  # Remove duplicates:
-  eidos_result[!duplicated(eidos_result), ]
-
-  # Remove any wierd whitespaces from table
-  eidos_result = as.data.frame(
-    lapply(eidos_result, eidos_clean_whitespaces),
-    check.names = FALSE
-  )
-
-  # For accepted names, the EIDOS API returns the wrong ID in the
-  # "nameid" and "acceptednameid" columns.
-  # If name is not accepted, nameid should be the ID for the invalid name
-  # NOT for the accepted name because it leas to confussion.
-  eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
-                               eidos_result$acceptednameid,
-                               eidos_result$idtaxon)
-
-  # After setting that, the acceptedmeid of an invalid name should be idtaxon,
-  # which corresponds to the id of the accepted name
-  eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
-                                       eidos_result$idtaxon,
-                                       eidos_result$idtaxon)
-
-  # Now, idtaxon should be equal to nameid. These columns seem to be
-  # redundant in the API
-  eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
-                                eidos_result$nameid,
-                                eidos_result$idtaxon)
-  return(eidos_result)
 }

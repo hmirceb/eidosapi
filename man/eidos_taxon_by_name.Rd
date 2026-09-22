@@ -20,7 +20,7 @@ Names have to be properly written, although the default API admits some common s
 For anything else use eidos_fuzzy_names()
 }
 \examples{
-example_taxo = data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
+example_taxo <- data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
 eidos_taxon_by_name(taxa_list = example_taxo)
 eidos_taxon_by_name(taxa_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
 }

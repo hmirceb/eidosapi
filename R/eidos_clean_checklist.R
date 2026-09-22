@@ -17,14 +17,29 @@ eidos_clean_checklist <- function(){
   ## Get checklist with synonyms ##
   checklist <- eidos_tables(eidos_table = "listapatronespecie_sinonimos")
 
-  # Remove unnecessary columns
-  checklist <- checklist[,-which(startsWith(x = names(checklist),
-                                           prefix = "LP "))]
+  # Check correct download
+  if ( is.null(checklist) ){
+    warning("Unable to retrieve checklist. EIDOS or your internet connection is down.",
+            call. = FALSE)
+    return(invisible(NULL))
+  } else {
+    # The default checklist is kind of a mess in terms of column names
+    # and the does not match the other tables in EIDOS
+    # Fix that
+    # Remove camelCase and capital letters in general in column names
+    colnames(checklist) <- tolower(colnames(checklist))
 
+    # Remove whitespace in column names
+    colnames(checklist) <- gsub(pattern = " ",
+                                replacement = "_",
+                                colnames(checklist))
+  # Remove unnecessary columns
+  checklist <- checklist[,!(startsWith(x = colnames(checklist),
+                                              prefix = "lp_"))]
   # Create new column with the taxon name
-  checklist$name <- ifelse(is.na(checklist[["Sin\u00f3nimo"]]),
-                           checklist$ScientificName,
-                           checklist[["Sin\u00f3nimo"]])
+  checklist$name <- ifelse(is.na(checklist[["sin\u00f3nimo"]]),
+                            checklist$scientificname,
+                            checklist[["sin\u00f3nimo"]])
 
   # Remove "subsp." and authorities and any Unicode whitespaces
   checklist$name_clean <- sapply(checklist$name, eidos_clean_names)
@@ -32,22 +47,10 @@ eidos_clean_checklist <- function(){
   # Substitute "" for NA
   checklist[checklist == ""] <- NA
 
-  # The default checklist is kind of a mess in terms of column names
-  # and the does not match the other tables in EIDOS
-  # Fix that
-
-  # Remove camelCase and capital letters in general in column names
-  colnames(checklist) <- tolower(colnames(checklist))
-
-  # Remove whitespace in column names
-  colnames(checklist) <- gsub(pattern = " ",
-                             replacement = "_",
-                             colnames(checklist))
-
   # Add 'nametype' column
   checklist$nametype <- ifelse(checklist$name == checklist$scientificname,
-                               "Aceptado/v\u00e1lido",
-                               "Sin\u00f3nimo")
+                                 "Aceptado/v\u00e1lido",
+                                 "Sin\u00f3nimo")
 
   # Rename columns
   names(checklist)[names(checklist) == "scientificname"] <- "acceptedname"
@@ -84,4 +87,5 @@ eidos_clean_checklist <- function(){
                               "vernacular_name","origin","environment")]
 
   return(checklist)
+  }
 }

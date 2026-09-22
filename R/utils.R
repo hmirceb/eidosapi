@@ -107,7 +107,7 @@ eidos_clean_names = function(taxa_names){
 get_authorities <- function(taxa_auth){
 
   ## Set API URL ##
-  api_url_base = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
+  api_url_base <- "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonespornombre?_nombretaxon="
 
   # Create URLs
   auth_urls <- lapply(taxa_auth,
@@ -156,8 +156,8 @@ get_authorities <- function(taxa_auth){
 
                             })
 
-  # Get taxa with no matches in EIDOS (DFs with only 5 columns):
-  no_matches <- which(sapply(auth_result_temp, ncol) == 5)
+  # Get taxa with no matches in EIDOS (have a column called "error")
+  no_matches <- which(sapply(auth_result_temp, function(x){any(colnames(x) %in% "error")}))
 
   # Remove those from list
   if (length(no_matches) == 0) {
@@ -166,26 +166,31 @@ get_authorities <- function(taxa_auth){
     auth_result <- do.call("rbind", auth_result_temp[-no_matches])
   }
 
-  # Keep only species-level records
-  auth_result <- auth_result[auth_result$taxonrank == "Species",]
+  ## Check if authorities were retrieved ##
+  if(is.null(auth_result)){
+    return(invisible(NULL))
+  } else {
+    # Keep only species-level records
+    auth_result <- auth_result[auth_result$taxonrank == "Species",]
 
-  # Keep only exact matches
-  auth_result <- auth_result[auth_result$supplied_genus == auth_result$genus &
-                               auth_result$supplied_species == auth_result$specificepithet,]
+    # Keep only exact matches
+    auth_result <- auth_result[auth_result$supplied_genus == auth_result$genus &
+                                 auth_result$supplied_species == auth_result$specificepithet,]
 
-  # Select columns
-  auth_result <- auth_result[c("supplied_genus", "supplied_species",
-                               "nameid", "scientificnameauthorship")]
+    # Select columns
+    auth_result <- auth_result[c("supplied_genus", "supplied_species",
+                                 "nameid", "scientificnameauthorship")]
 
-  # Create final name
-  auth_result$name <- paste(auth_result$supplied_genus,
-                            auth_result$supplied_species,
-                            sep = " ")
+    # Create final name
+    auth_result$name <- paste(auth_result$supplied_genus,
+                              auth_result$supplied_species,
+                              sep = " ")
 
-  # Final df
-  auth_result <- auth_result[c("name",
-                               "nameid", "scientificnameauthorship")]
-  return(auth_result)
+    # Final df
+    auth_result <- auth_result[c("name",
+                                 "nameid", "scientificnameauthorship")]
+    return(auth_result)
+  }
 }
 
 #' Parse JSON content in a URL
@@ -204,73 +209,15 @@ parse_api_json <- function(url) {
       # Check that the response was successful
       httr::stop_for_status(url_json)
       # Parse JSON
-      url_content <- jsonlite::fromJSON(httr::content(url_json, "text", encoding = "UTF-8"))
-      url_content  # returned if everything went well
-
+      jsonlite::fromJSON(httr::content(url_json, "text", encoding = "UTF-8"))
     }, error = function(e) {
-      message(paste0("Attempt ", attempt, "/", 5, " failed"))
       NULL
     })
-
     # If it succeeded, break the loop and return the result
-    if (!is.null(result)) {
-      return(result)
-    }
-
-    # If unsuccessful, wait a bit and try again
-    if (attempt < 5) {
-      Sys.sleep(2 * attempt)
-    }
+    if (!is.null(result)) {return(result)}
   }
   # Error if nothing worked
-  stop("Could not connect to EIDOS after ", 5, " attempts, try again later")
-}
-
-
-#' Function to download large Excel files from MITECO
-#'
-#' @param url URL to download.
-#' @param destfile Path to downloaded file.
-#' @param tries Number of download tries.
-#'
-#' @returns A file
-#' @keywords internal
-#' @noRd
-download_with_retry <- function(url, destfile, tries = 8) {
-  h <- curl::new_handle()
-  curl::handle_setopt(h,
-                      timeout = 600,
-                      low_speed_time = 120,
-                      low_speed_limit = 1,
-                      connecttimeout = 60,
-                      ssl_verifypeer = TRUE
-  )
-
-  for (i in seq_len(tries)) {
-    message("Attempt ", i, "...")
-    ok <- tryCatch({
-      curl::curl_download(url, destfile, handle = h, mode = "wb", quiet = FALSE)
-      TRUE
-    }, error = function(e) {
-      message("  failed: ", conditionMessage(e))
-      FALSE
-    })
-
-    if (ok && file.exists(destfile)) {
-      size <- file.info(destfile)$size
-      message("  got ", round(size / 1e6, 2), " MB")
-      # Basic sanity check: a valid xlsx is a zip file starting with "PK"
-      con <- file(destfile, "rb")
-      magic <- readBin(con, "raw", 2)
-      close(con)
-      if (identical(as.character(magic), c("50", "4b"))) {
-        message("File is valid")
-        return(invisible(TRUE))
-      } else {
-        message("  file looks incomplete/corrupted, retrying...")
-      }
-    }
-    Sys.sleep(5 * i)
-  }
-  stop("Download failed after ", tries, " attempts")
+  warning("Could not connect to the API, please check your connection or try again later.",
+          call. = FALSE)
+  return(invisible(NULL))
 }
