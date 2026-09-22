@@ -1,7 +1,7 @@
 Package: eidosapi
 Type: Package
 Title: Connect to the Taxonomic Services of the Spanish Inventory of Natural Patrimony and Biodiversity
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: c(
     person(
       "Héctor", "Miranda-Cebrián",
