@@ -11,7 +11,10 @@
 #' @export
 #'
 #' @examples
-#'eidos_taxon_by_id(taxon_id = 1)
+#' \donttest{
+#' eidos_taxon_by_id(taxon_id = 1)
+#' }
+#'
 eidos_taxon_by_id <- function(taxon_id){
 
   ## Make sure ID is numeric ##

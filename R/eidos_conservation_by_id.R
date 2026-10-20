@@ -12,7 +12,10 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eidos_conservation_by_id(taxon_id = 1)
+#' }
+#'
 eidos_conservation_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
   taxon_id <- as.numeric(taxon_id)

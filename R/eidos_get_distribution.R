@@ -6,11 +6,12 @@
 #' @export
 #'
 #' @examples
-#'
+#' \donttest{
 #' taxa_list <- data.frame(genus = "Sus", species = "scrofa", subspecies = NA, scientificnameauthorship = "Linnaeus, 1758")
 #' sps_distribution <- eidos_get_distribution(taxa_list)
 #' sps_distribution <- sps_distribution[sps_distribution$acceptedname_clean == "Sus scrofa",]
 #' plot(sps_distribution[3], main = sps_distribution$name_clean[1], key.pos = NULL)
+#' }
 #'
 eidos_get_distribution <- function(taxa_list){
   # Check that all inputs are the same type
