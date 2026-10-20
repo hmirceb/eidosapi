@@ -12,10 +12,7 @@
 #'
 #' @examples
 #' \donttest{
-#' example_taxo <- data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
-#' eidos_taxon_by_name(taxa_list = example_taxo)
 #' eidos_taxon_by_name(taxa_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
-#' eidos_taxon_by_name(taxa_list = data.frame(genus = "Sus", species = "scrofa", subspecies = NA, scientificnameauthorship = "Linnaeus, 1758"))
 #' }
 #'
 eidos_taxon_by_name = function(taxa_list) {
