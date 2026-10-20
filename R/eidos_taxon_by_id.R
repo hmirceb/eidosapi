@@ -15,7 +15,7 @@
 eidos_taxon_by_id <- function(taxon_id){
 
   ## Make sure ID is numeric ##
-  taxon_id = as.numeric(taxon_id)
+  taxon_id <- as.numeric(taxon_id)
 
   ## Check if ID is correct (only numbers allowed) ##
   if(sum(is.na(taxon_id) != 0)){
@@ -23,10 +23,10 @@ eidos_taxon_by_id <- function(taxon_id){
   }
 
   ## Set base URL ##
-  base_url = "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonporid?_idtaxon="
+  base_url <- "https://iepnb.gob.es:443/api/especie/rpc/obtenertaxonporid?_idtaxon="
 
   ## Create URL for API ##
-  eidos_url = paste0(base_url, taxon_id)
+  eidos_url <- paste0(base_url, taxon_id)
 
   ## Query API ##
   eidos_query <- lapply(eidos_url,
@@ -44,10 +44,10 @@ eidos_taxon_by_id <- function(taxon_id){
   )
 
   # Remove NULLs
-  eidos_query = eidos_query[!sapply(eidos_query, is.null)]
+  eidos_query <- eidos_query[!sapply(eidos_query, is.null)]
 
   ## Merge results ##
-  eidos_result = do.call("rbind", eidos_query)
+  eidos_result <- do.call("rbind", eidos_query)
 
   ## Check if at least one id was valid ##
   if(is.null(eidos_result)){
@@ -63,7 +63,7 @@ eidos_taxon_by_id <- function(taxon_id){
     eidos_result[eidos_result == ""] <- NA
 
     # Remove duplicates:
-    eidos_result[!duplicated(eidos_result), ]
+    eidos_result <- eidos_result[!duplicated(eidos_result), ]
 
     # Remove any wierd whitespaces from table
     eidos_result = as.data.frame(
@@ -75,19 +75,19 @@ eidos_taxon_by_id <- function(taxon_id){
     # "nameid" and "acceptednameid" columns.
     # If name is not accepted, nameid should be the ID for the invalid name
     # NOT for the accepted name because it leas to confussion.
-    eidos_result$nameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+    eidos_result$nameid <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                  eidos_result$acceptednameid,
                                  eidos_result$idtaxon)
 
     # After setting that, the acceptedmeid of an invalid name should be idtaxon,
     # which corresponds to the id of the accepted name
-    eidos_result$acceptednameid = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+    eidos_result$acceptednameid <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                          eidos_result$idtaxon,
                                          eidos_result$idtaxon)
 
     # Now, idtaxon should be equal to nameid. These columns seem to be
     # redundant in the API
-    eidos_result$idtaxon = ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
+    eidos_result$idtaxon <- ifelse(eidos_result$nametype != "Aceptado/v\u00e1lido",
                                   eidos_result$nameid,
                                   eidos_result$idtaxon)
     return(eidos_result)

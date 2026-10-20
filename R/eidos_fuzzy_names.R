@@ -181,7 +181,7 @@ eidos_fuzzy_names <- function(taxa_list,
     filtered_eidos_checklist_join[filtered_eidos_checklist_join == ""] <- NA
 
     # Remove duplicates:
-    filtered_eidos_checklist_join[!duplicated(filtered_eidos_checklist_join), ]
+    filtered_eidos_checklist_join <- filtered_eidos_checklist_join[!duplicated(filtered_eidos_checklist_join), ]
 
     # Remove any wierd whitespaces from table
     filtered_eidos_checklist_join <- as.data.frame(

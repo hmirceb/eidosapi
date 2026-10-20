@@ -15,7 +15,7 @@
 #' eidos_conservation_by_id(taxon_id = 1)
 eidos_conservation_by_id <- function(taxon_id){
   ## Make sure ID is numeric ##
-  taxon_id = as.numeric(taxon_id)
+  taxon_id <- as.numeric(taxon_id)
 
   ## Check if ID is correct (only numbers allowed) ##
   if(sum(is.na(taxon_id) != 0)){
@@ -23,13 +23,13 @@ eidos_conservation_by_id <- function(taxon_id){
   }
 
   ## Set base URL ##
-  base_url = "https://iepnb.gob.es:443/api/especie/rpc/obtenerestadosconservacionportaxonid?_idtaxon="
+  base_url <- "https://iepnb.gob.es:443/api/especie/rpc/obtenerestadosconservacionportaxonid?_idtaxon="
 
   ## Create URL for API ##
-  eidos_url = paste0(base_url, taxon_id)
+  eidos_url <- paste0(base_url, taxon_id)
 
   ## Query API ##
-  eidos_query_list = lapply(eidos_url,
+  eidos_query_list <- lapply(eidos_url,
                             function(x){
                               # Query EIDOS API
                               a <- parse_api_json(url = x)
@@ -44,7 +44,7 @@ eidos_conservation_by_id <- function(taxon_id){
                             )
 
   # Remove NULLs
-  eidos_query_list = eidos_query_list[!sapply(eidos_query_list, is.null)]
+  eidos_query_list <- eidos_query_list[!sapply(eidos_query_list, is.null)]
 
   # Stop if no results found
   if(length(eidos_query_list) == 0){
@@ -52,14 +52,14 @@ eidos_conservation_by_id <- function(taxon_id){
     return(invisible(NULL))
   } else {
     # Get names from EIDOS:
-    taxonomic_information = eidos_taxon_by_id(taxon_id = taxon_id)
-    taxonomic_information = taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
-    taxonomic_information = taxonomic_information[c("nameid", "name")]
-    taxonomic_information$name = eidos_clean_names(taxonomic_information$name)
+    taxonomic_information <- eidos_taxon_by_id(taxon_id = taxon_id)
+    taxonomic_information <- taxonomic_information[taxonomic_information$nameid == taxonomic_information$acceptednameid,]
+    taxonomic_information <- taxonomic_information[c("nameid", "name")]
+    taxonomic_information$name <- eidos_clean_names(taxonomic_information$name)
 
     ## Merge results ##
-    eidos_query_temp = do.call("rbind", eidos_query_list)
-    eidos_query = merge(x = eidos_query_temp,
+    eidos_query_temp <- do.call("rbind", eidos_query_list)
+    eidos_query <- merge(x = eidos_query_temp,
                         y = taxonomic_information,
                         by.x = "idtaxon",
                         by.y = "nameid")
@@ -67,14 +67,14 @@ eidos_conservation_by_id <- function(taxon_id){
     # Substitute "" for NA
     eidos_query[eidos_query == ""] <- NA
 
-    # Remove any wierd whitespaces from table
-    eidos_query = as.data.frame(
+    # Remove any weird whitespaces from table
+    eidos_query <- as.data.frame(
       lapply(eidos_query, eidos_clean_whitespaces),
       check.names = FALSE
     )
 
     # Put name as first column:
-    eidos_query = eidos_query[c("name",
+    eidos_query <- eidos_query[c("name",
                                 colnames(eidos_query)[colnames(eidos_query) != "name"])]
 
     # Rename column:

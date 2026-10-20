@@ -6,7 +6,7 @@
 #' For anything else use eidos_fuzzy_names()
 #'
 #' @param taxa_list A vector or data.frame with taxa names. The data frame needs at least 2 columns: "genus" and "species".
-#' Optional columns are "subspecies", "scientificnameauthorship."
+#' Optional columns are "subspecies", "scientificnameauthorship"
 #' @returns A data.frame with the supplied data and the taxonomic information from EIDOS for any matching taxa
 #' @export
 #'
@@ -14,6 +14,8 @@
 #' example_taxo <- data.frame(genus = "Alytes", species = "cisternasii", subspecies = NA)
 #' eidos_taxon_by_name(taxa_list = example_taxo)
 #' eidos_taxon_by_name(taxa_list = c("Alytes cisternasii", "Pinus nigra subsp. salzmannii"))
+#' eidos_taxon_by_name(taxa_list = data.frame(genus = "Sus", species = "scrofa", subspecies = NA, scientificnameauthorship = "Linnaeus, 1758"))
+#'
 eidos_taxon_by_name = function(taxa_list) {
 
   ## If supplied list is a vector, generate appropiate data frame
@@ -152,7 +154,6 @@ eidos_taxon_by_name = function(taxa_list) {
       )
   }
 
-
   # Join DFs with species and subspecies URLs
   df_urls <- do.call("rbind", c(sp_urls, subsp_urls))
 
@@ -160,6 +161,11 @@ eidos_taxon_by_name = function(taxa_list) {
   df_urls$url <- paste0(df_urls$url,
                        "%20",
                        df_urls$scientificnameauthorship)
+
+  # Format whitespaces properly
+  df_urls$url <- gsub(" ",
+                      "%20",
+                      df_urls$url)
 
   # Remove unnecessary text if scientific authority is unavailable
   df_urls$url <- gsub("%20NA",

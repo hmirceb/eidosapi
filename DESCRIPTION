@@ -16,7 +16,8 @@ Encoding: UTF-8
 Imports:
   jsonlite,
   fuzzyjoin,
-  httr
+  httr,
+  sf
 URL: https://github.com/hmirceb/eidosapi
 BugReports: https://github.com/hmirceb/eidosapi/issues
 Roxygen: list(markdown = TRUE)

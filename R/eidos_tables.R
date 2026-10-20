@@ -11,7 +11,10 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eidos_tables(eidos_table = "comunidades_autonomas")
+#' }
+#'
 eidos_tables <- function(eidos_table = c("comunidades_autonomas",
                                           "listapatronespecie",
                                           "listapatronespecie_sinonimos",
